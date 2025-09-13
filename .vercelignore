@@ -13,3 +13,7 @@ README-MONGODB.md
 # Git files
 .git
 .gitignore
+
+# Ignore package.json to force static deployment
+package.json
+package-lock.json
