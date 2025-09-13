@@ -10,16 +10,24 @@ let currentCharIndex = 0;
 let isTyping = true;
 let typingElement = null;
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    typingElement = document.getElementById('typingText');
+// Prevent double initialization
+if (!window.heroJsInitialized) {
+    window.heroJsInitialized = true;
     
-    // Start animations
-    setTimeout(() => {
-        startEntryAnimations();
-        startTypingAnimation();
-    }, 500);
-});
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        typingElement = document.getElementById('typingText');
+        
+        // Only initialize if hero section exists
+        if (typingElement) {
+            // Start animations
+            setTimeout(() => {
+                startEntryAnimations();
+                startTypingAnimation();
+            }, 500);
+        }
+    });
+}
 
 // Entry Animations
 function startEntryAnimations() {

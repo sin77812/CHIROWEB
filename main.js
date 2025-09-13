@@ -2,6 +2,10 @@
 (function() {
     'use strict';
     
+    // Prevent double initialization
+    if (window.mainJsInitialized) return;
+    window.mainJsInitialized = true;
+    
 document.addEventListener('DOMContentLoaded', function() {
     initSmoothScrolling();
     initSectionAnimations();

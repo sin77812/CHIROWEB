@@ -1,8 +1,9 @@
 :root {
-  /* Font Families */
+  /* Font Families - Aligned with styles.css */
   --font-display: "Black Han Sans", sans-serif;
-  --font-primary: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-korean: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-en-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-korean: 'Pretendard', 'Spoqa Han Sans Neo', sans-serif;
   
   /* Background Colors */
   --primary-bg: #0A0A0A;
