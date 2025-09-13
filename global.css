@@ -1,0 +1,126 @@
+/* Global Styles - Force Background Colors */
+html {
+  background-color: #0A0A0A !important;
+}
+
+body {
+  background-color: #0A0A0A !important;
+  color: #FFFFFF !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+}
+
+/* Video Optimization */
+video {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+}
+
+/* Video background containers optimization */
+.hero-video-background,
+.process-video-background,
+.cta-video-background {
+  contain: layout style paint;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Preload critical videos */
+.hero-video-background video,
+.process-video-background video {
+  preload: auto;
+}
+
+/* Non-critical videos load on demand */
+.cta-video-background video {
+  preload: metadata;
+}
+
+/* Video lazy loading intersection observer fallback */
+video[loading="lazy"] {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+video[loading="lazy"].loaded {
+  opacity: 1;
+}
+
+/* Body scroll control for horizontal section - removed aggressive positioning */
+
+/* Section Background Colors and Positioning */
+.hero-section {
+  background-color: #0A0A0A !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.portfolio-section {
+  background-color: #0A0A0A !important;
+  position: relative !important;
+  z-index: 2 !important;
+  margin-top: 0 !important;
+}
+
+.services-section {
+  background-color: #111111 !important;
+  position: relative !important;
+  z-index: 3 !important;
+  margin-top: 0 !important;
+  clear: both !important;
+}
+
+.pricing-section {
+  background-color: #0A0A0A !important;
+  position: relative !important;
+  z-index: 4 !important;
+  margin-top: 0 !important;
+  clear: both !important;
+}
+
+.contact-section {
+  background-color: #111111 !important;
+  position: relative !important;
+  z-index: 5 !important;
+  margin-top: 0 !important;
+  clear: both !important;
+}
+
+/* Footer Background */
+.site-footer {
+  background-color: #111111 !important;
+}
+
+/* Force Section Display Block */
+section {
+  display: block !important;
+  width: 100% !important;
+  float: none !important;
+  /* position: static 제거! */
+}
+
+/* Section Containers */
+.container {
+  display: block !important;
+  width: 100% !important;
+  max-width: 1440px !important;
+  margin: 0 auto !important;
+  padding: 0 5% !important;
+}
+
+/* Reset any conflicting styles */
+.services-section .container,
+.pricing-section .container,
+.portfolio-section .container,
+.contact-section .container,
+.contact-form-section .container,
+.contact-hero-section .container {
+  position: relative !important;
+  z-index: auto !important;
+  width: 100% !important;
+  max-width: 1440px !important;
+}

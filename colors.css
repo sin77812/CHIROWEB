@@ -1,0 +1,43 @@
+:root {
+  /* Font Families */
+  --font-display: "Black Han Sans", sans-serif;
+  --font-primary: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-korean: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  
+  /* Background Colors */
+  --primary-bg: #0A0A0A;
+  --secondary-bg: #111111;
+  --card-bg: #1A1A1A;
+  
+  /* Text Colors */
+  --primary-text: #FFFFFF;
+  --secondary-text: #A0A0A0;
+  --disabled-text: #666666;
+  
+  /* Accent Colors */
+  --accent-red: #FF3B30;
+  --accent-blue: #007AFF;
+  --success: #34C759;
+  --warning: #FF9500;
+  
+  /* Border Colors */
+  --primary-border: #2A2A2A;
+  --secondary-border: #1F1F1F;
+  --hover-border: #3A3A3A;
+  
+  /* Button Colors */
+  --btn-primary-bg: var(--accent-red);
+  --btn-primary-text: var(--primary-text);
+  --btn-secondary-bg: transparent;
+  --btn-secondary-text: var(--primary-text);
+  --btn-secondary-border: var(--primary-border);
+  --btn-text-color: var(--secondary-text);
+  --btn-text-hover: var(--primary-text);
+  
+  /* Input Colors */
+  --input-bg: var(--secondary-bg);
+  --input-border: var(--primary-border);
+  --input-focus: var(--accent-red);
+  --input-text: var(--primary-text);
+  --input-placeholder: var(--disabled-text);
+}

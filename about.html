@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - CHIRO</title>
+    
+    <!-- Design System CSS -->
+    <link rel="stylesheet" href="colors.css">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="typography.css">
+    <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="navigation.css">
+    <link rel="stylesheet" href="about.css">
+    <link rel="stylesheet" href="icons.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body style="background: #0A0A0A; margin: 0; padding: 0;">
+    
+    <!-- Main Navigation -->
+    <nav class="main-navigation">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="index.html" class="nav-logo">
+                <span class="nav-logo-text">CHIRO</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="portfolio.html" class="nav-link">Portfolio</a></li>
+                <li class="nav-item"><a href="about.html" class="nav-link active">About</a></li>
+                <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            
+            <!-- CTA Button -->
+            <div class="nav-cta">
+                <a href="contact.html" class="nav-contact-btn">Start Project</a>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="nav-toggle" aria-label="Toggle menu">
+                    <span class="nav-toggle-line"></span>
+                    <span class="nav-toggle-line"></span>
+                    <span class="nav-toggle-line"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div class="nav-mobile-menu">
+        <a href="index.html" class="nav-mobile-link">Home</a>
+        <a href="portfolio.html" class="nav-mobile-link">Portfolio</a>
+        <a href="about.html" class="nav-mobile-link active">About</a>
+        <a href="blog.html" class="nav-mobile-link">Blog</a>
+        <a href="contact.html" class="nav-mobile-link">Contact</a>
+    </div>
+    
+    <!-- About Hero Section -->
+    <section id="hero" class="about-hero-section">
+        <div class="hero-video-background">
+            <video autoplay muted loop playsinline preload="metadata" loading="lazy">
+                <source src="aboutvideo.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay"></div>
+        </div>
+        <div class="container">
+            <div class="about-hero-content">
+                <h1 class="about-hero-title">
+                    <span class="title-line">We Build</span>
+                    <span class="title-line highlight">Digital Excellence</span>
+                </h1>
+                <p class="about-hero-description">
+                    혁신적인 디지털 경험을 통해 브랜드의 본질을 드러내고,<br>
+                    사용자와 깊이 연결되는 솔루션을 만듭니다.
+                </p>
+                <div class="about-hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">2019</span>
+                        <span class="stat-label">설립년도</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">완료 프로젝트</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">고객 만족도</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Philosophy Section -->
+    <section id="philosophy" class="philosophy-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Philosophy</h2>
+                <p class="section-subtitle">디지털 세상에서 진정한 가치를 만드는 세 가지 원칙</p>
+            </div>
+            
+            <div class="philosophy-grid">
+                <!-- Minimal -->
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <span class="icon-text">01</span>
+                    </div>
+                    <h3 class="philosophy-title">Minimal</h3>
+                    <p class="philosophy-description">
+                        불필요한 것들을 제거하고 본질에 집중합니다.<br>
+                        단순함 속에서 가장 강력한 메시지를 전달합니다.
+                    </p>
+                </div>
+                
+                <!-- Fast -->
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <span class="icon-text">02</span>
+                    </div>
+                    <h3 class="philosophy-title">Fast</h3>
+                    <p class="philosophy-description">
+                        빠른 실행력으로 변화하는 시장에 대응합니다.<br>
+                        신속한 의사결정과 효율적인 워크플로우를 추구합니다.
+                    </p>
+                </div>
+                
+                <!-- Effective -->
+                <div class="philosophy-card">
+                    <div class="philosophy-icon">
+                        <span class="icon-text">03</span>
+                    </div>
+                    <h3 class="philosophy-title">Effective</h3>
+                    <p class="philosophy-description">
+                        결과 중심의 사고로 실질적인 성과를 만듭니다.<br>
+                        모든 디자인과 개발은 명확한 목표를 향합니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section id="process" class="process-section">
+        <div class="process-video-background">
+            <video autoplay muted loop playsinline preload="metadata" loading="lazy">
+                <source src="about2video.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay"></div>
+        </div>
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Process</h2>
+                <p class="section-subtitle">체계적이고 투명한 4단계 프로세스</p>
+            </div>
+            
+            <div class="process-timeline">
+                <!-- Discovery -->
+                <div class="process-step">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Discovery</h3>
+                        <div class="step-duration">1일</div>
+                        <p class="step-description">
+                            브랜드와 비즈니스를 깊이 이해하고,<br>
+                            프로젝트의 목표와 방향성을 설정합니다.
+                        </p>
+                        <ul class="step-details">
+                            <li>브랜드 분석 및 리서치</li>
+                            <li>타겟 오디언스 정의</li>
+                            <li>경쟁사 분석</li>
+                            <li>프로젝트 스코프 확정</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Design -->
+                <div class="process-step">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Design</h3>
+                        <div class="step-duration">3일</div>
+                        <p class="step-description">
+                            사용자 경험을 중심으로 한<br>
+                            창의적이고 기능적인 디자인을 제작합니다.
+                        </p>
+                        <ul class="step-details">
+                            <li>와이어프레임 및 프로토타입</li>
+                            <li>UI/UX 디자인</li>
+                            <li>브랜드 아이덴티티 적용</li>
+                            <li>디자인 시스템 구축</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Development -->
+                <div class="process-step">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Development</h3>
+                        <div class="step-duration">7-14일</div>
+                        <p class="step-description">
+                            최신 기술과 최적화된 코드로<br>
+                            안정적이고 빠른 웹사이트를 구현합니다.
+                        </p>
+                        <ul class="step-details">
+                            <li>프론트엔드 개발</li>
+                            <li>백엔드 시스템 구축</li>
+                            <li>반응형 웹 구현</li>
+                            <li>성능 최적화</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Launch -->
+                <div class="process-step">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <h3 class="step-title">Launch</h3>
+                        <div class="step-duration">1일</div>
+                        <p class="step-description">
+                            철저한 테스트를 거쳐 성공적인 런칭과<br>
+                            지속적인 운영 지원을 제공합니다.
+                        </p>
+                        <ul class="step-details">
+                            <li>최종 테스트 및 QA</li>
+                            <li>도메인 및 호스팅 설정</li>
+                            <li>런칭 및 배포</li>
+                            <li>운영 가이드 제공</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="team-section">
+        <div class="container">
+            <div class="team-content">
+                <div class="team-text">
+                    <h2 class="team-title">Working with AI</h2>
+                    <p class="team-description">
+                        우리는 인공지능과 협업하여 더 나은 결과물을 만듭니다.<br>
+                        기술의 힘과 인간의 창의성이 만나 새로운 가능성을 열어갑니다.
+                    </p>
+                    <div class="team-features">
+                        <div class="feature-item">
+                            <span class="feature-icon"><i class="icon icon-rocket"></i></span>
+                            <span class="feature-text">빠른 프로토타이핑</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon"><i class="icon icon-target"></i></span>
+                            <span class="feature-text">정확한 분석</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon"><i class="icon icon-bulb"></i></span>
+                            <span class="feature-text">창의적 솔루션</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="team-cta">
+                    <h3 class="cta-title">프로젝트를 시작할 준비가 되셨나요?</h3>
+                    <p class="cta-description">언제든 연락주세요. 24시간 내에 답변드리겠습니다.</p>
+                    <a href="contact.html" class="cta-button">프로젝트 시작하기</a>
+                    
+                    <div class="contact-links">
+                        <a href="mailto:chiro75web@gmail.com" class="contact-link">
+                            <span class="link-label">Email</span>
+                            <span class="link-value">chiro75web@gmail.com</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="navigation.js"></script>
+    <script src="video-optimization.js"></script>
+    <script src="about.js"></script>
+</body>
+</html>

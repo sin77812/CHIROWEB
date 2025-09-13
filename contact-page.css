@@ -1,0 +1,742 @@
+/* Contact Page Styles */
+
+/* Contact Hero Section */
+.contact-hero-section {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  background: var(--primary-bg);
+  padding: 160px 0 60px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.contact-hero-section .hero-video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.contact-hero-section .hero-video-background video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.contact-hero-section .video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.7);
+  z-index: 1;
+}
+
+.contact-hero-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+.contact-hero-content {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contact-hero-title {
+  margin-bottom: 32px;
+}
+
+.title-line {
+  display: block;
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 0.9;
+  color: var(--primary-text);
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.title-line.highlight {
+  color: var(--accent-red);
+}
+
+.contact-hero-description {
+  font-family: var(--font-korean);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--secondary-text);
+  line-height: 1.7;
+  margin-bottom: 48px;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.hero-features {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.feature-icon {
+  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+}
+
+.feature-icon .icon {
+  width: 20px;
+  height: 20px;
+  color: var(--accent-red);
+}
+
+.feature-text {
+  font-family: var(--font-korean);
+  font-size: 14px;
+  color: var(--secondary-text);
+  font-weight: 500;
+}
+
+/* Contact Form Section */
+.contact-form-section {
+  padding: 80px 0 120px;
+  background: var(--secondary-bg);
+  width: 100%;
+  min-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+/* Contact Form Container */
+.contact-form-container {
+  background: var(--card-bg);
+  border: 1px solid var(--primary-border);
+  border-radius: 12px;
+  padding: 48px;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.form-header {
+  margin-bottom: 40px;
+}
+
+.form-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--primary-text);
+  margin-bottom: 32px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Progress Bar */
+.progress-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.5;
+  transition: opacity 0.3s var(--ease-default);
+}
+
+.progress-step.active {
+  opacity: 1;
+}
+
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--primary-border);
+  color: var(--secondary-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s var(--ease-default);
+}
+
+.progress-step.active .step-number {
+  background: var(--accent-red);
+  color: var(--primary-text);
+}
+
+.step-label {
+  font-family: var(--font-korean);
+  font-size: 12px;
+  color: var(--secondary-text);
+  font-weight: 500;
+}
+
+.progress-line {
+  width: 80px;
+  height: 2px;
+  background: var(--primary-border);
+  margin: 0 20px;
+}
+
+/* Form Steps */
+.form-step {
+  display: none;
+  animation: slideInRight 0.5s ease-out forwards;
+}
+
+.form-step.active {
+  display: block;
+}
+
+.form-step.prev {
+  animation: slideInLeft 0.5s ease-out forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  font-family: var(--font-korean);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-text);
+  margin-bottom: 8px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background: var(--secondary-bg);
+  border: 1px solid var(--primary-border);
+  border-radius: 8px;
+  padding: 16px;
+  font-family: var(--font-korean);
+  font-size: 16px;
+  color: var(--primary-text);
+  transition: all 0.3s var(--ease-default);
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--disabled-text);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-error {
+  display: block;
+  font-family: var(--font-primary);
+  font-size: 12px;
+  color: var(--accent-red);
+  margin-top: 4px;
+  opacity: 0;
+  transition: opacity 0.3s var(--ease-default);
+}
+
+.form-error.show {
+  opacity: 1;
+}
+
+/* Form Buttons */
+.form-next-btn,
+.form-prev-btn,
+.form-submit-btn {
+  font-family: var(--font-korean);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 16px 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-default);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-next-btn,
+.form-submit-btn {
+  background: var(--accent-red);
+  color: var(--primary-text);
+  width: 100%;
+  justify-content: center;
+}
+
+.form-next-btn:hover,
+.form-submit-btn:hover {
+  background: #ff2d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3);
+}
+
+.form-prev-btn {
+  background: transparent;
+  color: var(--secondary-text);
+  border: 1px solid var(--primary-border);
+}
+
+.form-prev-btn:hover {
+  background: var(--card-bg);
+  color: var(--primary-text);
+  border-color: var(--accent-red);
+}
+
+.form-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.form-actions .form-prev-btn {
+  flex: 1;
+}
+
+.form-actions .form-submit-btn {
+  flex: 2;
+}
+
+.btn-arrow,
+.btn-icon {
+  font-size: 14px;
+  transition: transform 0.3s var(--ease-default);
+}
+
+.form-next-btn:hover .btn-arrow,
+.form-submit-btn:hover .btn-icon {
+  transform: translateX(2px);
+}
+
+.form-prev-btn:hover .btn-arrow {
+  transform: translateX(-2px);
+}
+
+/* Success Message */
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 60px 40px;
+}
+
+.form-success.show {
+  display: block;
+  animation: fadeInScale 0.6s ease-out forwards;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--accent-red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: var(--primary-text);
+  margin: 0 auto 24px;
+  animation: bounce 0.6s ease-out 0.3s both;
+}
+
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0,0,0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+.success-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--primary-text);
+  margin-bottom: 16px;
+}
+
+.success-description {
+  font-family: var(--font-korean);
+  font-size: 16px;
+  color: var(--secondary-text);
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.success-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.success-btn {
+  font-family: var(--font-korean);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  transition: all 0.3s var(--ease-default);
+  border: none;
+  cursor: pointer;
+}
+
+.success-btn.primary {
+  background: var(--accent-red);
+  color: var(--primary-text);
+}
+
+.success-btn.primary:hover {
+  background: #ff2d1f;
+  transform: translateY(-2px);
+}
+
+.success-btn.secondary {
+  background: transparent;
+  color: var(--secondary-text);
+  border: 1px solid var(--primary-border);
+}
+
+.success-btn.secondary:hover {
+  background: var(--card-bg);
+  color: var(--primary-text);
+}
+
+/* Contact Information */
+.contact-info-container {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.contact-info-card {
+  background: var(--card-bg);
+  border: 1px solid var(--primary-border);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.contact-info-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--primary-text);
+  margin-bottom: 32px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.contact-item:last-child {
+  margin-bottom: 0;
+}
+
+.contact-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 59, 48, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.contact-details {
+  flex: 1;
+}
+
+.contact-label {
+  font-family: var(--font-korean);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-text);
+  margin-bottom: 4px;
+}
+
+.contact-value {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--secondary-text);
+  text-decoration: none;
+  transition: color 0.3s var(--ease-default);
+}
+
+.contact-value:hover {
+  color: var(--accent-red);
+}
+
+/* FAQ Section */
+.contact-faq {
+  background: var(--card-bg);
+  border: 1px solid var(--primary-border);
+  border-radius: 12px;
+  padding: 32px;
+}
+
+.faq-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--primary-text);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.faq-item {
+  margin-bottom: 16px;
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--primary-border);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-default);
+}
+
+.faq-question:hover {
+  color: var(--accent-red);
+}
+
+.faq-question span:first-child {
+  font-family: var(--font-korean);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--primary-text);
+  flex: 1;
+}
+
+.faq-toggle {
+  font-size: 18px;
+  color: var(--secondary-text);
+  transition: transform 0.3s var(--ease-default);
+}
+
+.faq-item.open .faq-toggle {
+  transform: rotate(45deg);
+  color: var(--accent-red);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s var(--ease-default);
+  font-family: var(--font-korean);
+  font-size: 13px;
+  color: var(--secondary-text);
+  line-height: 1.6;
+  padding: 0 16px;
+  opacity: 0;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 200px;
+  padding: 16px;
+  opacity: 1;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .contact-hero-section {
+    padding: 140px 0 60px;
+  }
+  
+  .title-line {
+    font-size: 42px;
+  }
+  
+  .hero-features {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .contact-form-container {
+    padding: 32px 24px;
+  }
+  
+  .form-title {
+    font-size: 24px;
+  }
+  
+  .progress-bar {
+    justify-content: center;
+  }
+  
+  .progress-line {
+    width: 60px;
+    margin: 0 16px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .success-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-hero-section {
+    padding: 120px 0 40px;
+  }
+  
+  .title-line {
+    font-size: 32px;
+  }
+  
+  .contact-form-container {
+    padding: 24px 20px;
+  }
+  
+  .form-title {
+    font-size: 20px;
+  }
+  
+  .contact-info-card,
+  .contact-faq {
+    padding: 24px 20px;
+  }
+}
+
+/* Loading States */
+.form-loading .form-submit-btn {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.form-loading .form-submit-btn::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Form Validation States */
+.form-input.error,
+.form-select.error,
+.form-textarea.error {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1);
+}
+
+.form-input.success,
+.form-select.success,
+.form-textarea.success {
+  border-color: var(--success);
+  box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.1);
+}

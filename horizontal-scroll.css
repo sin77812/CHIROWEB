@@ -1,0 +1,239 @@
+/* Horizontal Scroll Section */
+.horizontal-scroll-section {
+  position: relative;
+  height: 100vh;
+  overflow: hidden; /* 다시 추가 */
+  background: #0A0A0A;
+  will-change: transform;
+  transform: translateZ(0); /* GPU 가속 */
+  backface-visibility: hidden;
+  /* Prevent scroll chaining/rubber-banding when entering/leaving section */
+  overscroll-behavior: contain;
+}
+
+/* Background Video */
+.horizontal-video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.horizontal-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.horizontal-video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.6);
+  z-index: 2;
+}
+
+/* Horizontal Container */
+.horizontal-container {
+  position: relative;
+  z-index: 3;
+  height: 100vh;
+  overflow: hidden;
+  will-change: transform;
+  transform: translateZ(0); /* GPU 가속 */
+  backface-visibility: hidden;
+}
+
+.horizontal-wrapper {
+  display: flex;
+  width: 400vw; /* 4 panels * 100vw */
+  height: 100vh;
+  will-change: transform;
+}
+
+/* Horizontal Panels */
+.horizontal-panel {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.panel-content {
+  text-align: center;
+  opacity: 1;  /* 처음부터 보이게 */
+  transform: translateY(0);  /* 변형 없음 */
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.panel-content.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Typography */
+.panel-main-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 140px;
+  font-weight: 400;
+  color: #FFFFFF;
+  line-height: 0.9;
+  margin-bottom: 40px;
+  letter-spacing: -3px;
+  text-transform: uppercase;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.panel-subtitle {
+  font-family: var(--font-primary);
+  font-size: 24px;
+  font-weight: 600;
+  color: #FF3B30;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.panel-description {
+  font-family: var(--font-korean);
+  font-size: 18px;
+  font-weight: 400;
+  color: #A0A0A0;
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Progress Indicators */
+.progress-indicators {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  z-index: 10;
+}
+
+.progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-dot.active {
+  background: #FF3B30;
+  transform: scale(1.2);
+}
+
+.progress-dot:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.progress-dot.active:hover {
+  background: #FF3B30;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .panel-main-title {
+    font-size: 90px;
+    margin-bottom: 32px;
+    letter-spacing: -2px;
+    line-height: 0.8;
+  }
+  
+  .panel-subtitle {
+    font-size: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+  }
+  
+  .panel-description {
+    font-size: 16px;
+    max-width: 300px;
+    padding: 0 20px;
+  }
+  
+  .progress-indicators {
+    bottom: 40px;
+  }
+  
+  .progress-dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .panel-main-title {
+    font-size: 70px;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+  }
+  
+  .panel-subtitle {
+    font-size: 18px;
+    letter-spacing: 1.5px;
+  }
+  
+  .panel-description {
+    font-size: 14px;
+    max-width: 280px;
+  }
+}
+
+/* Animation States - 모든 요소를 처음부터 보이게 */
+.panel-main-title,
+.panel-subtitle,
+.panel-description {
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+
+/* Performance Optimizations */
+.horizontal-wrapper {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.horizontal-panel {
+  will-change: transform;
+}
+
+.panel-content {
+  will-change: transform, opacity;
+}
+
+/* Prevent text selection during scroll */
+.horizontal-scroll-section {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Custom scrollbar (hidden) */
+.horizontal-container::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontal-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* NOTE: Do not override GSAP ScrollTrigger's .pin-spacer styles.
+   Overriding its height/overflow can cause scroll jump/bounce issues
+   when entering/leaving the pinned horizontal section. */

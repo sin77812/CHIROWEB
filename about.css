@@ -1,0 +1,597 @@
+/* About Page Styles */
+
+/* About Hero Section */
+.about-hero-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: var(--primary-bg);
+  padding: 160px 0 80px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.hero-video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-video-background video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-hero-section .video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.6);
+  z-index: 1;
+}
+
+.about-hero-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+.about-hero-content {
+  text-align: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.about-hero-title {
+  margin-bottom: 40px;
+}
+
+.title-line {
+  display: block;
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 72px;
+  font-weight: 400;
+  line-height: 0.9;
+  color: var(--primary-text);
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.title-line.highlight {
+  color: var(--accent-red);
+}
+
+.about-hero-description {
+  font-family: var(--font-korean);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--secondary-text);
+  line-height: 1.6;
+  margin-bottom: 60px;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.about-hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--accent-red);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-family: var(--font-korean);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--secondary-text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Philosophy Section */
+.philosophy-section {
+  padding: 160px 0;
+  background: var(--secondary-bg);
+  width: 100%;
+  min-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 120px;
+}
+
+.section-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 56px;
+  font-weight: 400;
+  color: var(--primary-text);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.section-subtitle {
+  font-family: var(--font-korean);
+  font-size: 18px;
+  color: var(--secondary-text);
+  line-height: 1.6;
+}
+
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.philosophy-card {
+  text-align: center;
+  padding: 60px 40px;
+  background: var(--card-bg);
+  border: 1px solid var(--primary-border);
+  border-radius: 8px;
+  transition: all 0.3s var(--ease-default);
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.philosophy-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent-red);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.philosophy-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--accent-red);
+  border-radius: 50%;
+}
+
+.icon-text {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 24px;
+  color: var(--accent-red);
+  font-weight: 400;
+}
+
+.philosophy-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--primary-text);
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.philosophy-description {
+  font-family: var(--font-korean);
+  font-size: 16px;
+  color: var(--secondary-text);
+  line-height: 1.7;
+}
+
+/* Process Section */
+.process-section {
+  padding: 160px 0;
+  background: var(--primary-bg);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.process-video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.process-video-background video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.7);
+  z-index: 1;
+}
+
+.process-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+.process-timeline {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.process-timeline::before {
+  content: '';
+  position: absolute;
+  left: 60px;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: var(--primary-border);
+  z-index: 1;
+}
+
+.process-step {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 120px;
+  position: relative;
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.process-step:last-child {
+  margin-bottom: 0;
+}
+
+.step-number {
+  width: 120px;
+  height: 120px;
+  background: var(--card-bg);
+  border: 3px solid var(--accent-red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--accent-red);
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.step-content {
+  margin-left: 80px;
+  padding-top: 20px;
+}
+
+.step-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 42px;
+  font-weight: 400;
+  color: var(--primary-text);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.step-duration {
+  display: inline-block;
+  background: var(--accent-red);
+  color: var(--primary-text);
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+}
+
+.step-description {
+  font-family: var(--font-korean);
+  font-size: 18px;
+  color: var(--secondary-text);
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.step-details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.step-details li {
+  font-family: var(--font-korean);
+  font-size: 14px;
+  color: var(--secondary-text);
+  padding: 8px 0;
+  padding-left: 24px;
+  position: relative;
+}
+
+.step-details li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--accent-red);
+  font-weight: bold;
+}
+
+/* Team Section */
+.team-section {
+  padding: 160px 0;
+  background: var(--secondary-bg);
+  width: 100%;
+  min-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.team-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 120px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.team-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--primary-text);
+  margin-bottom: 32px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.team-description {
+  font-family: var(--font-korean);
+  font-size: 18px;
+  color: var(--secondary-text);
+  line-height: 1.7;
+  margin-bottom: 48px;
+}
+
+.team-features {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.feature-icon {
+  font-size: 24px;
+}
+
+.feature-text {
+  font-family: var(--font-korean);
+  font-size: 16px;
+  color: var(--primary-text);
+  font-weight: 500;
+}
+
+.team-cta {
+  text-align: center;
+  padding: 60px 40px;
+  background: var(--card-bg);
+  border: 1px solid var(--primary-border);
+  border-radius: 12px;
+}
+
+.cta-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--primary-text);
+  margin-bottom: 16px;
+}
+
+.cta-description {
+  font-family: var(--font-korean);
+  font-size: 16px;
+  color: var(--secondary-text);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.cta-button {
+  display: inline-block;
+  background: var(--accent-red);
+  color: var(--primary-text);
+  font-family: var(--font-korean);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 16px 40px;
+  border-radius: 8px;
+  transition: all 0.3s var(--ease-default);
+  margin-bottom: 40px;
+}
+
+.cta-button:hover {
+  background: #ff2d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3);
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--primary-border);
+  text-decoration: none;
+  transition: all 0.3s var(--ease-default);
+}
+
+.contact-link:hover {
+  border-color: var(--accent-red);
+}
+
+.link-label {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--secondary-text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.link-value {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  color: var(--primary-text);
+  font-weight: 500;
+}
+
+.contact-link:hover .link-value {
+  color: var(--accent-red);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .about-hero-section {
+    padding: 140px 0 60px;
+  }
+  
+  .title-line {
+    font-size: 48px;
+  }
+  
+  .about-hero-description {
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+  
+  .about-hero-stats {
+    flex-direction: column;
+    gap: 32px;
+  }
+  
+  .section-title {
+    font-size: 36px;
+  }
+  
+  .philosophy-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .philosophy-card {
+    padding: 40px 24px;
+  }
+  
+  .philosophy-title {
+    font-size: 24px;
+  }
+  
+  .process-timeline::before {
+    left: 30px;
+  }
+  
+  .step-number {
+    width: 60px;
+    height: 60px;
+    font-size: 18px;
+  }
+  
+  .step-content {
+    margin-left: 40px;
+  }
+  
+  .step-title {
+    font-size: 28px;
+  }
+  
+  .team-content {
+    grid-template-columns: 1fr;
+    gap: 60px;
+    text-align: center;
+  }
+  
+  .team-title {
+    font-size: 32px;
+  }
+  
+  .team-cta {
+    padding: 40px 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero-section {
+    padding: 120px 0 40px;
+  }
+  
+  .title-line {
+    font-size: 36px;
+  }
+  
+  .section-title {
+    font-size: 28px;
+  }
+  
+  .philosophy-section,
+  .process-section,
+  .team-section {
+    padding: 80px 0;
+  }
+  
+  .philosophy-card {
+    padding: 32px 20px;
+  }
+  
+  .step-title {
+    font-size: 24px;
+  }
+}
