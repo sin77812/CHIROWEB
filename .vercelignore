@@ -1,0 +1,15 @@
+# Server files
+server.js
+package-server.json
+
+# Node modules and logs
+node_modules
+*.log
+.env
+
+# Development files
+README-MONGODB.md
+
+# Git files
+.git
+.gitignore
