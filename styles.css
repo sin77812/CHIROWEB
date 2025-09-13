@@ -11,6 +11,9 @@
   --secondary-bg: #111111;
   --card-bg: #1A1A1A;
   
+  /* Navigation */
+  --nav-height: 80px;
+  
   /* Text Colors */
   --primary-text: #FFFFFF;
   --secondary-text: #A0A0A0;
@@ -33,6 +36,8 @@
   --font-korean: 'Pretendard', 'Spoqa Han Sans Neo', sans-serif;
   --font-code: 'JetBrains Mono', Monaco, 'Cascadia Code', monospace;
   --font-title: 'Black Han Sans', sans-serif;
+  /* Alias to keep compatibility with older rules */
+  --font-primary: var(--font-en-primary);
   
   /* Font Sizes */
   --font-display-large: 4.5rem;  /* 72px */
@@ -371,7 +376,10 @@ section {
 
 /* Portfolio Section */
 .portfolio-section {
+  position: relative;
   background: var(--secondary-bg);
+  z-index: 1;
+  padding: var(--space-section) 0;
 }
 
 .section-header {
@@ -505,9 +513,11 @@ section {
 
 /* Contact Section */
 .contact-section {
+  position: relative;
   background: var(--secondary-bg);
   padding: 80px 0;
   min-height: 60vh;
+  z-index: 1;
 }
 
 .contact-content {
@@ -697,15 +707,17 @@ section {
   height: 100vh;
   overflow: hidden;
   background: var(--primary-bg);
+  /* Ensure the section's bottom equals the visual bottom */
+  padding: 0;
 }
 
 /* Video Background */
 .hero-video-container {
   position: absolute;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   z-index: 1;
 }
 
@@ -735,7 +747,8 @@ section {
   display: grid;
   grid-template-rows: 1fr auto 1fr;
   grid-template-columns: 1fr auto 1fr;
-  padding: 100px 60px 60px 60px;
+  /* Keep near-flush with a tiny breathing room at bottom */
+  padding: calc(var(--nav-height) + 8px) 60px 4px 60px;
   gap: 40px;
 }
 
@@ -820,11 +833,18 @@ section {
 .hero-center {
   grid-row: 2;
   grid-column: 1 / -1;
+  position: absolute;
+  left: 50%;
+  top: calc(50% - (var(--nav-height) + 8px) / 2);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.hero-center-inner {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
   will-change: transform;
   transition: transform 0.1s ease-out;
 }
@@ -879,6 +899,8 @@ section {
   gap: 16px;
   will-change: transform;
   transition: transform 0.1s ease-out;
+  /* Nudge up slightly to align bottom text with section end */
+  margin-bottom: 6px;
 }
 
 .social-links {
@@ -916,6 +938,8 @@ section {
   font-family: var(--font-en-primary);
   font-size: var(--font-micro);
   color: var(--disabled-text);
+  /* Avoid extra space pushing content above the section bottom */
+  margin-bottom: 0;
 }
 
 /* Bottom Right: Contact CTA */
@@ -929,12 +953,16 @@ section {
   gap: 32px;
   will-change: transform;
   transition: transform 0.1s ease-out;
+  /* Nudge up slightly so icons aren’t clipped */
+  margin-bottom: 6px;
 }
 
 .scroll-indicator {
   text-align: right;
   opacity: 1;
   transform: translateY(0);
+  /* Ensure scroll arrows remain visible above section bottom */
+  margin-bottom: 6px;
 }
 
 .scroll-text {
@@ -1102,6 +1130,8 @@ section {
   }
 }
 
+/* (Removed aggressive short-viewport adjustments to preserve original hero layout) */
+
 /* ===== BUTTON STYLES ===== */
 
 /* Secondary Button */
@@ -1146,6 +1176,7 @@ section {
   width: 100%;
   position: relative;
   overflow: visible;
+  z-index: 1;
 }
 
 /* Pricing Grid */
@@ -1194,7 +1225,7 @@ section {
 /* Pricing Badge */
 .pricing-badge {
   position: absolute;
-  top: -1px;
+  top: -12px;
   left: 50%;
   transform: translateX(-50%);
   background: var(--accent-red);
@@ -1203,7 +1234,7 @@ section {
   font-size: var(--font-micro);
   font-weight: var(--font-semibold);
   padding: 6px 16px;
-  border-radius: 0 0 8px 8px;
+  border-radius: 8px 8px 0 0;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -1417,15 +1448,16 @@ section {
   transform: translateZ(0);
   backface-visibility: hidden;
   overscroll-behavior: contain;
+  z-index: 1;
 }
 
 /* Background Video */
 .horizontal-video-container {
   position: absolute;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   z-index: 1;
 }
 
@@ -1477,13 +1509,14 @@ section {
 .panel-content {
   text-align: center;
   opacity: 1;
-  transform: translateY(0);
+  /* Visually center within viewport minus fixed nav overlay */
+  transform: translateY(calc(-1 * var(--nav-height) / 2));
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .panel-content.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(calc(-1 * var(--nav-height) / 2));
 }
 
 /* Typography */
@@ -1999,6 +2032,11 @@ section {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+/* Service panels: compensate fixed nav so content is visually centered */
+.horizontal-scroll-section .panel-content {
+  transform: translateY(calc(-1 * var(--nav-height) / 2)) !important;
 }
 
 /* Reduce Motion for Accessibility */
