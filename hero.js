@@ -181,7 +181,8 @@ function updateParallax() {
             heroBadge.style.transform = `translate3d(0, ${scrolled * 0.2}px, 0)`;
         }
         if (heroCenter) {
-            heroCenter.style.transform = `translate3d(0, ${scrolled * 0.4}px, 0)`;
+            // Apply parallax without breaking the centering transform set in CSS
+            heroCenter.style.setProperty('--parallaxY', `${scrolled * 0.4}px`);
         }
         if (heroBottomLeft) {
             heroBottomLeft.style.transform = `translate3d(0, ${scrolled * 0.25}px, 0)`;

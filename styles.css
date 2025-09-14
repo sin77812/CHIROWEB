@@ -842,7 +842,8 @@ section {
   position: absolute;
   left: 50%;
   top: calc(50% - (var(--nav-height) + 8px) / 2);
-  transform: translate(-50%, -50%);
+  /* Preserve centering while allowing parallax offset via CSS variable */
+  transform: translate(-50%, -50%) translate3d(0, var(--parallaxY, 0px), 0);
   text-align: center;
 }
 
