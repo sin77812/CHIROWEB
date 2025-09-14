@@ -15,7 +15,7 @@ async function loadPortfolioData() {
                 category: "web",
                 year: 2024,
                 description: "친환경 가스히터 설비 전문업체의 기업 웹사이트",
-                thumbnail: "/images/portfolio/nbpkorea.jpg",
+                thumbnail: "images/portfolio/nbpkorea.jpg",
                 url: "https://nbpkorea.vercel.app/",
                 featured: true
             },
@@ -25,7 +25,7 @@ async function loadPortfolioData() {
                 category: "web",
                 year: 2024,
                 description: "일본식 프렌치 레스토랑의 우아하고 세련된 브랜드 웹사이트",
-                thumbnail: "/images/portfolio/goyomisik.jpg",
+                thumbnail: "images/portfolio/goyomisik.jpg",
                 url: "https://japanese-french.vercel.app/",
                 featured: true
             },
@@ -35,7 +35,7 @@ async function loadPortfolioData() {
                 category: "web", 
                 year: 2024,
                 description: "개인 맞춤형 피트니스 솔루션 헬스장 웹사이트",
-                thumbnail: "/images/portfolio/LPT.jpg",
+                thumbnail: "images/portfolio/LPT.jpg",
                 url: "https://gym-umber-three.vercel.app/",
                 featured: true
             },
@@ -45,7 +45,7 @@ async function loadPortfolioData() {
                 category: "web",
                 year: 2024, 
                 description: "특별한 순간을 기록하는 프리미엄 사진관 웹사이트",
-                thumbnail: "/images/portfolio/STUDIO.jpg",
+                thumbnail: "images/portfolio/STUDIO.jpg",
                 url: "https://photo-cyan-five.vercel.app/",
                 featured: true
             },
@@ -55,7 +55,7 @@ async function loadPortfolioData() {
                 category: "web",
                 year: 2024,
                 description: "창의적인 공간 디자인을 전문으로 하는 인테리어 회사",
-                thumbnail: "/images/portfolio/FUNI.jpg",
+                thumbnail: "images/portfolio/FUNI.jpg",
                 url: "https://funiture-olive.vercel.app/",
                 featured: false
             },
@@ -65,7 +65,7 @@ async function loadPortfolioData() {
                 category: "web",
                 year: 2024,
                 description: "엔터테인먼트 업계의 혁신을 추구하는 기업 웹사이트",
-                thumbnail: "/images/portfolio/K&J.jpg",
+                thumbnail: "images/portfolio/K&J.jpg",
                 url: "https://kjco.vercel.app/",
                 featured: false
             },
@@ -75,7 +75,7 @@ async function loadPortfolioData() {
                 category: "web",
                 year: 2024,
                 description: "성수동의 감성 넘치는 스페셜티 커피숍 웹사이트",
-                thumbnail: "/images/portfolio/NEDCOFY.jpg",
+                thumbnail: "images/portfolio/NEDCOFY.jpg",
                 url: "https://coffee-sigma-tawny.vercel.app/",
                 featured: false
             },
@@ -85,7 +85,7 @@ async function loadPortfolioData() {
                 category: "web",
                 year: 2024,
                 description: "전문적인 스피치 교육을 제공하는 학원 웹사이트",
-                thumbnail: "/images/portfolio/gracespeech.jpg",
+                thumbnail: "images/portfolio/gracespeech.jpg",
                 url: "https://grace-speech.vercel.app/",
                 featured: false
             },
@@ -95,7 +95,7 @@ async function loadPortfolioData() {
                 category: "web",
                 year: 2024,
                 description: "개인 맞춤 운동 프로그램을 제공하는 헬스장",
-                thumbnail: "/images/portfolio/ONLYGYM.jpg",
+                thumbnail: "images/portfolio/ONLYGYM.jpg",
                 featured: false
             },
             {
@@ -104,7 +104,7 @@ async function loadPortfolioData() {
                 category: "web",
                 year: 2024,
                 description: "남성 전용 의료 서비스를 제공하는 전문 클리닉",
-                thumbnail: "/images/portfolio/mansolution.jpg",
+                thumbnail: "images/portfolio/mansolution.jpg",
                 featured: false
             }
         ];
@@ -122,7 +122,7 @@ async function loadPortfolioData() {
         portfolioGrid.innerHTML = displayPortfolios.map(item => `
             <div class="portfolio-item" data-category="${item.category}">
                 <div class="portfolio-image">
-                    <img src="${item.thumbnail}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='/images/portfolio/placeholder.jpg';">
+                    <img src="${item.thumbnail}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='images/portfolio/placeholder.jpg';">
                     <div class="portfolio-overlay">
                         <div class="portfolio-info">
                             <h3 class="project-title">${item.title}</h3>
