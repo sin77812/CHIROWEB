@@ -110,22 +110,32 @@ const portfolioData = [
 window.portfolioData = portfolioData;
 
 // Load portfolio data - 직접 하드코딩된 데이터 사용
-async function loadPortfolioData() {
-    console.log('Loading portfolio data...');
+function loadPortfolioData() {
+    console.log('=== MAIN PAGE PORTFOLIO LOADING ===');
+    
+    const portfolios = portfolioData;
+    console.log('Portfolio data available:', portfolios ? portfolios.length : 0, 'items');
+    
+    const portfolioGrid = document.querySelector('.portfolio-grid');
+    console.log('Portfolio grid element found:', !!portfolioGrid);
+    
+    if (!portfolioGrid) {
+        console.error('Portfolio grid not found on main page!');
+        return;
+    }
+    
+    if (!portfolios || portfolios.length === 0) {
+        console.error('No portfolio data available!');
+        return;
+    }
     
     try {
-        const portfolios = portfolioData;
-        
-        console.log('✅ 포트폴리오 데이터 로드 완료:', portfolios.length);
-        
-        const portfolioGrid = document.querySelector('.portfolio-grid');
-        if (!portfolioGrid) return;
-        
-        console.log('Loading portfolio data for main page:', portfolios.length);
-        
         // 메인페이지에 표시할 4개 프로젝트 선택 (2x2 그리드)
         const featuredIds = ["1", "2", "5", "10"]; // NBPKOREA, 고요속의미식, 후니인테리어, 맨솔루션
         const displayPortfolios = portfolios.filter(item => featuredIds.includes(item.id));
+        
+        console.log('Filtered portfolios for main page:', displayPortfolios.length);
+        console.log('Selected projects:', displayPortfolios.map(p => p.title));
         
         portfolioGrid.innerHTML = displayPortfolios.map(item => `
             <div class="portfolio-item visible" data-category="${item.category}">
@@ -141,13 +151,16 @@ async function loadPortfolioData() {
             </div>
         `).join('');
         
+        console.log('Generated HTML for main page, length:', portfolioGrid.innerHTML.length);
+        console.log('Main page portfolio loaded successfully:', displayPortfolios.length, 'items');
+        
         // 이벤트 재적용
         initPortfolioInteractions();
         initImageLoading();
         initScrollAnimations();
         
     } catch (error) {
-        console.error('Failed to load portfolio data:', error);
+        console.error('ERROR loading main page portfolio:', error);
     }
 }
 
@@ -167,7 +180,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 메인 페이지에서만 포트폴리오 로드
     if (document.querySelector('.portfolio-section')) {
+        console.log('Main page detected, loading portfolio...');
+        // 여러 번 시도
         loadPortfolioData();
+        setTimeout(loadPortfolioData, 100);
+        setTimeout(loadPortfolioData, 500);
+        setTimeout(loadPortfolioData, 1000);
     }
     
     initPortfolioAnimations();
