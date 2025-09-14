@@ -409,24 +409,19 @@
         console.log('Portfolio page initialized successfully');
     });
     
-    // Load portfolio data from dataManager
+    // Load portfolio data from global portfolioData
     async function loadPortfolioData() {
-        if (!window.dataManager) {
-            console.warn('DataManager not available, using static content');
-            return;
-        }
+        // Use global portfolioData from portfolio.js
+        const portfolios = window.portfolioData || [];
+        const portfolioGrid = document.getElementById('portfolioGrid');
         
-        try {
-            const portfolios = await window.dataManager.getPortfolios();
-            const portfolioGrid = document.getElementById('portfolioGrid');
-        
-            if (portfolioGrid && portfolios.length > 0) {
-                console.log('Loading portfolio page data:', portfolios.length);
-                portfolioGrid.innerHTML = portfolios.map(item => `
-                    <div class="portfolio-item" data-category="${item.category}" data-year="${item.year}">
-                        <div class="portfolio-card">
-                            <div class="portfolio-image">
-                                <img src="${item.image || 'https://via.placeholder.com/600x400/1a1a1a/666666?text=' + encodeURIComponent(item.title)}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1a1a1a/666666?text=' + encodeURIComponent('${item.title}')">
+        if (portfolioGrid && portfolios.length > 0) {
+            console.log('Loading portfolio page data:', portfolios.length);
+            portfolioGrid.innerHTML = portfolios.map(item => `
+                <div class="portfolio-item" data-category="${item.category}" data-year="${item.year}">
+                    <div class="portfolio-card">
+                        <div class="portfolio-image">
+                            <img src="${item.thumbnail || item.image || 'images/portfolio/placeholder.jpg'}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='images/portfolio/placeholder.jpg'">
                                 <div class="portfolio-overlay">
                                     <div class="project-info">
                                         <h3 class="project-title">${item.title}</h3>

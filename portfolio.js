@@ -2,13 +2,8 @@
 (function() {
     'use strict';
     
-// Load portfolio data - 직접 하드코딩된 데이터 사용
-async function loadPortfolioData() {
-    console.log('Loading portfolio data...');
-    
-    try {
-        // 하드코딩된 포트폴리오 데이터 (Claude가 직접 관리)
-        const portfolios = [
+// 하드코딩된 포트폴리오 데이터 (Claude가 직접 관리)
+const portfolioData = [
             {
                 id: "1",
                 title: "NBPKOREA",
@@ -107,7 +102,17 @@ async function loadPortfolioData() {
                 thumbnail: "images/portfolio/mansolution.jpg",
                 featured: false
             }
-        ];
+];
+
+// 전역 변수로 설정
+window.portfolioData = portfolioData;
+
+// Load portfolio data - 직접 하드코딩된 데이터 사용
+async function loadPortfolioData() {
+    console.log('Loading portfolio data...');
+    
+    try {
+        const portfolios = portfolioData;
         
         console.log('✅ 포트폴리오 데이터 로드 완료:', portfolios.length);
         
@@ -157,8 +162,10 @@ function getCategoryDisplayName(category) {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Portfolio.js DOM loaded');
     
-    // 포트폴리오 데이터 바로 로드 (Claude가 직접 관리)
-    loadPortfolioData();
+    // 메인 페이지에서만 포트폴리오 로드
+    if (document.querySelector('.portfolio-section')) {
+        loadPortfolioData();
+    }
     
     initPortfolioAnimations();
 });
