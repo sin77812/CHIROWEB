@@ -322,7 +322,11 @@
   
   /* Hide the Start Project button on mobile */
   .nav-contact-btn {
-    display: none;
+    display: none !important;
+  }
+  
+  .nav-cta {
+    display: none !important;
   }
   
   .nav-toggle {
@@ -345,6 +349,12 @@
   
   .nav-mobile-link {
     font-size: 28px;
+  }
+  
+  /* Ensure Start Project button is hidden on small mobile */
+  .nav-contact-btn,
+  .nav-cta {
+    display: none !important;
   }
 }
 
