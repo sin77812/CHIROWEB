@@ -10,6 +10,31 @@
       "handle": "filesystem"
     },
     {
+      "src": "^/(admin)/?$",
+      "dest": "/admin.html"
+    },
+    {
+      "src": "^/(login)/?$",
+      "dest": "/login.html"
+    },
+    {
+      "src": "^/(blog)/?$",
+      "dest": "/blog.html"
+    },
+    {
+      "src": "^/(portfolio)/?$",
+      "dest": "/portfolio.html"
+    },
+    {
+      "src": "^/(contact)/?$",
+      "dest": "/contact.html"
+    },
+    {
+      "src": "^/(.*\\.html)/$",
+      "status": 308,
+      "headers": { "Location": "/$1" }
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
