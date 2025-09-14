@@ -225,11 +225,29 @@
 .nav-mobile-link:nth-child(3) { transition-delay: 0.3s; }
 .nav-mobile-link:nth-child(4) { transition-delay: 0.4s; }
 .nav-mobile-link:nth-child(5) { transition-delay: 0.5s; }
+.nav-mobile-link:nth-child(6) { transition-delay: 0.6s; }
 
 .nav-mobile-link:hover,
 .nav-mobile-link.active {
   color: var(--accent-red);
   transform: scale(1.05);
+}
+
+/* Mobile CTA Button Styling */
+.nav-mobile-cta {
+  background: var(--accent-red);
+  color: var(--primary-text) !important;
+  padding: 16px 32px;
+  border-radius: 6px;
+  margin-top: 20px;
+  font-size: 28px;
+  transition: all 0.3s var(--ease-default);
+}
+
+.nav-mobile-cta:hover {
+  background: #ff2d1f;
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(255, 59, 48, 0.3);
 }
 
 /* Navigation Indicator */
@@ -298,8 +316,12 @@
     letter-spacing: 1px;
   }
   
-  .nav-menu,
-  .nav-cta {
+  .nav-menu {
+    display: none;
+  }
+  
+  /* Hide the Start Project button on mobile */
+  .nav-contact-btn {
     display: none;
   }
   

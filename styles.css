@@ -1082,10 +1082,7 @@ section {
   }
   
   .hero-top-right {
-    grid-row: 1;
-    grid-column: 1;
-    justify-content: center;
-    margin-top: 24px;
+    display: none; /* Hide 37+ Projects badge on mobile */
   }
   
   .hero-center {
@@ -1101,10 +1098,7 @@ section {
   }
   
   .hero-bottom-right {
-    grid-row: 3;
-    grid-column: 1;
-    align-items: center;
-    margin-top: 24px;
+    display: none; /* Hide Contact CTA and Scroll indicator on mobile */
   }
   
   .logo-text {
