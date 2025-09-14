@@ -123,9 +123,9 @@ async function handleLogin(e) {
             loginBtn.style.background = '#34C759';
             loginBtn.querySelector('.btn-text').textContent = '로그인 성공!';
             
-            // Redirect to admin dashboard
+            // Redirect to admin dashboard (use absolute path to avoid nested URLs)
             setTimeout(() => {
-                window.location.href = 'admin.html';
+                window.location.href = '/admin.html';
             }, 1000);
             
         } else {
@@ -153,7 +153,7 @@ function checkExistingAuth() {
     
     if (token && rememberMe === 'true') {
         // Auto redirect if remember me is enabled
-        window.location.href = 'admin.html';
+        window.location.href = '/admin.html';
     }
     
     // Pre-fill username if remembered

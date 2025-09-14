@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login - CHIRO</title>
+    <base href="/">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -419,7 +420,7 @@
             </form>
             
             <div class="login-footer">
-                <a href="index.html" class="back-link">
+                <a href="/index.html" class="back-link">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
                     </svg>
@@ -543,9 +544,9 @@
                     loginBtn.style.background = '#34C759';
                     loginBtn.querySelector('.btn-text').textContent = '로그인 성공!';
                     
-                    // 관리자 페이지로 이동
+                    // 관리자 페이지로 이동 (절대 경로로 고정)
                     setTimeout(() => {
-                        window.location.href = 'admin.html';
+                        window.location.href = '/admin.html';
                     }, 1000);
                     
                 } else {
@@ -572,7 +573,7 @@
             const rememberMe = localStorage.getItem('chiro_remember_me');
             
             if (token && rememberMe === 'true') {
-                window.location.href = 'admin.html';
+                window.location.href = '/admin.html';
                 return;
             }
             

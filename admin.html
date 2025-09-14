@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHIRO Admin Dashboard</title>
+    <base href="/">
     
     <!-- External Libraries -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
@@ -785,7 +786,7 @@
             const token = localStorage.getItem('chiro_admin_token');
             if (!token) {
                 alert('로그인이 필요합니다.');
-                window.location.href = 'login.html';
+                window.location.href = '/login.html';
                 return;
             }
             console.log('Authentication verified');
@@ -1110,7 +1111,7 @@
                 localStorage.removeItem('chiro_admin_token');
                 localStorage.removeItem('chiro_admin_username');
                 localStorage.removeItem('chiro_remember_me');
-                window.location.href = 'login.html';
+                window.location.href = '/login.html';
             }
         }
 
