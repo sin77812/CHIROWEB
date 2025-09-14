@@ -3,9 +3,15 @@
     'use strict';
     
     document.addEventListener('DOMContentLoaded', function() {
+        console.log('Portfolio page DOM loaded - starting initialization');
         
-        // Initialize components
+        // Load portfolio data immediately and with backup timers
         loadPortfolioData();
+        setTimeout(loadPortfolioData, 100);
+        setTimeout(loadPortfolioData, 500);
+        setTimeout(loadPortfolioData, 1000);
+        
+        // Initialize other components
         initAnimations();
         initFiltering();
         initLoadMore();
@@ -514,25 +520,32 @@
     ];
 
     // Load portfolio data 
-    async function loadPortfolioData() {
-        // Force clear ALL localStorage data to prevent any conflicts
-        localStorage.clear();
+    function loadPortfolioData() {
+        console.log('=== LOADING PORTFOLIO DATA ===');
         
-        // Add cache busting
-        const timestamp = Date.now();
-        console.log('Cache-busting timestamp:', timestamp);
+        const portfolioGrid = document.getElementById('portfolioGrid');
+        console.log('Portfolio grid element:', portfolioGrid);
+        
+        if (!portfolioGrid) {
+            console.error('portfolioGrid element not found!');
+            return;
+        }
         
         const portfolios = portfolioPageData;
-        const portfolioGrid = document.getElementById('portfolioGrid');
-        console.log('Force loading NEW portfolio data:', portfolios.length, 'items');
+        console.log('Portfolio data:', portfolios.length, 'items');
         
-        if (portfolioGrid) {
+        if (portfolios.length === 0) {
+            console.error('No portfolio data available!');
+            return;
+        }
+        
+        try {
             // Force clear existing content first
             portfolioGrid.innerHTML = '';
-            console.log('Cleared existing content, now loading:', portfolios.length, 'items');
+            console.log('Cleared existing content');
             
-            // Force render new content
-            portfolioGrid.innerHTML = portfolios.map(item => `
+            // Generate HTML
+            const html = portfolios.map(item => `
                 <div class="portfolio-item" data-category="${item.category}" data-year="${item.year}">
                     <div class="portfolio-card">
                         <div class="portfolio-image">
@@ -555,16 +568,22 @@
                             </div>
                         </div>
                     </div>
-                `).join('');
-                
-                // Update project count
-                const loadMoreInfo = document.querySelector('.load-more-info');
-                if (loadMoreInfo) {
-                    loadMoreInfo.textContent = `${portfolios.length} of ${portfolios.length}+ projects shown`;
-                }
+            `).join('');
+            
+            console.log('Generated HTML length:', html.length);
+            
+            // Insert HTML into grid
+            portfolioGrid.innerHTML = html;
+            console.log('Portfolio data loaded successfully:', portfolios.length, 'items');
+            
+            // Update project count
+            const loadMoreInfo = document.querySelector('.load-more-info');
+            if (loadMoreInfo) {
+                loadMoreInfo.textContent = `${portfolios.length} of ${portfolios.length}+ projects shown`;
             }
+            
         } catch (error) {
-            console.error('Failed to load portfolio page data:', error);
+            console.error('ERROR loading portfolio data:', error);
         }
     }
     
