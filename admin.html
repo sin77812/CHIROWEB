@@ -871,14 +871,12 @@
             try {
                 console.log('Loading dashboard data...');
                 
-                // Try to fetch from API
-                const [portfolios, blogs] = await Promise.all([
-                    fetch('/api/portfolios').then(r => r.ok ? r.json() : []).catch(() => []),
-                    fetch('/api/blogs').then(r => r.ok ? r.json() : []).catch(() => [])
-                ]);
+                // LocalStorage에서 데이터 가져오기
+                const portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+                const blogs = JSON.parse(localStorage.getItem('chiro_blogs') || '[]');
                 
-                document.getElementById('portfolio-count').textContent = portfolios.length || 0;
-                document.getElementById('blog-count').textContent = blogs.length || 0;
+                document.getElementById('portfolio-count').textContent = portfolios.length;
+                document.getElementById('blog-count').textContent = blogs.length;
                 
                 console.log('Dashboard data loaded:', { portfolios: portfolios.length, blogs: blogs.length });
             } catch (error) {
@@ -893,21 +891,28 @@
         async function loadPortfolios() {
             try {
                 console.log('Loading portfolios...');
-                const response = await fetch('/api/portfolios');
-                const portfolios = response.ok ? await response.json() : [];
+                // LocalStorage에서 포트폴리오 가져오기
+                const portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
                 
                 const grid = document.getElementById('portfolio-grid');
+                
+                if (portfolios.length === 0) {
+                    grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: var(--secondary-text); padding: 40px;">아직 추가된 포트폴리오가 없습니다.</div>';
+                    return;
+                }
+                
                 grid.innerHTML = portfolios.map(portfolio => `
                     <div class="portfolio-item">
                         <div class="portfolio-image">
-                            ${portfolio.image ? `<img src="${portfolio.image}" alt="${portfolio.title}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i class="fas fa-image fa-2x"></i>'}
+                            ${portfolio.image ? `<img src="${portfolio.image}" alt="${portfolio.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div style="display: none; align-items: center; justify-content: center; height: 100%; color: var(--secondary-text);"><i class="fas fa-image fa-2x"></i></div>` : '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--secondary-text);"><i class="fas fa-image fa-2x"></i></div>'}
                         </div>
                         <div class="portfolio-info">
                             <div class="portfolio-title">${portfolio.title}</div>
                             <div class="portfolio-meta">${portfolio.category} • ${portfolio.year}</div>
                             <div class="portfolio-actions">
-                                <button class="btn btn-primary" onclick="editPortfolio('${portfolio._id}')">편집</button>
-                                <button class="btn btn-secondary" onclick="deletePortfolio('${portfolio._id}')">삭제</button>
+                                <button class="btn btn-primary" onclick="editPortfolio('${portfolio.id}')">편집</button>
+                                <button class="btn btn-secondary" onclick="deletePortfolio('${portfolio.id}')">삭제</button>
                             </div>
                         </div>
                     </div>
@@ -931,7 +936,7 @@
                 document.getElementById('portfolio-year').value = portfolioData.year || 2024;
                 document.getElementById('portfolio-description').value = portfolioData.description || '';
                 document.getElementById('portfolio-image').value = portfolioData.image || '';
-                currentEditingPortfolio = portfolioData._id;
+                currentEditingPortfolio = portfolioData.id;
             } else {
                 form.reset();
                 currentEditingPortfolio = null;
@@ -947,9 +952,9 @@
 
         async function editPortfolio(id) {
             try {
-                const response = await fetch(`/api/portfolios/${id}`);
-                if (response.ok) {
-                    const portfolio = await response.json();
+                const portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+                const portfolio = portfolios.find(p => p.id === id);
+                if (portfolio) {
                     openPortfolioModal(portfolio);
                 }
             } catch (error) {
@@ -961,13 +966,16 @@
             if (!confirm('정말로 이 프로젝트를 삭제하시겠습니까?')) return;
             
             try {
-                const response = await fetch(`/api/portfolios/${id}`, { method: 'DELETE' });
-                if (response.ok) {
-                    loadPortfolios();
-                    loadDashboardData();
-                }
+                let portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+                portfolios = portfolios.filter(p => p.id !== id);
+                localStorage.setItem('chiro_portfolios', JSON.stringify(portfolios));
+                
+                loadPortfolios();
+                loadDashboardData();
+                alert('포트폴리오가 삭제되었습니다.');
             } catch (error) {
                 console.error('Error deleting portfolio:', error);
+                alert('삭제 중 오류가 발생했습니다.');
             }
         }
 
@@ -976,34 +984,38 @@
             e.preventDefault();
             
             const formData = {
+                id: currentEditingPortfolio || Date.now().toString(),
                 title: document.getElementById('portfolio-title').value,
                 category: document.getElementById('portfolio-category').value,
                 year: parseInt(document.getElementById('portfolio-year').value),
                 description: document.getElementById('portfolio-description').value,
-                image: document.getElementById('portfolio-image').value
+                image: document.getElementById('portfolio-image').value,
+                createdAt: new Date().toISOString()
             };
 
             try {
-                const url = currentEditingPortfolio 
-                    ? `/api/portfolios/${currentEditingPortfolio}`
-                    : '/api/portfolios';
+                // LocalStorage에서 기존 포트폴리오 가져오기
+                let portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
                 
-                const method = currentEditingPortfolio ? 'PUT' : 'POST';
-                
-                const response = await fetch(url, {
-                    method: method,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                });
-
-                if (response.ok) {
-                    closePortfolioModal();
-                    loadPortfolios();
-                    loadDashboardData();
-                    alert('포트폴리오가 저장되었습니다.');
+                if (currentEditingPortfolio) {
+                    // 수정 모드
+                    const index = portfolios.findIndex(p => p.id === currentEditingPortfolio);
+                    if (index !== -1) {
+                        portfolios[index] = { ...portfolios[index], ...formData };
+                    }
                 } else {
-                    alert('저장에 실패했습니다.');
+                    // 새로 추가
+                    portfolios.push(formData);
                 }
+                
+                // LocalStorage에 저장
+                localStorage.setItem('chiro_portfolios', JSON.stringify(portfolios));
+                
+                closePortfolioModal();
+                loadPortfolios();
+                loadDashboardData();
+                alert('포트폴리오가 저장되었습니다!');
+                
             } catch (error) {
                 console.error('Error saving portfolio:', error);
                 alert('저장 중 오류가 발생했습니다.');
@@ -1015,30 +1027,30 @@
             e.preventDefault();
             
             const blogData = {
+                id: Date.now().toString(),
                 title: document.getElementById('blog-title').value,
                 category: document.getElementById('blog-category').value,
                 excerpt: document.getElementById('blog-excerpt').value,
                 content: quill ? quill.root.innerHTML : '',
                 thumbnail: document.getElementById('blog-thumbnail').value,
                 date: new Date().toLocaleDateString('ko-KR'),
-                readTime: calculateReadTime(quill ? quill.getText() : '')
+                readTime: calculateReadTime(quill ? quill.getText() : ''),
+                createdAt: new Date().toISOString()
             };
 
             try {
-                const response = await fetch('/api/blogs', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(blogData)
-                });
-
-                if (response.ok) {
-                    alert('블로그가 성공적으로 발행되었습니다!');
-                    document.getElementById('blog-form').reset();
-                    if (quill) quill.setText('');
-                    loadDashboardData();
-                } else {
-                    alert('블로그 발행에 실패했습니다.');
-                }
+                // LocalStorage에서 기존 블로그 가져오기
+                let blogs = JSON.parse(localStorage.getItem('chiro_blogs') || '[]');
+                blogs.push(blogData);
+                
+                // LocalStorage에 저장
+                localStorage.setItem('chiro_blogs', JSON.stringify(blogs));
+                
+                alert('블로그가 성공적으로 발행되었습니다!');
+                document.getElementById('blog-form').reset();
+                if (quill) quill.setText('');
+                loadDashboardData();
+                
             } catch (error) {
                 console.error('Error saving blog:', error);
                 alert('블로그 발행 중 오류가 발생했습니다.');
@@ -1054,10 +1066,15 @@
 
         async function loadBlogs() {
             try {
-                const response = await fetch('/api/blogs');
-                const blogs = response.ok ? await response.json() : [];
+                const blogs = JSON.parse(localStorage.getItem('chiro_blogs') || '[]');
                 
                 const container = document.getElementById('blog-list-container');
+                
+                if (blogs.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; color: var(--secondary-text); padding: 40px;">아직 작성된 블로그가 없습니다.</div>';
+                    return;
+                }
+                
                 container.innerHTML = blogs.map(blog => `
                     <div class="dashboard-card">
                         <div class="card-header">
@@ -1068,8 +1085,7 @@
                         </div>
                         <p style="color: var(--secondary-text); margin: 16px 0;">${blog.excerpt}</p>
                         <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-primary" onclick="editBlog('${blog._id}')">편집</button>
-                            <button class="btn btn-secondary" onclick="deleteBlog('${blog._id}')">삭제</button>
+                            <button class="btn btn-secondary" onclick="deleteBlog('${blog.id}')">삭제</button>
                         </div>
                     </div>
                 `).join('');
@@ -1082,13 +1098,16 @@
             if (!confirm('정말로 이 블로그 글을 삭제하시겠습니까?')) return;
             
             try {
-                const response = await fetch(`/api/blogs/${id}`, { method: 'DELETE' });
-                if (response.ok) {
-                    loadBlogs();
-                    loadDashboardData();
-                }
+                let blogs = JSON.parse(localStorage.getItem('chiro_blogs') || '[]');
+                blogs = blogs.filter(b => b.id !== id);
+                localStorage.setItem('chiro_blogs', JSON.stringify(blogs));
+                
+                loadBlogs();
+                loadDashboardData();
+                alert('블로그가 삭제되었습니다.');
             } catch (error) {
                 console.error('Error deleting blog:', error);
+                alert('삭제 중 오류가 발생했습니다.');
             }
         }
 
