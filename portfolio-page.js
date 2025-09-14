@@ -546,7 +546,7 @@
             
             // Generate HTML
             const html = portfolios.map(item => `
-                <div class="portfolio-item" data-category="${item.category}" data-year="${item.year}">
+                <div class="portfolio-item visible" data-category="${item.category}" data-year="${item.year}">
                     <div class="portfolio-card">
                         <div class="portfolio-image">
                             <img src="${item.thumbnail || item.image || 'images/portfolio/placeholder.jpg'}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='images/portfolio/placeholder.jpg'">
