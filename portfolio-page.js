@@ -515,6 +515,9 @@
 
     // Load portfolio data 
     async function loadPortfolioData() {
+        // Clear any existing localStorage data to prevent conflicts
+        localStorage.removeItem('chiro_portfolio_data');
+        
         const portfolios = portfolioPageData;
         const portfolioGrid = document.getElementById('portfolioGrid');
         console.log('Loading portfolio page data:', portfolios.length);

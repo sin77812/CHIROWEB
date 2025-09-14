@@ -6,13 +6,11 @@ class DataManager {
     }
     
     init() {
-        // 초기 데이터가 없으면 기본 데이터 설정
-        if (!localStorage.getItem('chiro_portfolio_data')) {
-            this.setDefaultPortfolioData();
-        }
+        // 초기 데이터가 없으면 기본 데이터 설정 (포트폴리오 페이지에서는 사용하지 않음)
         if (!localStorage.getItem('chiro_blog_data')) {
             this.setDefaultBlogData();
         }
+        // 포트폴리오 데이터는 portfolio-page.js에서 직접 관리
     }
     
     // Portfolio 기본 데이터
