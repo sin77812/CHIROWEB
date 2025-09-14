@@ -66,10 +66,11 @@ function initSectionAnimations() {
 // Contact form handling
 function initContactForm() {
     const form = document.getElementById('contactForm');
-    const submitBtn = form.querySelector('.form-submit');
-    const loadingSpan = form.querySelector('.btn-loading');
     
     if (!form) return;
+    
+    const submitBtn = form.querySelector('.form-submit');
+    const loadingSpan = form.querySelector('.btn-loading');
     
     form.addEventListener('submit', function(e) {
         e.preventDefault();

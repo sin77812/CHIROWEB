@@ -234,9 +234,9 @@ function initImageLoading() {
                 // Try placeholder service first
                 this.src = `https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(title)}`;
                 
-                // If that also fails, use SVG fallback
+                // If that also fails, hide the image
                 this.addEventListener('error', function() {
-                    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDYwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjMUExQTFBIi8+CjxwYXRoIGQ9Ik0yNTAgMjAwTDM1MCAyMDBNMzAwIDE1MEwzMDAgMjUwIiBzdHJva2U9IiM2NjY2NjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi/+Cjx0ZXh0IHg9IjMwMCIgeT0iMjMwIiBmb250LWZhbWlseT0iSW50ZXIiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2NjY2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlIE5vdCBGb3VuZDwvdGV4dD4KPC9zdmc+'.
+                    this.style.display = 'none';
                 }, { once: true });
                 
                 this.classList.add('loaded');
