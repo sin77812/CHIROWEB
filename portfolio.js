@@ -123,8 +123,9 @@ async function loadPortfolioData() {
         
         console.log('Loading portfolio data for main page:', portfolios.length);
         
-        // 처음 4개만 메인페이지에 표시 (2x2 그리드)
-        const displayPortfolios = portfolios.slice(0, 4);
+        // 메인페이지에 표시할 4개 프로젝트 선택 (2x2 그리드)
+        const featuredIds = ["1", "2", "5", "10"]; // NBPKOREA, 고요속의미식, 후니인테리어, 맨솔루션
+        const displayPortfolios = portfolios.filter(item => featuredIds.includes(item.id));
         
         portfolioGrid.innerHTML = displayPortfolios.map(item => `
             <div class="portfolio-item" data-category="${item.category}">
