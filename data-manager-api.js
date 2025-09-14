@@ -1,383 +1,463 @@
-// MongoDB API를 사용한 데이터 관리 시스템
-// localStorage fallback 포함
+// API-based Data Manager - MongoDB와 연동하는 중앙 데이터 관리 시스템
 
-class DataManager {
+class APIDataManager {
     constructor() {
-        this.apiBaseUrl = this.getApiBaseUrl();
-        this.isOnline = navigator.onLine;
-        
-        // 네트워크 상태 감지
-        window.addEventListener('online', () => {
-            this.isOnline = true;
-            console.log('온라인 모드로 전환');
-        });
-        
-        window.addEventListener('offline', () => {
-            this.isOnline = false;
-            console.log('오프라인 모드로 전환');
-        });
-        
-        this.init();
+        this.baseURL = window.location.origin;
+        this.cache = {
+            portfolios: null,
+            blogs: null,
+            lastUpdate: {
+                portfolios: null,
+                blogs: null
+            }
+        };
+        this.cacheTimeout = 5 * 60 * 1000; // 5분 캐시
     }
     
-    getApiBaseUrl() {
-        // 개발 환경에서는 localhost:3000, 프로덕션에서는 현재 호스트 사용
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            return 'http://localhost:3000/api';
-        }
-        return `${window.location.origin}/api`;
+    // Cache 관리
+    isCacheValid(type) {
+        const lastUpdate = this.cache.lastUpdate[type];
+        if (!lastUpdate) return false;
+        return (Date.now() - lastUpdate) < this.cacheTimeout;
     }
     
-    async init() {
-        // API가 사용 가능한지 확인
+    updateCache(type, data) {
+        this.cache[type] = data;
+        this.cache.lastUpdate[type] = Date.now();
+    }
+    
+    // API 요청 헬퍼
+    async makeRequest(url, options = {}) {
         try {
-            const response = await fetch(`${this.apiBaseUrl}/stats`);
-            this.apiAvailable = response.ok;
-            console.log('MongoDB API 연결:', this.apiAvailable ? '성공' : '실패');
+            const response = await fetch(`${this.baseURL}${url}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                },
+                ...options
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            return await response.json();
         } catch (error) {
-            this.apiAvailable = false;
-            console.log('MongoDB API 연결 실패, localStorage 사용');
-        }
-        
-        // localStorage 초기 데이터 설정 (fallback용)
-        if (!localStorage.getItem('chiro_portfolio_data')) {
-            this.setDefaultPortfolioData();
-        }
-        if (!localStorage.getItem('chiro_blog_data')) {
-            this.setDefaultBlogData();
+            console.error('API Request failed:', error);
+            // 에러 시 캐시된 데이터 반환 시도
+            return this.handleAPIError(error);
         }
     }
     
-    // API 요청 헬퍼 함수
-    async apiRequest(endpoint, options = {}) {
-        if (!this.apiAvailable || !this.isOnline) {
-            throw new Error('API 사용 불가');
-        }
+    handleAPIError(error) {
+        console.warn('API 연결 실패, 캐시 데이터 사용:', error.message);
+        // localStorage에서 백업 데이터 가져오기
+        const fallbackPortfolios = JSON.parse(localStorage.getItem('chiro_portfolio_backup') || '[]');
+        const fallbackBlogs = JSON.parse(localStorage.getItem('chiro_blog_backup') || '[]');
         
-        const response = await fetch(`${this.apiBaseUrl}${endpoint}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                ...options.headers
-            },
-            ...options
-        });
-        
-        if (!response.ok) {
-            throw new Error(`API 오류: ${response.status}`);
-        }
-        
-        if (response.status === 204) {
-            return null; // DELETE 요청의 경우
-        }
-        
-        return await response.json();
+        return {
+            portfolios: fallbackPortfolios,
+            blogs: fallbackBlogs
+        };
     }
     
-    // Portfolio 관련 메서드
-    async getPortfolios() {
+    // Portfolio 관련 메서드들
+    async getPortfolios(useCache = true) {
+        if (useCache && this.cache.portfolios && this.isCacheValid('portfolios')) {
+            return this.cache.portfolios;
+        }
+        
         try {
-            const data = await this.apiRequest('/portfolios');
-            // localStorage에도 백업
-            localStorage.setItem('chiro_portfolio_data', JSON.stringify(data));
-            return data;
+            const portfolios = await this.makeRequest('/api/portfolios');
+            this.updateCache('portfolios', portfolios);
+            
+            // 백업 데이터로 localStorage에 저장
+            localStorage.setItem('chiro_portfolio_backup', JSON.stringify(portfolios));
+            
+            return portfolios;
         } catch (error) {
-            console.warn('API 사용 불가, localStorage 사용:', error.message);
-            return this.getPortfoliosFromStorage();
+            console.error('Portfolio 데이터 로드 실패:', error);
+            return JSON.parse(localStorage.getItem('chiro_portfolio_backup') || '[]');
         }
     }
     
     async getPortfolio(id) {
         try {
-            return await this.apiRequest(`/portfolios/${id}`);
+            return await this.makeRequest(`/api/portfolios/${id}`);
         } catch (error) {
-            console.warn('API 사용 불가, localStorage 사용:', error.message);
-            const portfolios = this.getPortfoliosFromStorage();
+            console.error('Portfolio 개별 데이터 로드 실패:', error);
+            const portfolios = await this.getPortfolios();
             return portfolios.find(p => p._id === id || p.id === id);
         }
     }
     
-    async savePortfolio(portfolio) {
+    async createPortfolio(data) {
         try {
-            let result;
-            if (portfolio._id || portfolio.id) {
-                // 수정
-                const id = portfolio._id || portfolio.id;
-                result = await this.apiRequest(`/portfolios/${id}`, {
-                    method: 'PUT',
-                    body: JSON.stringify(portfolio)
-                });
-            } else {
-                // 생성
-                result = await this.apiRequest('/portfolios', {
-                    method: 'POST',
-                    body: JSON.stringify(portfolio)
-                });
-            }
+            const result = await this.makeRequest('/api/portfolios', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
             
-            // localStorage 업데이트
-            await this.syncPortfoliosToStorage();
-            this.notifyDataChange('portfolio');
+            // 캐시 무효화
+            this.cache.portfolios = null;
+            this.cache.lastUpdate.portfolios = null;
+            
             return result;
         } catch (error) {
-            console.warn('API 사용 불가, localStorage 사용:', error.message);
-            return this.savePortfolioToStorage(portfolio);
+            console.error('Portfolio 생성 실패:', error);
+            throw error;
+        }
+    }
+    
+    async updatePortfolio(id, data) {
+        try {
+            const result = await this.makeRequest(`/api/portfolios/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            });
+            
+            // 캐시 무효화
+            this.cache.portfolios = null;
+            this.cache.lastUpdate.portfolios = null;
+            
+            return result;
+        } catch (error) {
+            console.error('Portfolio 수정 실패:', error);
+            throw error;
         }
     }
     
     async deletePortfolio(id) {
         try {
-            await this.apiRequest(`/portfolios/${id}`, {
+            await this.makeRequest(`/api/portfolios/${id}`, {
                 method: 'DELETE'
             });
             
-            // localStorage 업데이트
-            await this.syncPortfoliosToStorage();
-            this.notifyDataChange('portfolio');
+            // 캐시 무효화
+            this.cache.portfolios = null;
+            this.cache.lastUpdate.portfolios = null;
+            
+            return true;
         } catch (error) {
-            console.warn('API 사용 불가, localStorage 사용:', error.message);
-            return this.deletePortfolioFromStorage(id);
+            console.error('Portfolio 삭제 실패:', error);
+            throw error;
         }
     }
     
-    // Blog 관련 메서드
-    async getBlogs() {
+    // Blog 관련 메서드들
+    async getBlogs(useCache = true) {
+        if (useCache && this.cache.blogs && this.isCacheValid('blogs')) {
+            return this.cache.blogs;
+        }
+        
         try {
-            const data = await this.apiRequest('/blogs');
-            // localStorage에도 백업
-            localStorage.setItem('chiro_blog_data', JSON.stringify(data));
-            return data;
+            const blogs = await this.makeRequest('/api/blogs');
+            this.updateCache('blogs', blogs);
+            
+            // 백업 데이터로 localStorage에 저장
+            localStorage.setItem('chiro_blog_backup', JSON.stringify(blogs));
+            
+            return blogs;
         } catch (error) {
-            console.warn('API 사용 불가, localStorage 사용:', error.message);
-            return this.getBlogsFromStorage();
+            console.error('Blog 데이터 로드 실패:', error);
+            return JSON.parse(localStorage.getItem('chiro_blog_backup') || '[]');
         }
     }
     
     async getBlog(id) {
         try {
-            return await this.apiRequest(`/blogs/${id}`);
+            return await this.makeRequest(`/api/blogs/${id}`);
         } catch (error) {
-            console.warn('API 사용 불가, localStorage 사용:', error.message);
-            const blogs = this.getBlogsFromStorage();
+            console.error('Blog 개별 데이터 로드 실패:', error);
+            const blogs = await this.getBlogs();
             return blogs.find(b => b._id === id || b.id === id);
         }
     }
     
-    async saveBlog(blog) {
+    async createBlog(data) {
         try {
-            let result;
-            if (blog._id || blog.id) {
-                // 수정
-                const id = blog._id || blog.id;
-                result = await this.apiRequest(`/blogs/${id}`, {
-                    method: 'PUT',
-                    body: JSON.stringify(blog)
-                });
-            } else {
-                // 생성
-                result = await this.apiRequest('/blogs', {
-                    method: 'POST',
-                    body: JSON.stringify(blog)
-                });
-            }
+            const result = await this.makeRequest('/api/blogs', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
             
-            // localStorage 업데이트
-            await this.syncBlogsToStorage();
-            this.notifyDataChange('blog');
+            // 캐시 무효화
+            this.cache.blogs = null;
+            this.cache.lastUpdate.blogs = null;
+            
             return result;
         } catch (error) {
-            console.warn('API 사용 불가, localStorage 사용:', error.message);
-            return this.saveBlogToStorage(blog);
+            console.error('Blog 생성 실패:', error);
+            throw error;
+        }
+    }
+    
+    async updateBlog(id, data) {
+        try {
+            const result = await this.makeRequest(`/api/blogs/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            });
+            
+            // 캐시 무효화
+            this.cache.blogs = null;
+            this.cache.lastUpdate.blogs = null;
+            
+            return result;
+        } catch (error) {
+            console.error('Blog 수정 실패:', error);
+            throw error;
         }
     }
     
     async deleteBlog(id) {
         try {
-            await this.apiRequest(`/blogs/${id}`, {
+            await this.makeRequest(`/api/blogs/${id}`, {
                 method: 'DELETE'
             });
             
-            // localStorage 업데이트
-            await this.syncBlogsToStorage();
-            this.notifyDataChange('blog');
+            // 캐시 무효화
+            this.cache.blogs = null;
+            this.cache.lastUpdate.blogs = null;
+            
+            return true;
         } catch (error) {
-            console.warn('API 사용 불가, localStorage 사용:', error.message);
-            return this.deleteBlogFromStorage(id);
+            console.error('Blog 삭제 실패:', error);
+            throw error;
         }
     }
     
     // 통계 데이터
     async getStats() {
         try {
-            return await this.apiRequest('/stats');
+            return await this.makeRequest('/api/stats');
         } catch (error) {
-            console.warn('API 사용 불가, localStorage 사용:', error.message);
-            const portfolios = this.getPortfoliosFromStorage();
-            const blogs = this.getBlogsFromStorage();
+            console.error('Stats 데이터 로드 실패:', error);
+            // 캐시된 데이터를 기반으로 통계 계산
+            const portfolios = await this.getPortfolios();
+            const blogs = await this.getBlogs();
+            
             return {
                 portfolioCount: portfolios.length,
                 blogCount: blogs.length,
-                viewCount: 1234,
-                contactCount: 23
+                viewCount: 0,
+                contactCount: 0
             };
         }
     }
     
-    // localStorage 동기화 메서드
-    async syncPortfoliosToStorage() {
+    // 서버 상태 확인
+    async getServerStatus() {
         try {
-            const portfolios = await this.apiRequest('/portfolios');
-            localStorage.setItem('chiro_portfolio_data', JSON.stringify(portfolios));
+            return await this.makeRequest('/api/status');
         } catch (error) {
-            console.warn('동기화 실패:', error.message);
+            return {
+                status: '연결 안됨',
+                error: error.message,
+                timestamp: new Date().toISOString()
+            };
         }
     }
     
-    async syncBlogsToStorage() {
+    // 필터링 및 검색 기능 (클라이언트 사이드)
+    async getPortfoliosByCategory(category) {
+        const portfolios = await this.getPortfolios();
+        if (category === 'all') return portfolios;
+        return portfolios.filter(p => p.category.toLowerCase() === category.toLowerCase());
+    }
+    
+    async getBlogsByCategory(category) {
+        const blogs = await this.getBlogs();
+        if (category === 'all') return blogs;
+        return blogs.filter(b => b.category.toLowerCase() === category.toLowerCase());
+    }
+    
+    async searchContent(query) {
+        const [portfolios, blogs] = await Promise.all([
+            this.getPortfolios(),
+            this.getBlogs()
+        ]);
+        
+        const lowerQuery = query.toLowerCase();
+        
+        return {
+            portfolios: portfolios.filter(p => 
+                p.title.toLowerCase().includes(lowerQuery) ||
+                p.description.toLowerCase().includes(lowerQuery) ||
+                p.category.toLowerCase().includes(lowerQuery)
+            ),
+            blogs: blogs.filter(b =>
+                b.title.toLowerCase().includes(lowerQuery) ||
+                b.excerpt.toLowerCase().includes(lowerQuery) ||
+                b.content.toLowerCase().includes(lowerQuery) ||
+                b.category.toLowerCase().includes(lowerQuery)
+            )
+        };
+    }
+    
+    // 실시간 업데이트를 위한 이벤트 시스템
+    addEventListener(type, callback) {
+        document.addEventListener(`dataManager_${type}`, callback);
+    }
+    
+    removeEventListener(type, callback) {
+        document.removeEventListener(`dataManager_${type}`, callback);
+    }
+    
+    emit(type, data) {
+        const event = new CustomEvent(`dataManager_${type}`, { detail: data });
+        document.dispatchEvent(event);
+    }
+    
+    // 백그라운드에서 정기적으로 데이터 동기화
+    startAutoSync(interval = 60000) { // 1분마다
+        this.autoSyncInterval = setInterval(async () => {
+            try {
+                await this.getPortfolios(false); // 캐시 사용 안함
+                await this.getBlogs(false);
+                this.emit('dataUpdated', { timestamp: new Date() });
+            } catch (error) {
+                console.error('자동 동기화 실패:', error);
+            }
+        }, interval);
+    }
+    
+    stopAutoSync() {
+        if (this.autoSyncInterval) {
+            clearInterval(this.autoSyncInterval);
+            this.autoSyncInterval = null;
+        }
+    }
+    
+    // 초기 데이터 마이그레이션 (기존 localStorage 데이터 → MongoDB)
+    async migrateExistingData() {
         try {
-            const blogs = await this.apiRequest('/blogs');
-            localStorage.setItem('chiro_blog_data', JSON.stringify(blogs));
+            const existingPortfolios = JSON.parse(localStorage.getItem('chiro_portfolio_data') || '[]');
+            const existingBlogs = JSON.parse(localStorage.getItem('chiro_blog_data') || '[]');
+            
+            // 서버에 기존 데이터가 있는지 확인
+            const [serverPortfolios, serverBlogs] = await Promise.all([
+                this.getPortfolios(false),
+                this.getBlogs(false)
+            ]);
+            
+            // 서버가 비어있고 로컬에 데이터가 있으면 마이그레이션
+            if (serverPortfolios.length === 0 && existingPortfolios.length > 0) {
+                console.log('포트폴리오 데이터 마이그레이션 시작...');
+                for (const portfolio of existingPortfolios) {
+                    const { id, ...data } = portfolio; // id 제거
+                    await this.createPortfolio(data);
+                }
+            }
+            
+            if (serverBlogs.length === 0 && existingBlogs.length > 0) {
+                console.log('블로그 데이터 마이그레이션 시작...');
+                for (const blog of existingBlogs) {
+                    const { id, ...data } = blog; // id 제거
+                    await this.createBlog(data);
+                }
+            }
+            
+            return true;
         } catch (error) {
-            console.warn('동기화 실패:', error.message);
+            console.error('데이터 마이그레이션 실패:', error);
+            return false;
         }
-    }
-    
-    // localStorage fallback 메서드들
-    getPortfoliosFromStorage() {
-        const data = localStorage.getItem('chiro_portfolio_data');
-        return data ? JSON.parse(data) : [];
-    }
-    
-    savePortfolioToStorage(portfolio) {
-        const portfolios = this.getPortfoliosFromStorage();
-        
-        if (portfolio.id || portfolio._id) {
-            // 수정
-            const index = portfolios.findIndex(p => 
-                p.id === portfolio.id || p._id === portfolio._id || 
-                p.id === portfolio._id || p._id === portfolio.id
-            );
-            if (index !== -1) {
-                portfolios[index] = { ...portfolios[index], ...portfolio };
-            }
-        } else {
-            // 생성
-            portfolio.id = Date.now();
-            portfolio.createdAt = new Date().toISOString();
-            portfolios.push(portfolio);
-        }
-        
-        localStorage.setItem('chiro_portfolio_data', JSON.stringify(portfolios));
-        this.notifyDataChange('portfolio');
-        return portfolio;
-    }
-    
-    deletePortfolioFromStorage(id) {
-        const portfolios = this.getPortfoliosFromStorage();
-        const filtered = portfolios.filter(p => p.id !== id && p._id !== id);
-        localStorage.setItem('chiro_portfolio_data', JSON.stringify(filtered));
-        this.notifyDataChange('portfolio');
-    }
-    
-    getBlogsFromStorage() {
-        const data = localStorage.getItem('chiro_blog_data');
-        return data ? JSON.parse(data) : [];
-    }
-    
-    saveBlogToStorage(blog) {
-        const blogs = this.getBlogsFromStorage();
-        
-        if (blog.id || blog._id) {
-            // 수정
-            const index = blogs.findIndex(b => 
-                b.id === blog.id || b._id === blog._id ||
-                b.id === blog._id || b._id === blog.id
-            );
-            if (index !== -1) {
-                blogs[index] = { ...blogs[index], ...blog };
-            }
-        } else {
-            // 생성
-            blog.id = Date.now();
-            blog.date = new Date().toISOString().split('T')[0];
-            blog.createdAt = new Date().toISOString();
-            blogs.push(blog);
-        }
-        
-        localStorage.setItem('chiro_blog_data', JSON.stringify(blogs));
-        this.notifyDataChange('blog');
-        return blog;
-    }
-    
-    deleteBlogFromStorage(id) {
-        const blogs = this.getBlogsFromStorage();
-        const filtered = blogs.filter(b => b.id !== id && b._id !== id);
-        localStorage.setItem('chiro_blog_data', JSON.stringify(filtered));
-        this.notifyDataChange('blog');
-    }
-    
-    // 이벤트 알림
-    notifyDataChange(type) {
-        const event = new CustomEvent('dataManagerUpdate', {
-            detail: { type, timestamp: Date.now() }
-        });
-        window.dispatchEvent(event);
-        
-        // Storage 이벤트도 발생
-        const storageEvent = new StorageEvent('storage', {
-            key: `chiro_${type}_data`,
-            newValue: localStorage.getItem(`chiro_${type}_data`),
-            storageArea: localStorage
-        });
-        window.dispatchEvent(storageEvent);
-    }
-    
-    // 기본 데이터 설정 (변경 없음)
-    setDefaultPortfolioData() {
-        const defaultPortfolio = [
-            {
-                id: 1,
-                title: "Tech Startup Dashboard",
-                category: "web",
-                year: 2024,
-                description: "혁신적인 SaaS 플랫폼을 위한 직관적이고 현대적인 대시보드 디자인",
-                image: "https://picsum.photos/600/400?random=1",
-                status: "active",
-                createdAt: new Date().toISOString()
-            },
-            {
-                id: 2,
-                title: "Luxury Hotel Brand",
-                category: "branding", 
-                year: 2024,
-                description: "프리미엄 호텔 체인을 위한 고급스럽고 세련된 브랜드 아이덴티티",
-                image: "https://picsum.photos/600/500?random=2",
-                status: "active",
-                createdAt: new Date().toISOString()
-            }
-        ];
-        localStorage.setItem('chiro_portfolio_data', JSON.stringify(defaultPortfolio));
-    }
-    
-    setDefaultBlogData() {
-        const defaultBlogs = [
-            {
-                id: 1,
-                title: "2025년 웹 디자인 트렌드",
-                category: "design",
-                excerpt: "새해를 맞아 웹 디자인 분야에서 주목해야 할 핵심 트렌드들을 살펴봅니다.",
-                content: "웹 디자인 트렌드에 대한 상세한 내용...",
-                thumbnail: "https://picsum.photos/600/400?random=10",
-                readTime: "5 min read",
-                date: new Date().toISOString().split('T')[0],
-                status: "active",
-                createdAt: new Date().toISOString()
-            }
-        ];
-        localStorage.setItem('chiro_blog_data', JSON.stringify(defaultBlogs));
     }
 }
 
 // 전역 인스턴스 생성
-window.dataManager = new DataManager();
+const APIDataManager_Instance = new APIDataManager();
 
-console.log('📊 DataManager (MongoDB API) 초기화 완료');
+// 기존 DataManager와 호환성을 위한 래퍼
+class DataManager {
+    constructor() {
+        this.api = APIDataManager_Instance;
+        this.init();
+    }
+    
+    async init() {
+        // 페이지 로드 시 자동 동기화 시작
+        this.api.startAutoSync();
+        
+        // 기존 데이터 마이그레이션 (한 번만)
+        if (!localStorage.getItem('chiro_migrated')) {
+            await this.api.migrateExistingData();
+            localStorage.setItem('chiro_migrated', 'true');
+        }
+    }
+    
+    // Portfolio 메서드들
+    async getPortfolios() {
+        return await this.api.getPortfolios();
+    }
+    
+    async getPortfolio(id) {
+        return await this.api.getPortfolio(id);
+    }
+    
+    async addPortfolio(data) {
+        return await this.api.createPortfolio(data);
+    }
+    
+    async updatePortfolio(id, data) {
+        return await this.api.updatePortfolio(id, data);
+    }
+    
+    async deletePortfolio(id) {
+        return await this.api.deletePortfolio(id);
+    }
+    
+    // Blog 메서드들
+    async getBlogs() {
+        return await this.api.getBlogs();
+    }
+    
+    async getBlog(id) {
+        return await this.api.getBlog(id);
+    }
+    
+    async addBlog(data) {
+        return await this.api.createBlog(data);
+    }
+    
+    async updateBlog(id, data) {
+        return await this.api.updateBlog(id, data);
+    }
+    
+    async deleteBlog(id) {
+        return await this.api.deleteBlog(id);
+    }
+    
+    // 필터링
+    async getPortfoliosByCategory(category) {
+        return await this.api.getPortfoliosByCategory(category);
+    }
+    
+    async getBlogsByCategory(category) {
+        return await this.api.getBlogsByCategory(category);
+    }
+    
+    // 통계
+    async getStats() {
+        return await this.api.getStats();
+    }
+    
+    // 이벤트 리스너
+    addEventListener(type, callback) {
+        this.api.addEventListener(type, callback);
+    }
+    
+    removeEventListener(type, callback) {
+        this.api.removeEventListener(type, callback);
+    }
+    
+    // 정리
+    destroy() {
+        this.api.stopAutoSync();
+    }
+}
+
+// 전역 변수로 노출 (기존 코드 호환성)
+window.DataManager = DataManager;
+window.APIDataManager = APIDataManager;

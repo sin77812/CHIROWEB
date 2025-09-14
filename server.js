@@ -220,6 +220,33 @@ app.get('/api/stats', async (req, res) => {
     }
 });
 
+// 서버 상태 확인 API
+app.get('/api/status', (req, res) => {
+    try {
+        const dbState = mongoose.connection.readyState;
+        const status = dbState === 1 ? '연결됨' : '연결 안됨';
+        
+        res.json({
+            status,
+            dbState,
+            timestamp: new Date().toISOString(),
+            uptime: process.uptime()
+        });
+    } catch (error) {
+        console.error('Status check error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// 헬스 체크 엔드포인트
+app.get('/api/health', (req, res) => {
+    res.json({ 
+        status: 'OK', 
+        timestamp: new Date().toISOString(),
+        version: '1.0.0'
+    });
+});
+
 // 정적 파일 서빙 (HTML 파일들)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
