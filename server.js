@@ -2,17 +2,76 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
+const multer = require('multer');
+const { GridFsStorage } = require('multer-gridfs-storage');
 require('dotenv').config();
 
 const app = express();
 
 // 미들웨어 설정
+// CORS 설정 (배포 도메인 환경 변수로 제어)
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || '')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
+
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:5500', 'http://localhost:5500'],
-    credentials: true
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // same-origin / curl
+    if (process.env.ALLOW_ALL_ORIGINS === 'true') return callback(null, true);
+    if (allowedOrigins.length === 0) return callback(null, true); // 기본 허용(개발 편의)
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('CORS: Origin not allowed: ' + origin));
+  },
+  credentials: true
 }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// 업로드 디렉토리 준비
+function ensureDir(dir) {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+}
+ensureDir(path.join(__dirname, 'uploads', 'portfolio'));
+ensureDir(path.join(__dirname, 'uploads', 'blog'));
+
+// Multer 설정 (디스크 저장)
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const type = req.params.type; // 'portfolio' | 'blog'
+    const dest = path.join(__dirname, 'uploads', type);
+    ensureDir(dest);
+    cb(null, dest);
+  },
+  filename: function (req, file, cb) {
+    const ext = (file.originalname && file.originalname.split('.').pop()) || 'jpg';
+    cb(null, `${Date.now()}.${ext}`);
+  }
+});
+const upload = multer({ storage });
+
+// Multer 설정 (MongoDB GridFS 저장)
+let gridStorage;
+try {
+  gridStorage = new GridFsStorage({
+    url: process.env.MONGODB_URI,
+    options: { useNewUrlParser: true, useUnifiedTopology: true },
+    file: (req, file) => {
+      const type = req.params.type === 'blog' ? 'blog' : 'portfolio';
+      return {
+        bucketName: type, // GridFS 버킷명
+        filename: `${Date.now()}_${file.originalname.replace(/\s+/g,'_')}`
+      };
+    }
+  });
+} catch (e) {
+  console.warn('GridFS storage init failed:', e.message);
+}
+const uploadGrid = gridStorage ? multer({ storage: gridStorage }) : null;
 
 // MongoDB 연결
 mongoose.connect(process.env.MONGODB_URI)
@@ -48,6 +107,79 @@ const blogSchema = new mongoose.Schema({
 });
 
 const Blog = mongoose.model('Blog', blogSchema);
+
+// 파일 업로드 API
+app.post('/api/upload/:type(portfolio|blog)', upload.single('file'), (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+        const type = req.params.type;
+        const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${type}/${req.file.filename}`;
+        res.json({ url: fileUrl, filename: req.file.filename, type });
+    } catch (error) {
+        console.error('Upload error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// 파일 업로드 API (MongoDB GridFS)
+app.post('/api/upload-grid/:type(portfolio|blog)', (req, res, next) => {
+    if (!uploadGrid) return res.status(503).json({ error: 'GridFS storage unavailable' });
+    return uploadGrid.single('file')(req, res, (err) => {
+        if (err) return next(err);
+        try {
+            const type = req.params.type;
+            // multer-gridfs-storage가 저장 후 file.id 등을 req.file에 채움
+            const id = req.file.id?.toString() || req.file.filename; // 일부 드라이버 차이 대응
+            const fileUrl = `${req.protocol}://${req.get('host')}/api/files/${type}/${id}`;
+            res.json({ url: fileUrl, id, type, filename: req.file.filename });
+        } catch (error) {
+            console.error('GridFS upload error:', error);
+            res.status(500).json({ error: error.message });
+        }
+    });
+});
+
+// GridFS 파일 스트리밍 라우트
+app.get('/api/files/:bucket(portfolio|blog)/:id', async (req, res) => {
+    try {
+        const bucketName = req.params.bucket;
+        const db = mongoose.connection.db;
+        const bucket = new mongoose.mongo.GridFSBucket(db, { bucketName });
+
+        let objectId;
+        try {
+            objectId = new mongoose.Types.ObjectId(req.params.id);
+        } catch {
+            // id가 filename일 수도 있으니 filename으로 조회
+        }
+
+        // Try by _id first
+        if (objectId) {
+            return bucket.openDownloadStream(objectId)
+                .on('file', (file) => {
+                    res.set('Content-Type', file.contentType || 'application/octet-stream');
+                })
+                .on('error', (err) => {
+                    console.error('GridFS stream error:', err);
+                    res.status(404).json({ error: 'File not found' });
+                })
+                .pipe(res);
+        }
+
+        // Fallback by filename
+        bucket.find({ filename: req.params.id }).toArray((err, files) => {
+            if (err || !files || files.length === 0) {
+                return res.status(404).json({ error: 'File not found' });
+            }
+            const file = files[0];
+            res.set('Content-Type', file.contentType || 'application/octet-stream');
+            bucket.openDownloadStreamByName(file.filename).pipe(res);
+        });
+    } catch (error) {
+        console.error('GridFS fetch error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
 // 포트폴리오 API 라우트
 // 모든 포트폴리오 조회

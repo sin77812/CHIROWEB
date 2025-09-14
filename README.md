@@ -198,10 +198,26 @@ vercel --prod
 ```
 
 ### Environment Variables
+Copy `.env.example` to `.env` and fill values:
 ```env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>/<db>?retryWrites=true&w=majority
+ALLOWED_ORIGINS=https://your-frontend.example.com
+# ALLOW_ALL_ORIGINS=true  # development only
 PORT=3000
 NODE_ENV=production
+```
+
+### Frontend API Base URL
+Frontend reads API base from `api-config.js` with this priority:
+
+- `<meta name="api-base" content="https://api.example.com">`
+- `window.__API_BASE__ = 'https://api.example.com'` (in HTML before scripts)
+- `localStorage['chiro_api_base_url']`
+- fallback to same origin
+
+To set without editing files, open the site console and run:
+```js
+localStorage.setItem('chiro_api_base_url','https://your-api.example.com')
 ```
 
 ---

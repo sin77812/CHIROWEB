@@ -399,9 +399,9 @@
             }
         });
         
-        // Listen for data changes
+        // Listen for data changes from Admin
         window.addEventListener('storage', function(e) {
-            if (e.key === 'chiro_portfolio_data') {
+            if (e.key === 'chiro_portfolios' || e.key === 'chiro_portfolio_data' || e.key === 'chiro_last_update') {
                 loadPortfolioData();
             }
         });

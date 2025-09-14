@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Storage 변경 감지 (다른 탭에서의 변경사항)
     window.addEventListener('storage', (e) => {
-        if (e.key === 'chiro_portfolio_data' || e.key === 'chiro_last_update') {
+        if (e.key === 'chiro_portfolios' || e.key === 'chiro_portfolio_data' || e.key === 'chiro_last_update') {
             loadPortfolioData();
         }
     });

@@ -357,9 +357,9 @@
         `;
         document.head.appendChild(style);
         
-        // Listen for data changes
+        // Listen for data changes from Admin
         window.addEventListener('storage', function(e) {
-            if (e.key === 'chiro_blog_data') {
+            if (e.key === 'chiro_blogs' || e.key === 'chiro_blog_data' || e.key === 'chiro_last_update') {
                 loadBlogData();
             }
         });
@@ -368,13 +368,13 @@
     });
     
     // Load blog data from dataManager
-    function loadBlogData() {
+    async function loadBlogData() {
         if (!window.dataManager) {
             console.warn('DataManager not available, using static content');
             return;
         }
         
-        const blogs = window.dataManager.getBlogs();
+        const blogs = await window.dataManager.getBlogs();
         const articlesGrid = document.querySelector('.articles-grid');
         
         if (articlesGrid && blogs.length > 0) {

@@ -2,7 +2,7 @@
 
 class APIDataManager {
     constructor() {
-        this.baseURL = window.location.origin;
+        this.baseURL = (typeof window !== 'undefined' && window.API_BASE_URL) ? window.API_BASE_URL : window.location.origin;
         this.cache = {
             portfolios: null,
             blogs: null,
@@ -63,37 +63,47 @@ class APIDataManager {
     
     // Portfolio 관련 메서드들
     async getPortfolios(useCache = true) {
+        // 유효한 캐시가 있으면 사용
+        if (useCache && this.cache.portfolios && this.isCacheValid('portfolios')) {
+            return this.cache.portfolios;
+        }
+
         try {
-            console.log('Loading portfolios - prioritizing LocalStorage...');
-            
-            // 1. LocalStorage에서 관리자가 추가한 데이터 가져오기
+            // 1) API에서 최신 데이터 우선
+            try {
+                const apiPortfolios = await this.makeRequest('/api/portfolios');
+                if (Array.isArray(apiPortfolios)) {
+                    this.updateCache('portfolios', apiPortfolios);
+                    localStorage.setItem('chiro_portfolio_backup', JSON.stringify(apiPortfolios));
+                    return apiPortfolios;
+                }
+            } catch (apiErr) {
+                // API 실패 시 아래 로컬+정적 데이터 사용
+            }
+
+            // 2) LocalStorage의 관리자 데이터
             let adminPortfolios = [];
             try {
                 adminPortfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+                if (!Array.isArray(adminPortfolios)) adminPortfolios = [];
                 console.log('Admin portfolios found:', adminPortfolios.length);
             } catch (e) {
                 console.warn('Failed to parse admin portfolios');
             }
-            
-            // 2. 정적 기본 데이터 가져오기 (portfolio-data-real.js에서)
+
+            // 3) 정적 기본 데이터 결합 (portfolio-data-real.js)
             let staticPortfolios = [];
             if (typeof realPortfolioData !== 'undefined') {
                 staticPortfolios = realPortfolioData;
                 console.log('Static portfolios found:', staticPortfolios.length);
             }
-            
-            // 3. 관리자 데이터를 우선으로 합치기 (최신 데이터가 위로)
+
             const allPortfolios = [...adminPortfolios, ...staticPortfolios];
-            
-            // 캐시 업데이트
             this.updateCache('portfolios', allPortfolios);
-            
-            console.log('Total portfolios loaded:', allPortfolios.length);
             return allPortfolios;
-            
         } catch (error) {
             console.error('Portfolio 데이터 로드 실패:', error);
-            // 최후 폴백
+            // 최후 폴백: 백업 데이터
             return JSON.parse(localStorage.getItem('chiro_portfolio_backup') || '[]');
         }
     }
@@ -163,20 +173,54 @@ class APIDataManager {
     
     // Blog 관련 메서드들
     async getBlogs(useCache = true) {
+        // 캐시된 데이터가 유효하면 우선 사용
         if (useCache && this.cache.blogs && this.isCacheValid('blogs')) {
             return this.cache.blogs;
         }
-        
+
         try {
-            const blogs = await this.makeRequest('/api/blogs');
-            this.updateCache('blogs', blogs);
-            
-            // 백업 데이터로 localStorage에 저장
-            localStorage.setItem('chiro_blog_backup', JSON.stringify(blogs));
-            
-            return blogs;
+            // 1) 로컬스토리지에 관리자가 저장한 블로그 우선 사용
+            let adminBlogs = [];
+            try {
+                adminBlogs = JSON.parse(localStorage.getItem('chiro_blogs') || '[]');
+                if (Array.isArray(adminBlogs)) {
+                    console.log('Admin blogs found:', adminBlogs.length);
+                } else {
+                    adminBlogs = [];
+                }
+            } catch (e) {
+                console.warn('Failed to parse admin blogs from localStorage');
+            }
+
+            // 2) 정적 기본 데이터 결합 (blog-data-real.js의 realBlogData)
+            let staticBlogs = [];
+            if (typeof realBlogData !== 'undefined') {
+                staticBlogs = realBlogData;
+                console.log('Static blogs found:', staticBlogs.length);
+            }
+
+            // 우선순위: 관리자 데이터가 위로
+            const combinedBlogs = [...adminBlogs, ...staticBlogs];
+
+            // 3) 가능하면 API 데이터로 보강 (성공 시 백업도 갱신)
+            try {
+                const apiBlogs = await this.makeRequest('/api/blogs');
+                if (Array.isArray(apiBlogs) && apiBlogs.length) {
+                    // API 데이터를 최상단으로 사용하거나 정책에 맞게 병합
+                    this.updateCache('blogs', apiBlogs);
+                    localStorage.setItem('chiro_blog_backup', JSON.stringify(apiBlogs));
+                    return apiBlogs;
+                }
+            } catch (apiErr) {
+                // API 실패는 치명적이지 않음. 아래 로컬/정적 데이터로 진행
+            }
+
+            // 캐시 업데이트 및 반환
+            this.updateCache('blogs', combinedBlogs);
+            return combinedBlogs;
         } catch (error) {
             console.error('Blog 데이터 로드 실패:', error);
+            // 최후 폴백: 백업 키
             return JSON.parse(localStorage.getItem('chiro_blog_backup') || '[]');
         }
     }
