@@ -894,13 +894,16 @@
         // Load Dashboard Data
         async function loadDashboardData() {
             try {
-                console.log('Loading dashboard data (API)...');
-                const res = await fetch('/api/stats');
-                if (!res.ok) throw new Error('Failed to fetch stats');
-                const stats = await res.json();
-                document.getElementById('portfolio-count').textContent = stats.portfolioCount ?? '0';
-                document.getElementById('blog-count').textContent = stats.blogCount ?? '0';
-                console.log('Dashboard data loaded:', stats);
+                console.log('Loading dashboard data...');
+                
+                // LocalStorage에서 데이터 가져오기 (Vercel 정적 호스팅 환경)
+                const portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+                const blogs = JSON.parse(localStorage.getItem('chiro_blogs') || '[]');
+                
+                document.getElementById('portfolio-count').textContent = portfolios.length;
+                document.getElementById('blog-count').textContent = blogs.length;
+                
+                console.log('Dashboard data loaded:', { portfolios: portfolios.length, blogs: blogs.length });
             } catch (error) {
                 console.error('Error loading dashboard data:', error);
                 document.getElementById('portfolio-count').textContent = '0';
@@ -911,10 +914,9 @@
         // Portfolio Functions
         async function loadPortfolios() {
             try {
-                console.log('Loading portfolios (API)...');
-                const res = await fetch('/api/portfolios');
-                if (!res.ok) throw new Error('Failed to fetch portfolios');
-                const portfolios = await res.json();
+                console.log('Loading portfolios...');
+                // LocalStorage에서 포트폴리오 가져오기
+                const portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
 
                 const grid = document.getElementById('portfolio-grid');
                 if (!portfolios || portfolios.length === 0) {
@@ -931,8 +933,8 @@
                             <div class="portfolio-title">${portfolio.title}</div>
                             <div class="portfolio-meta">${portfolio.category} • ${portfolio.year}</div>
                             <div class="portfolio-actions">
-                                <button class="btn btn-primary" onclick="editPortfolio('${portfolio._id}')">편집</button>
-                                <button class="btn btn-secondary" onclick="deletePortfolio('${portfolio._id}')">삭제</button>
+                                <button class="btn btn-primary" onclick="editPortfolio('${portfolio.id || portfolio._id}')">편집</button>
+                                <button class="btn btn-secondary" onclick="deletePortfolio('${portfolio.id || portfolio._id}')">삭제</button>
                             </div>
                         </div>
                     </div>
@@ -971,10 +973,14 @@
 
         async function editPortfolio(id) {
             try {
-                const res = await fetch(`/api/portfolios/${id}`);
-                if (!res.ok) throw new Error('Failed to fetch portfolio');
-                const portfolio = await res.json();
-                openPortfolioModal(portfolio);
+                // LocalStorage에서 포트폴리오 찾기
+                const portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+                const portfolio = portfolios.find(p => p.id === id || p._id === id);
+                if (portfolio) {
+                    openPortfolioModal(portfolio);
+                } else {
+                    alert('포트폴리오를 찾을 수 없습니다.');
+                }
             } catch (error) {
                 console.error('Error loading portfolio:', error);
                 alert('포트폴리오 로드 중 오류가 발생했습니다.');
@@ -984,11 +990,18 @@
         async function deletePortfolio(id) {
             if (!confirm('정말로 이 프로젝트를 삭제하시겠습니까?')) return;
             try {
-                const res = await fetch(`/api/portfolios/${id}`, { method: 'DELETE' });
-                if (res.status !== 204 && !res.ok) throw new Error('Failed to delete');
+                // LocalStorage에서 삭제
+                let portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+                portfolios = portfolios.filter(p => p.id !== id && p._id !== id);
+                localStorage.setItem('chiro_portfolios', JSON.stringify(portfolios));
+                
                 await loadPortfolios();
                 await loadDashboardData();
                 localStorage.setItem('chiro_last_update', Date.now().toString());
+                
+                // 데이터 변경 이벤트 발생
+                window.dispatchEvent(new CustomEvent('chiroDataChanged', { detail: { type: 'portfolio' } }));
+                
                 alert('포트폴리오가 삭제되었습니다.');
             } catch (error) {
                 console.error('Error deleting portfolio:', error);
@@ -999,33 +1012,42 @@
         // Portfolio Form Submit
         document.getElementById('portfolio-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const body = {
+            
+            const formData = {
+                id: currentEditingPortfolio || Date.now().toString(),
                 title: document.getElementById('portfolio-title').value,
                 category: document.getElementById('portfolio-category').value,
                 year: parseInt(document.getElementById('portfolio-year').value),
                 description: document.getElementById('portfolio-description').value,
-                image: document.getElementById('portfolio-image').value
+                image: document.getElementById('portfolio-image').value,
+                createdAt: new Date().toISOString()
             };
+            
             try {
+                // LocalStorage에 저장
+                let portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+                
                 if (currentEditingPortfolio) {
-                    const res = await fetch(`/api/portfolios/${currentEditingPortfolio}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(body)
-                    });
-                    if (!res.ok) throw new Error('Failed to update portfolio');
+                    // 수정 모드
+                    const index = portfolios.findIndex(p => p.id === currentEditingPortfolio || p._id === currentEditingPortfolio);
+                    if (index !== -1) {
+                        portfolios[index] = { ...portfolios[index], ...formData };
+                    }
                 } else {
-                    const res = await fetch('/api/portfolios', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(body)
-                    });
-                    if (!res.ok) throw new Error('Failed to create portfolio');
+                    // 새로 추가
+                    portfolios.unshift(formData);
                 }
+                
+                localStorage.setItem('chiro_portfolios', JSON.stringify(portfolios));
+                localStorage.setItem('chiro_last_update', Date.now().toString());
+                
+                // 데이터 변경 이벤트 발생
+                window.dispatchEvent(new CustomEvent('chiroDataChanged', { detail: { type: 'portfolio' } }));
+                
                 closePortfolioModal();
                 await loadPortfolios();
                 await loadDashboardData();
-                localStorage.setItem('chiro_last_update', Date.now().toString());
+                
                 alert('포트폴리오가 저장되었습니다!');
             } catch (error) {
                 console.error('Error saving portfolio:', error);
@@ -1037,27 +1059,32 @@
         document.getElementById('blog-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const blogData = {
+                id: Date.now().toString(),
                 title: document.getElementById('blog-title').value,
                 category: document.getElementById('blog-category').value,
                 excerpt: document.getElementById('blog-excerpt').value,
                 content: quill ? quill.root.innerHTML : '',
                 thumbnail: document.getElementById('blog-thumbnail').value,
                 date: new Date().toISOString().split('T')[0],
-                readTime: calculateReadTime(quill ? quill.getText() : '')
+                readTime: calculateReadTime(quill ? quill.getText() : ''),
+                createdAt: new Date().toISOString()
             };
+            
             try {
-                const res = await fetch('/api/blogs', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(blogData)
-                });
-                if (!res.ok) throw new Error('Failed to create blog');
+                // LocalStorage에 저장
+                let blogs = JSON.parse(localStorage.getItem('chiro_blogs') || '[]');
+                blogs.unshift(blogData);
+                localStorage.setItem('chiro_blogs', JSON.stringify(blogs));
+                localStorage.setItem('chiro_last_update', Date.now().toString());
+                
+                // 데이터 변경 이벤트 발생
+                window.dispatchEvent(new CustomEvent('chiroDataChanged', { detail: { type: 'blog' } }));
+                
                 alert('블로그가 성공적으로 발행되었습니다!');
                 document.getElementById('blog-form').reset();
                 if (quill) quill.setText('');
                 await loadBlogs();
                 await loadDashboardData();
-                localStorage.setItem('chiro_last_update', Date.now().toString());
             } catch (error) {
                 console.error('Error saving blog:', error);
                 alert('블로그 발행 중 오류가 발생했습니다.');
@@ -1073,9 +1100,8 @@
 
         async function loadBlogs() {
             try {
-                const res = await fetch('/api/blogs');
-                if (!res.ok) throw new Error('Failed to fetch blogs');
-                const blogs = await res.json();
+                // LocalStorage에서 블로그 가져오기
+                const blogs = JSON.parse(localStorage.getItem('chiro_blogs') || '[]');
                 const container = document.getElementById('blog-list-container');
                 if (!blogs || blogs.length === 0) {
                     container.innerHTML = '<div style="text-align: center; color: var(--secondary-text); padding: 40px;">아직 작성된 블로그가 없습니다.</div>';
@@ -1091,7 +1117,7 @@
                         </div>
                         <p style="color: var(--secondary-text); margin: 16px 0;">${blog.excerpt}</p>
                         <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary" onclick="deleteBlog('${blog._id}')">삭제</button>
+                            <button class="btn btn-secondary" onclick="deleteBlog('${blog.id || blog._id}')">삭제</button>
                         </div>
                     </div>
                 `).join('');
@@ -1103,11 +1129,18 @@
         async function deleteBlog(id) {
             if (!confirm('정말로 이 블로그 글을 삭제하시겠습니까?')) return;
             try {
-                const res = await fetch(`/api/blogs/${id}`, { method: 'DELETE' });
-                if (res.status !== 204 && !res.ok) throw new Error('Failed to delete');
+                // LocalStorage에서 삭제
+                let blogs = JSON.parse(localStorage.getItem('chiro_blogs') || '[]');
+                blogs = blogs.filter(b => b.id !== id && b._id !== id);
+                localStorage.setItem('chiro_blogs', JSON.stringify(blogs));
+                
                 await loadBlogs();
                 await loadDashboardData();
                 localStorage.setItem('chiro_last_update', Date.now().toString());
+                
+                // 데이터 변경 이벤트 발생
+                window.dispatchEvent(new CustomEvent('chiroDataChanged', { detail: { type: 'blog' } }));
+                
                 alert('블로그가 삭제되었습니다.');
             } catch (error) {
                 console.error('Error deleting blog:', error);
@@ -1129,16 +1162,18 @@
         }
 
         function testDbConnection() {
-            fetch('/api/status')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('db-status').textContent = data.status || '연결됨';
-                    document.getElementById('db-status').style.color = data.status === '연결됨' ? 'var(--success)' : 'var(--accent-red)';
-                })
-                .catch(error => {
-                    document.getElementById('db-status').textContent = '연결 실패';
-                    document.getElementById('db-status').style.color = 'var(--accent-red)';
-                });
+            // Vercel 정적 호스팅 환경에서는 LocalStorage 사용
+            document.getElementById('db-status').textContent = 'LocalStorage';
+            document.getElementById('db-status').style.color = 'var(--success)';
+            
+            // LocalStorage 저장 공간 확인
+            try {
+                const portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+                const blogs = JSON.parse(localStorage.getItem('chiro_blogs') || '[]');
+                console.log(`LocalStorage 상태: 포트폴리오 ${portfolios.length}개, 블로그 ${blogs.length}개`);
+            } catch (error) {
+                console.error('LocalStorage 확인 실패:', error);
+            }
         }
 
         function logout() {
@@ -1240,69 +1275,49 @@
                 ctx.drawImage(img, 0, 0, newWidth, newHeight);
                 
                 canvas.toBlob(async function(blob) {
-                    // 1) 서버로 업로드 시도
-                    try {
-                        const fileName = `${type}_${Date.now()}.jpg`;
-                        const file = new File([blob], fileName, { type: 'image/jpeg' });
-                        const form = new FormData();
-                        form.append('file', file);
-                        // 1) 먼저 MongoDB GridFS 업로드 시도
-                        let uploadRes = await fetch(`/api/upload-grid/${type}`, { method: 'POST', body: form });
-                        if (!uploadRes.ok) {
-                            // 2) GridFS가 불가하면 로컬 디스크 업로드로 폴백
-                            uploadRes = await fetch(`/api/upload/${type}`, { method: 'POST', body: form });
-                        }
-                        if (!uploadRes.ok) throw new Error('Upload failed');
-                        const { url } = await uploadRes.json();
+                    // Vercel 정적 호스팅 환경이므로 직접 다운로드 방식 사용
+                    const fileName = `${type}_${Date.now()}.jpg`;
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const optimizedDataUrl = e.target.result;
+                        
+                        // 이미지 URL 생성 (GitHub에 업로드 후 사용할 경로)
+                        const imageUrl = `/images/${type}/${fileName}`;
 
-                        // 입력값/프리뷰 갱신
+                        // 입력 필드에 URL 설정
                         if (type === 'portfolio') {
-                            document.getElementById('portfolio-image').value = url;
+                            document.getElementById('portfolio-image').value = imageUrl;
                         } else if (type === 'blog') {
-                            document.getElementById('blog-thumbnail').value = url;
+                            document.getElementById('blog-thumbnail').value = imageUrl;
                         }
+                        
+                        // 프리뷰 업데이트
                         const previewImg = type === 'portfolio' ? 'preview-img' : 'blog-preview-img';
                         const imageInfo = type === 'portfolio' ? 'image-info' : 'blog-image-info';
-                        document.getElementById(previewImg).src = url;
+                        document.getElementById(previewImg).src = optimizedDataUrl;
+                        
+                        // 정보 표시
                         document.getElementById(imageInfo).innerHTML = `
-                            ✅ 업로드 완료<br>
-                            URL: <code>${url}</code>
+                            ✅ 최적화 완료: ${fileName}<br>
+                            크기: ${(blob.size / 1024).toFixed(1)}KB → URL: <code>${imageUrl}</code><br>
+                            <small style="color: var(--accent-red);">이미지를 GitHub에 업로드하고 푸시해야 URL이 활성화됩니다.</small>
                         `;
-                        alert('이미지가 업로드되어 URL이 자동으로 설정되었습니다.');
-                        return;
-                    } catch (err) {
-                        // 2) 업로드 실패 시 기존 다운로드 플로우로 폴백
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            const optimizedDataUrl = e.target.result;
-                            const fileName = `${type}_${Date.now()}.jpg`;
-                            const imageUrl = `/images/${type}/${fileName}`;
-                            if (type === 'portfolio') {
-                                document.getElementById('portfolio-image').value = imageUrl;
-                            } else if (type === 'blog') {
-                                document.getElementById('blog-thumbnail').value = imageUrl;
-                            }
-                            const previewImg = type === 'portfolio' ? 'preview-img' : 'blog-preview-img';
-                            const imageInfo = type === 'portfolio' ? 'image-info' : 'blog-image-info';
-                            document.getElementById(previewImg).src = optimizedDataUrl;
-                            document.getElementById(imageInfo).innerHTML = `
-                                ✅ 최적화 완료: ${fileName}<br>
-                                크기: ${(blob.size / 1024).toFixed(1)}KB → URL: <code>${imageUrl}</code><br>
-                                <small style="color: var(--accent-red);">이미지를 GitHub에 업로드하고 푸시해야 URL이 활성화됩니다.</small>
-                            `;
-                            const downloadLink = document.createElement('a');
-                            downloadLink.href = optimizedDataUrl;
-                            downloadLink.download = fileName;
-                            downloadLink.textContent = '📥 다운로드 (GitHub 업로드용)';
-                            downloadLink.style.cssText = 'display: block; margin-top: 8px; color: var(--accent-red); text-decoration: none; font-size: 12px;';
-                            const infoElement = document.getElementById(imageInfo);
-                            const existingLink = infoElement.querySelector('a');
-                            if (existingLink) existingLink.remove();
-                            infoElement.appendChild(downloadLink);
-                            alert('서버 업로드에 실패했습니다. 대신 최적화된 이미지를 다운로드해 정적 폴더에 수동 업로드하세요.');
-                        };
-                        reader.readAsDataURL(blob);
-                    }
+                        
+                        // 다운로드 링크 생성
+                        const downloadLink = document.createElement('a');
+                        downloadLink.href = optimizedDataUrl;
+                        downloadLink.download = fileName;
+                        downloadLink.textContent = '📥 다운로드 (GitHub 업로드용)';
+                        downloadLink.style.cssText = 'display: block; margin-top: 8px; color: var(--accent-red); text-decoration: none; font-size: 12px;';
+                        
+                        const infoElement = document.getElementById(imageInfo);
+                        const existingLink = infoElement.querySelector('a');
+                        if (existingLink) existingLink.remove();
+                        infoElement.appendChild(downloadLink);
+                    };
+                    
+                    reader.readAsDataURL(blob);
                 }, 'image/jpeg', quality);
             };
             
