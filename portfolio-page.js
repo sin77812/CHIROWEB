@@ -515,15 +515,23 @@
 
     // Load portfolio data 
     async function loadPortfolioData() {
-        // Clear any existing localStorage data to prevent conflicts
-        localStorage.removeItem('chiro_portfolio_data');
+        // Force clear ALL localStorage data to prevent any conflicts
+        localStorage.clear();
+        
+        // Add cache busting
+        const timestamp = Date.now();
+        console.log('Cache-busting timestamp:', timestamp);
         
         const portfolios = portfolioPageData;
         const portfolioGrid = document.getElementById('portfolioGrid');
-        console.log('Loading portfolio page data:', portfolios.length);
+        console.log('Force loading NEW portfolio data:', portfolios.length, 'items');
         
-        if (portfolioGrid && portfolios.length > 0) {
-            console.log('Loading portfolio page data:', portfolios.length);
+        if (portfolioGrid) {
+            // Force clear existing content first
+            portfolioGrid.innerHTML = '';
+            console.log('Cleared existing content, now loading:', portfolios.length, 'items');
+            
+            // Force render new content
             portfolioGrid.innerHTML = portfolios.map(item => `
                 <div class="portfolio-item" data-category="${item.category}" data-year="${item.year}">
                     <div class="portfolio-card">
