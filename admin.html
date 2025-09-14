@@ -680,14 +680,26 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">썸네일 이미지 URL</label>
-                            <input type="url" class="form-input" id="blog-thumbnail" placeholder="예: /images/blog/article1.jpg">
-                            <div style="margin-top: 10px; padding: 10px; background: rgba(255, 59, 48, 0.1); border-radius: 8px; font-size: 14px; color: var(--secondary-text);">
-                                💡 <strong>이미지 업로드 방법:</strong><br>
-                                1. <a href="/image-upload.html" target="_blank" style="color: var(--accent-red);">이미지 최적화 도구</a>에서 이미지를 최적화<br>
-                                2. images/blog/ 폴더에 업로드<br>
-                                3. GitHub에 푸시 후 URL 사용: <code>/images/blog/파일명.jpg</code>
+                            <label class="form-label">썸네일 이미지</label>
+                            
+                            <!-- 파일 업로드 섹션 -->
+                            <div class="blog-image-upload-section" style="margin-bottom: 16px;">
+                                <input type="file" id="blog-image-file" accept="image/*" style="display: none;">
+                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('blog-image-file').click()">
+                                    <i class="fas fa-upload"></i> 이미지 파일 선택
+                                </button>
+                                <div id="blog-image-preview" style="margin-top: 16px; display: none;">
+                                    <img id="blog-preview-img" style="max-width: 200px; max-height: 150px; border-radius: 8px; object-fit: cover;">
+                                    <div style="margin-top: 8px; font-size: 14px; color: var(--secondary-text);">
+                                        <span id="blog-image-info"></span>
+                                        <button type="button" class="btn btn-primary" id="blog-optimize-btn" style="margin-left: 10px; padding: 4px 12px; font-size: 12px;">최적화</button>
+                                    </div>
+                                </div>
                             </div>
+                            
+                            <!-- 또는 URL 직접 입력 -->
+                            <div style="text-align: center; margin: 16px 0; color: var(--secondary-text);">또는</div>
+                            <input type="url" class="form-input" id="blog-thumbnail" placeholder="썸네일 URL 직접 입력">
                         </div>
 
                         <div class="form-group">
@@ -760,14 +772,27 @@
                     <textarea class="form-input" id="portfolio-description" rows="4"></textarea>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">이미지 URL</label>
-                    <input type="url" class="form-input" id="portfolio-image" placeholder="예: /images/portfolio/project1.jpg">
-                    <div style="margin-top: 10px; padding: 10px; background: rgba(255, 59, 48, 0.1); border-radius: 8px; font-size: 14px; color: var(--secondary-text);">
-                        💡 <strong>이미지 업로드 방법:</strong><br>
-                        1. <a href="/image-upload.html" target="_blank" style="color: var(--accent-red);">이미지 최적화 도구</a>에서 이미지를 최적화<br>
-                        2. images/portfolio/ 폴더에 업로드<br>
-                        3. GitHub에 푸시 후 URL 사용: <code>/images/portfolio/파일명.jpg</code>
+                    <label class="form-label">이미지</label>
+                    
+                    <!-- 파일 업로드 섹션 -->
+                    <div class="image-upload-section" style="margin-bottom: 16px;">
+                        <input type="file" id="portfolio-image-file" accept="image/*" style="display: none;">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('portfolio-image-file').click()">
+                            <i class="fas fa-upload"></i> 이미지 파일 선택
+                        </button>
+                        <div id="image-preview" style="margin-top: 16px; display: none;">
+                            <img id="preview-img" style="max-width: 200px; max-height: 150px; border-radius: 8px; object-fit: cover;">
+                            <div style="margin-top: 8px; font-size: 14px; color: var(--secondary-text);">
+                                <span id="image-info"></span>
+                                <button type="button" class="btn btn-primary" id="optimize-btn" style="margin-left: 10px; padding: 4px 12px; font-size: 12px;">최적화</button>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <!-- 또는 URL 직접 입력 -->
+                    <div style="text-align: center; margin: 16px 0; color: var(--secondary-text);">또는</div>
+                    <input type="url" class="form-input" id="portfolio-image" placeholder="이미지 URL 직접 입력">
+                    
                 </div>
                 <div class="action-buttons">
                     <button type="button" class="btn btn-secondary" onclick="closePortfolioModal()">취소</button>
@@ -1144,6 +1169,144 @@
                 localStorage.removeItem('chiro_remember_me');
                 window.location.href = '/login.html';
             }
+        }
+
+        // Image Upload and Optimization Functions
+        let portfolioImageData = null;
+        let blogImageData = null;
+        
+        // 포트폴리오 이미지 업로드
+        document.addEventListener('DOMContentLoaded', function() {
+            const portfolioImageInput = document.getElementById('portfolio-image-file');
+            const blogImageInput = document.getElementById('blog-image-file');
+            
+            if (portfolioImageInput) {
+                portfolioImageInput.addEventListener('change', function(e) {
+                    handleImageSelect(e.target.files[0], 'portfolio');
+                });
+            }
+            
+            if (blogImageInput) {
+                blogImageInput.addEventListener('change', function(e) {
+                    handleImageSelect(e.target.files[0], 'blog');
+                });
+            }
+            
+            // 최적화 버튼 이벤트
+            document.addEventListener('click', function(e) {
+                if (e.target.id === 'optimize-btn') {
+                    optimizeImage('portfolio');
+                } else if (e.target.id === 'blog-optimize-btn') {
+                    optimizeImage('blog');
+                }
+            });
+        });
+        
+        function handleImageSelect(file, type) {
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                if (type === 'portfolio') {
+                    portfolioImageData = { file: file, dataUrl: e.target.result };
+                    showImagePreview(e.target.result, file, 'portfolio');
+                } else if (type === 'blog') {
+                    blogImageData = { file: file, dataUrl: e.target.result };
+                    showImagePreview(e.target.result, file, 'blog');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function showImagePreview(dataUrl, file, type) {
+            const previewContainer = type === 'portfolio' ? 'image-preview' : 'blog-image-preview';
+            const previewImg = type === 'portfolio' ? 'preview-img' : 'blog-preview-img';
+            const imageInfo = type === 'portfolio' ? 'image-info' : 'blog-image-info';
+            
+            document.getElementById(previewContainer).style.display = 'block';
+            document.getElementById(previewImg).src = dataUrl;
+            document.getElementById(imageInfo).textContent = `${file.name} (${(file.size / 1024).toFixed(1)}KB)`;
+        }
+        
+        function optimizeImage(type) {
+            const imageData = type === 'portfolio' ? portfolioImageData : blogImageData;
+            if (!imageData) return;
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            img.onload = function() {
+                // 타입별 최적화 설정
+                let targetWidth, targetHeight, quality;
+                
+                if (type === 'portfolio') {
+                    targetWidth = 1200;
+                    targetHeight = 800;
+                    quality = 0.85;
+                } else if (type === 'blog') {
+                    targetWidth = 800;
+                    targetHeight = 600;
+                    quality = 0.80;
+                }
+                
+                // 비율 유지하면서 리사이즈
+                const ratio = Math.min(targetWidth / img.width, targetHeight / img.height);
+                const newWidth = img.width * ratio;
+                const newHeight = img.height * ratio;
+                
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+                
+                ctx.drawImage(img, 0, 0, newWidth, newHeight);
+                
+                canvas.toBlob(function(blob) {
+                    // 최적화된 이미지를 Data URL로 변환
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const optimizedDataUrl = e.target.result;
+                        const fileName = `${type}_${Date.now()}.jpg`;
+                        const imageUrl = `/images/${type}/${fileName}`;
+                        
+                        // URL 입력 필드에 자동 입력
+                        if (type === 'portfolio') {
+                            document.getElementById('portfolio-image').value = imageUrl;
+                        } else if (type === 'blog') {
+                            document.getElementById('blog-thumbnail').value = imageUrl;
+                        }
+                        
+                        // 프리뷰 업데이트
+                        const previewImg = type === 'portfolio' ? 'preview-img' : 'blog-preview-img';
+                        const imageInfo = type === 'portfolio' ? 'image-info' : 'blog-image-info';
+                        
+                        document.getElementById(previewImg).src = optimizedDataUrl;
+                        document.getElementById(imageInfo).innerHTML = `
+                            ✅ 최적화 완료: ${fileName}<br>
+                            크기: ${(blob.size / 1024).toFixed(1)}KB → URL: <code>${imageUrl}</code><br>
+                            <small style="color: var(--accent-red);">이미지를 GitHub에 업로드하고 푸시해야 URL이 활성화됩니다.</small>
+                        `;
+                        
+                        // 다운로드 링크 생성 (GitHub 업로드용)
+                        const downloadLink = document.createElement('a');
+                        downloadLink.href = optimizedDataUrl;
+                        downloadLink.download = fileName;
+                        downloadLink.textContent = '📥 다운로드 (GitHub 업로드용)';
+                        downloadLink.style.cssText = 'display: block; margin-top: 8px; color: var(--accent-red); text-decoration: none; font-size: 12px;';
+                        
+                        const infoElement = document.getElementById(imageInfo);
+                        const existingLink = infoElement.querySelector('a');
+                        if (existingLink) {
+                            existingLink.remove();
+                        }
+                        infoElement.appendChild(downloadLink);
+                        
+                        alert(`이미지가 최적화되었습니다!\\n파일명: ${fileName}\\n크기: ${(blob.size / 1024).toFixed(1)}KB\\n\\n다운로드 후 images/${type}/ 폴더에 업로드하고 GitHub에 푸시하세요.`);
+                    };
+                    reader.readAsDataURL(blob);
+                }, 'image/jpeg', quality);
+            };
+            
+            img.src = imageData.dataUrl;
         }
 
         // Error handling
