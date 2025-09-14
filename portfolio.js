@@ -4,15 +4,52 @@
     
 // Load portfolio data from DataManager
 async function loadPortfolioData() {
-    if (typeof window.dataManager === 'undefined') {
-        console.warn('DataManager not available for main portfolio');
-        return;
-    }
+    console.log('Loading portfolio data...');
     
     try {
-        const portfolios = await window.dataManager.getPortfolios();
+        // 1) LocalStorage에서 직접 가져오기
+        let portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+        
+        // 2) 만약 없다면 기본 포트폴리오 생성
+        if (portfolios.length === 0) {
+            portfolios = [
+                {
+                    id: "1",
+                    title: "ARC 인테리어",
+                    category: "web",
+                    year: 2024,
+                    description: "지역 기반 가구 전문업체의 전국구 확장 프로젝트",
+                    image: "/images/portfolio/FUNI.jpg"
+                },
+                {
+                    id: "2",
+                    title: "NBPKOREA",
+                    category: "web",
+                    year: 2024,
+                    description: "친환경 가스설비 제조업체 기업 이미지 쇄신",
+                    image: "/images/portfolio/nbpkorea.jpg"
+                },
+                {
+                    id: "3",
+                    title: "연수를선 비뇨기과",
+                    category: "web",
+                    year: 2024,
+                    description: "의료 전문성과 신뢰성을 강조한 병원 웹사이트",
+                    image: "/images/portfolio/mansolution.jpg"
+                },
+                {
+                    id: "4",
+                    title: "프리미엄 스튜디오",
+                    category: "web",
+                    year: 2024,
+                    description: "차별화된 컨셉의 프리미엄 사진관",
+                    image: "/images/portfolio/STUDIO.jpg"
+                }
+            ];
+            localStorage.setItem('chiro_portfolios', JSON.stringify(portfolios));
+        }
+        
         const portfolioGrid = document.querySelector('.portfolio-grid');
-    
         if (!portfolioGrid) return;
         
         console.log('Loading portfolio data for main page:', portfolios.length);
