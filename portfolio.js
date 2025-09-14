@@ -3,35 +3,45 @@
     'use strict';
     
 // Load portfolio data from DataManager
-function loadPortfolioData() {
-    if (typeof window.dataManager === 'undefined') return;
+async function loadPortfolioData() {
+    if (typeof window.dataManager === 'undefined') {
+        console.warn('DataManager not available for main portfolio');
+        return;
+    }
     
-    const portfolios = window.dataManager.getPortfolios();
-    const portfolioGrid = document.querySelector('.portfolio-grid');
+    try {
+        const portfolios = await window.dataManager.getPortfolios();
+        const portfolioGrid = document.querySelector('.portfolio-grid');
     
-    if (!portfolioGrid) return;
-    
-    // 처음 4개만 메인페이지에 표시 (2x2 그리드)
-    const displayPortfolios = portfolios.slice(0, 4);
-    
-    portfolioGrid.innerHTML = displayPortfolios.map(item => `
-        <div class="portfolio-item" data-category="${item.category}">
-            <div class="portfolio-image">
-                <img src="${item.image}" alt="${item.title}" loading="lazy">
-                <div class="portfolio-overlay">
-                    <div class="portfolio-info">
-                        <h3 class="project-title">${item.title}</h3>
-                        <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+        if (!portfolioGrid) return;
+        
+        console.log('Loading portfolio data for main page:', portfolios.length);
+        
+        // 처음 4개만 메인페이지에 표시 (2x2 그리드)
+        const displayPortfolios = portfolios.slice(0, 4);
+        
+        portfolioGrid.innerHTML = displayPortfolios.map(item => `
+            <div class="portfolio-item" data-category="${item.category}">
+                <div class="portfolio-image">
+                    <img src="${item.image || `https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}`}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}';">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-info">
+                            <h3 class="project-title">${item.title}</h3>
+                            <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    `).join('');
-    
-    // 이벤트 재적용
-    initPortfolioInteractions();
-    initImageLoading();
-    initScrollAnimations();
+        `).join('');
+        
+        // 이벤트 재적용
+        initPortfolioInteractions();
+        initImageLoading();
+        initScrollAnimations();
+        
+    } catch (error) {
+        console.error('Failed to load portfolio data:', error);
+    }
 }
 
 // 카테고리 표시명 변환
@@ -46,14 +56,28 @@ function getCategoryDisplayName(category) {
 }
     
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Portfolio.js DOM loaded');
+    
     // 데이터 매니저가 준비되면 데이터 로드
     if (typeof window.dataManager !== 'undefined') {
         loadPortfolioData();
-    } else {
-        // 데이터 매니저 로드 대기
+    } else if (typeof window.DataManager !== 'undefined') {
+        // DataManager 클래스가 있으면 인스턴스 생성
+        window.dataManager = new window.DataManager();
         setTimeout(() => {
             loadPortfolioData();
-        }, 100);
+        }, 200);
+    } else {
+        // 데이터 매니저 로드 대기 - 더 긴 시간 대기
+        console.log('Waiting for DataManager...');
+        setTimeout(() => {
+            if (typeof window.DataManager !== 'undefined') {
+                window.dataManager = new window.DataManager();
+                loadPortfolioData();
+            } else {
+                console.warn('DataManager still not available');
+            }
+        }, 500);
     }
     
     // 데이터 변경 감지
@@ -108,8 +132,19 @@ function initImageLoading() {
             });
             
             img.addEventListener('error', function() {
-                // Fallback for broken images
-                this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDYwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjMUExQTFBIi8+CjxwYXRoIGQ9Ik0yNTAgMjAwTDM1MCAyMDBNMzAwIDE1MEwzMDAgMjUwIiBzdHJva2U9IiM2NjY2NjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjx0ZXh0IHg9IjMwMCIgeT0iMjMwIiBmb250LWZhbWlseT0iSW50ZXIiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2NjY2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlIE5vdCBGb3VuZDwvdGV4dD4KPC9zdmc+';
+                // Try placeholder image first, then fallback SVG
+                const portfolioItem = this.closest('.portfolio-item');
+                const titleElement = portfolioItem?.querySelector('.project-title');
+                const title = titleElement?.textContent || 'Portfolio';
+                
+                // Try placeholder service first
+                this.src = `https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(title)}`;
+                
+                // If that also fails, use SVG fallback
+                this.addEventListener('error', function() {
+                    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDYwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjMUExQTFBIi8+CjxwYXRoIGQ9Ik0yNTAgMjAwTDM1MCAyMDBNMzAwIDE1MEwzMDAgMjUwIiBzdHJva2U9IiM2NjY2NjYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi/+Cjx0ZXh0IHg9IjMwMCIgeT0iMjMwIiBmb250LWZhbWlseT0iSW50ZXIiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2NjY2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkltYWdlIE5vdCBGb3VuZDwvdGV4dD4KPC9zdmc+'.
+                }, { once: true });
+                
                 this.classList.add('loaded');
             });
         }

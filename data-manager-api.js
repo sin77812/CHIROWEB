@@ -63,20 +63,37 @@ class APIDataManager {
     
     // Portfolio 관련 메서드들
     async getPortfolios(useCache = true) {
-        if (useCache && this.cache.portfolios && this.isCacheValid('portfolios')) {
-            return this.cache.portfolios;
-        }
-        
         try {
-            const portfolios = await this.makeRequest('/api/portfolios');
-            this.updateCache('portfolios', portfolios);
+            console.log('Loading portfolios - prioritizing LocalStorage...');
             
-            // 백업 데이터로 localStorage에 저장
-            localStorage.setItem('chiro_portfolio_backup', JSON.stringify(portfolios));
+            // 1. LocalStorage에서 관리자가 추가한 데이터 가져오기
+            let adminPortfolios = [];
+            try {
+                adminPortfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+                console.log('Admin portfolios found:', adminPortfolios.length);
+            } catch (e) {
+                console.warn('Failed to parse admin portfolios');
+            }
             
-            return portfolios;
+            // 2. 정적 기본 데이터 가져오기 (portfolio-data-real.js에서)
+            let staticPortfolios = [];
+            if (typeof realPortfolioData !== 'undefined') {
+                staticPortfolios = realPortfolioData;
+                console.log('Static portfolios found:', staticPortfolios.length);
+            }
+            
+            // 3. 관리자 데이터를 우선으로 합치기 (최신 데이터가 위로)
+            const allPortfolios = [...adminPortfolios, ...staticPortfolios];
+            
+            // 캐시 업데이트
+            this.updateCache('portfolios', allPortfolios);
+            
+            console.log('Total portfolios loaded:', allPortfolios.length);
+            return allPortfolios;
+            
         } catch (error) {
             console.error('Portfolio 데이터 로드 실패:', error);
+            // 최후 폴백
             return JSON.parse(localStorage.getItem('chiro_portfolio_backup') || '[]');
         }
     }
@@ -392,6 +409,18 @@ class DataManager {
         return await this.api.getPortfolios();
     }
     
+    // Synchronous version for compatibility
+    getPortfoliosSync() {
+        try {
+            const portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+            const staticPortfolios = typeof realPortfolioData !== 'undefined' ? realPortfolioData : [];
+            return [...portfolios, ...staticPortfolios];
+        } catch (error) {
+            console.error('Error loading portfolios sync:', error);
+            return [];
+        }
+    }
+    
     async getPortfolio(id) {
         return await this.api.getPortfolio(id);
     }
@@ -461,3 +490,9 @@ class DataManager {
 // 전역 변수로 노출 (기존 코드 호환성)
 window.DataManager = DataManager;
 window.APIDataManager = APIDataManager;
+
+// 자동으로 dataManager 인스턴스 생성
+if (typeof window !== 'undefined') {
+    window.dataManager = new DataManager();
+    console.log('DataManager instance created automatically');
+}

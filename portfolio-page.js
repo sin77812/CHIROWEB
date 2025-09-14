@@ -410,46 +410,51 @@
     });
     
     // Load portfolio data from dataManager
-    function loadPortfolioData() {
+    async function loadPortfolioData() {
         if (!window.dataManager) {
             console.warn('DataManager not available, using static content');
             return;
         }
         
-        const portfolios = window.dataManager.getPortfolios();
-        const portfolioGrid = document.getElementById('portfolioGrid');
+        try {
+            const portfolios = await window.dataManager.getPortfolios();
+            const portfolioGrid = document.getElementById('portfolioGrid');
         
-        if (portfolioGrid && portfolios.length > 0) {
-            portfolioGrid.innerHTML = portfolios.map(item => `
-                <div class="portfolio-item" data-category="${item.category}" data-year="${item.year}">
-                    <div class="portfolio-card">
-                        <div class="portfolio-image">
-                            <img src="${item.image}" alt="${item.title}" loading="lazy">
-                            <div class="portfolio-overlay">
-                                <div class="project-info">
-                                    <h3 class="project-title">${item.title}</h3>
-                                    <p class="project-category">${getCategoryDisplayName(item.category)} • ${item.year}</p>
-                                    <p class="project-description">${item.description}</p>
-                                </div>
-                                <div class="project-actions">
-                                    <button class="action-btn view-btn">View Details</button>
-                                    <button class="action-btn like-btn"><i class="icon icon-heart"></i> ${Math.floor(Math.random() * 50) + 10}</button>
+            if (portfolioGrid && portfolios.length > 0) {
+                console.log('Loading portfolio page data:', portfolios.length);
+                portfolioGrid.innerHTML = portfolios.map(item => `
+                    <div class="portfolio-item" data-category="${item.category}" data-year="${item.year}">
+                        <div class="portfolio-card">
+                            <div class="portfolio-image">
+                                <img src="${item.image || 'https://via.placeholder.com/600x400/1a1a1a/666666?text=' + encodeURIComponent(item.title)}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1a1a1a/666666?text=' + encodeURIComponent('${item.title}')">
+                                <div class="portfolio-overlay">
+                                    <div class="project-info">
+                                        <h3 class="project-title">${item.title}</h3>
+                                        <p class="project-category">${getCategoryDisplayName(item.category)} • ${item.year}</p>
+                                        <p class="project-description">${item.description}</p>
+                                    </div>
+                                    <div class="project-actions">
+                                        <button class="action-btn view-btn">View Details</button>
+                                        <button class="action-btn like-btn"><i class="icon icon-heart"></i> ${Math.floor(Math.random() * 50) + 10}</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="portfolio-meta">
-                            <span class="project-badge ${item.category}">${getCategoryDisplayName(item.category)}</span>
-                            <span class="project-year">${item.year}</span>
+                            <div class="portfolio-meta">
+                                <span class="project-badge ${item.category}">${getCategoryDisplayName(item.category)}</span>
+                                <span class="project-year">${item.year}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
-            
-            // Update project count
-            const loadMoreInfo = document.querySelector('.load-more-info');
-            if (loadMoreInfo) {
-                loadMoreInfo.textContent = `${portfolios.length} of ${portfolios.length}+ projects shown`;
+                `).join('');
+                
+                // Update project count
+                const loadMoreInfo = document.querySelector('.load-more-info');
+                if (loadMoreInfo) {
+                    loadMoreInfo.textContent = `${portfolios.length} of ${portfolios.length}+ projects shown`;
+                }
             }
+        } catch (error) {
+            console.error('Failed to load portfolio page data:', error);
         }
     }
     
