@@ -637,6 +637,11 @@
                 this.renderBlogs();
                 this.updateStats();
                 this.showSuccess('새 블로그 글이 추가되었습니다.');
+                
+                // 저장 후 메인 페이지로 리다이렉트
+                setTimeout(() => {
+                    window.location.href = '/index.html';
+                }, 1500);
             }
 
             // 블로그 글 수정
