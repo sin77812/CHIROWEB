@@ -2,52 +2,114 @@
 (function() {
     'use strict';
     
-// Load portfolio data from DataManager
+// Load portfolio data - 직접 하드코딩된 데이터 사용
 async function loadPortfolioData() {
     console.log('Loading portfolio data...');
     
     try {
-        // 1) LocalStorage에서 직접 가져오기
-        let portfolios = JSON.parse(localStorage.getItem('chiro_portfolios') || '[]');
+        // 하드코딩된 포트폴리오 데이터 (Claude가 직접 관리)
+        const portfolios = [
+            {
+                id: "1",
+                title: "NBPKOREA",
+                category: "web",
+                year: 2024,
+                description: "친환경 가스히터 설비 전문업체의 기업 웹사이트",
+                thumbnail: "/images/portfolio/nbpkorea.jpg",
+                url: "https://nbpkorea.vercel.app/",
+                featured: true
+            },
+            {
+                id: "2", 
+                title: "고요속의미식",
+                category: "web",
+                year: 2024,
+                description: "일본식 프렌치 레스토랑의 우아하고 세련된 브랜드 웹사이트",
+                thumbnail: "/images/portfolio/goyomisik.jpg",
+                url: "https://japanese-french.vercel.app/",
+                featured: true
+            },
+            {
+                id: "3",
+                title: "리얼PT",
+                category: "web", 
+                year: 2024,
+                description: "개인 맞춤형 피트니스 솔루션 헬스장 웹사이트",
+                thumbnail: "/images/portfolio/LPT.jpg",
+                url: "https://gym-umber-three.vercel.app/",
+                featured: true
+            },
+            {
+                id: "4",
+                title: "유어모먼트 스튜디오",
+                category: "web",
+                year: 2024, 
+                description: "특별한 순간을 기록하는 프리미엄 사진관 웹사이트",
+                thumbnail: "/images/portfolio/STUDIO.jpg",
+                url: "https://photo-cyan-five.vercel.app/",
+                featured: true
+            },
+            {
+                id: "5",
+                title: "후니 인테리어",
+                category: "web",
+                year: 2024,
+                description: "창의적인 공간 디자인을 전문으로 하는 인테리어 회사",
+                thumbnail: "/images/portfolio/FUNI.jpg",
+                url: "https://funiture-olive.vercel.app/",
+                featured: false
+            },
+            {
+                id: "6",
+                title: "K&J Entertainment",
+                category: "web",
+                year: 2024,
+                description: "엔터테인먼트 업계의 혁신을 추구하는 기업 웹사이트",
+                thumbnail: "/images/portfolio/K&J.jpg",
+                url: "https://kjco.vercel.app/",
+                featured: false
+            },
+            {
+                id: "7",
+                title: "니드커피",
+                category: "web",
+                year: 2024,
+                description: "성수동의 감성 넘치는 스페셜티 커피숍 웹사이트",
+                thumbnail: "/images/portfolio/NEDCOFY.jpg",
+                url: "https://coffee-sigma-tawny.vercel.app/",
+                featured: false
+            },
+            {
+                id: "8",
+                title: "그레이스 스피치",
+                category: "web",
+                year: 2024,
+                description: "전문적인 스피치 교육을 제공하는 학원 웹사이트",
+                thumbnail: "/images/portfolio/gracespeech.jpg",
+                url: "https://grace-speech.vercel.app/",
+                featured: false
+            },
+            {
+                id: "9",
+                title: "온리짐",
+                category: "web",
+                year: 2024,
+                description: "개인 맞춤 운동 프로그램을 제공하는 헬스장",
+                thumbnail: "/images/portfolio/ONLYGYM.jpg",
+                featured: false
+            },
+            {
+                id: "10",
+                title: "맨솔루션",
+                category: "web",
+                year: 2024,
+                description: "남성 전용 의료 서비스를 제공하는 전문 클리닉",
+                thumbnail: "/images/portfolio/mansolution.jpg",
+                featured: false
+            }
+        ];
         
-        // 2) 만약 없다면 기본 포트폴리오 생성
-        if (portfolios.length === 0) {
-            portfolios = [
-                {
-                    id: "1",
-                    title: "ARC 인테리어",
-                    category: "web",
-                    year: 2024,
-                    description: "지역 기반 가구 전문업체의 전국구 확장 프로젝트",
-                    image: "/images/portfolio/FUNI.jpg"
-                },
-                {
-                    id: "2",
-                    title: "NBPKOREA",
-                    category: "web",
-                    year: 2024,
-                    description: "친환경 가스설비 제조업체 기업 이미지 쇄신",
-                    image: "/images/portfolio/nbpkorea.jpg"
-                },
-                {
-                    id: "3",
-                    title: "연수를선 비뇨기과",
-                    category: "web",
-                    year: 2024,
-                    description: "의료 전문성과 신뢰성을 강조한 병원 웹사이트",
-                    image: "/images/portfolio/mansolution.jpg"
-                },
-                {
-                    id: "4",
-                    title: "프리미엄 스튜디오",
-                    category: "web",
-                    year: 2024,
-                    description: "차별화된 컨셉의 프리미엄 사진관",
-                    image: "/images/portfolio/STUDIO.jpg"
-                }
-            ];
-            localStorage.setItem('chiro_portfolios', JSON.stringify(portfolios));
-        }
+        console.log('✅ 포트폴리오 데이터 로드 완료:', portfolios.length);
         
         const portfolioGrid = document.querySelector('.portfolio-grid');
         if (!portfolioGrid) return;
@@ -60,7 +122,7 @@ async function loadPortfolioData() {
         portfolioGrid.innerHTML = displayPortfolios.map(item => `
             <div class="portfolio-item" data-category="${item.category}">
                 <div class="portfolio-image">
-                    <img src="${item.image || `https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}`}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}';">
+                    <img src="${item.thumbnail}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='/images/portfolio/placeholder.jpg';">
                     <div class="portfolio-overlay">
                         <div class="portfolio-info">
                             <h3 class="project-title">${item.title}</h3>
@@ -95,41 +157,8 @@ function getCategoryDisplayName(category) {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Portfolio.js DOM loaded');
     
-    // 데이터 매니저가 준비되면 데이터 로드
-    if (typeof window.dataManager !== 'undefined') {
-        loadPortfolioData();
-    } else if (typeof window.DataManager !== 'undefined') {
-        // DataManager 클래스가 있으면 인스턴스 생성
-        window.dataManager = new window.DataManager();
-        setTimeout(() => {
-            loadPortfolioData();
-        }, 200);
-    } else {
-        // 데이터 매니저 로드 대기 - 더 긴 시간 대기
-        console.log('Waiting for DataManager...');
-        setTimeout(() => {
-            if (typeof window.DataManager !== 'undefined') {
-                window.dataManager = new window.DataManager();
-                loadPortfolioData();
-            } else {
-                console.warn('DataManager still not available');
-            }
-        }, 500);
-    }
-    
-    // 데이터 변경 감지
-    window.addEventListener('chiroDataChanged', (e) => {
-        if (e.detail.type === 'portfolio') {
-            loadPortfolioData();
-        }
-    });
-    
-    // Storage 변경 감지 (다른 탭에서의 변경사항)
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'chiro_portfolios' || e.key === 'chiro_portfolio_data' || e.key === 'chiro_last_update') {
-            loadPortfolioData();
-        }
-    });
+    // 포트폴리오 데이터 바로 로드 (Claude가 직접 관리)
+    loadPortfolioData();
     
     initPortfolioAnimations();
 });

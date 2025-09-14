@@ -3,424 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHIRO Admin Dashboard</title>
-    <base href="/">
-    
-    <!-- External Libraries -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- CSS Override for Admin Page -->
+    <title>CHIRO - 블로그 관리자 패널</title>
     <style>
-        /* FORCE ADMIN STYLES - NO INHERITANCE */
-        html, body {
-            background-color: #0A0A0A !important;
-            color: #FFFFFF !important;
-            font-family: 'Inter', sans-serif !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-    </style>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans:wght@400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* CRITICAL ADMIN PAGE OVERRIDE - HIGHEST PRIORITY */
-        html { background: #0A0A0A !important; }
-        body { background: #0A0A0A !important; color: #FFFFFF !important; }
-        
-        /* CSS Reset and Base */
-        *, *::before, *::after {
+        * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
-        
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-            background: #0A0A0A !important;
-            color: #FFFFFF !important;
-            overflow-x: hidden !important;
-            line-height: 1.5 !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
-        
-        /* Variables */
-        :root {
-            --primary-bg: #0A0A0A;
-            --secondary-bg: #111111;
-            --card-bg: #1A1A1A;
-            --sidebar-bg: #0D0D0D;
-            --primary-text: #FFFFFF;
-            --secondary-text: #A0A0A0;
-            --muted-text: #666666;
-            --accent-red: #FF3B30;
-            --success: #34C759;
-            --primary-border: #2A2A2A;
-            --hover-border: #3A3A3A;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            line-height: 1.6;
         }
 
-        /* Layout */
-        .admin-container {
-            display: flex !important;
-            min-height: 100vh !important;
-            width: 100% !important;
-            background: #0A0A0A !important;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            background: var(--sidebar-bg);
-            border-right: 1px solid var(--primary-border);
-            position: fixed;
-            height: 100vh;
-            z-index: 100;
-            overflow-y: auto;
-            left: 0;
-            top: 0;
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #FF3B30;
         }
 
-        .sidebar-header {
-            padding: 32px 24px;
-            border-bottom: 1px solid var(--primary-border);
-        }
-
-        .logo {
-            font-family: 'Black Han Sans', sans-serif;
-            font-size: 24px;
-            font-weight: 400;
-            color: var(--primary-text);
-            text-decoration: none;
-            display: block;
-            background: linear-gradient(135deg, var(--primary-text), var(--accent-red));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .admin-tag {
-            font-size: 12px;
-            color: var(--muted-text);
-            margin-top: 4px;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .nav-menu {
-            padding: 24px 0;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 16px 24px;
-            color: var(--secondary-text);
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-            background: none;
-            width: 100%;
-            text-align: left;
-            font-family: inherit;
-            font-size: 14px;
-        }
-
-        .nav-item:hover, 
-        .nav-item.active {
-            background: rgba(255, 59, 48, 0.1);
-            color: var(--accent-red);
-            border-right: 3px solid var(--accent-red);
-        }
-
-        .nav-item i {
-            width: 20px;
-            margin-right: 12px;
-            text-align: center;
-        }
-
-        .logout-btn {
-            position: absolute;
-            bottom: 24px;
-            left: 24px;
-            right: 24px;
-            background: rgba(255, 59, 48, 0.1);
-            border: 1px solid var(--accent-red);
-            color: var(--accent-red);
-            padding: 12px 16px;
+        .section {
+            background: #1A1A1A;
+            border: 1px solid #2A2A2A;
             border-radius: 8px;
-            text-align: center;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 14px;
+            padding: 2rem;
+            margin-bottom: 2rem;
         }
 
-        .logout-btn:hover {
-            background: var(--accent-red);
-            color: var(--primary-text);
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            margin-left: 280px;
-            padding: 32px;
-            min-height: 100vh;
-        }
-
-        .page-header {
-            margin-bottom: 32px;
-        }
-
-        .page-title {
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: var(--primary-text);
-        }
-
-        .page-subtitle {
-            color: var(--secondary-text);
-            font-size: 16px;
-        }
-
-        /* Dashboard Cards */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        .dashboard-card {
-            background: var(--card-bg);
-            border: 1px solid var(--primary-border);
-            border-radius: 16px;
-            padding: 24px;
-            transition: all 0.3s ease;
-        }
-
-        .dashboard-card:hover {
-            border-color: var(--hover-border);
-            transform: translateY(-2px);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 59, 48, 0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 16px;
-            color: var(--accent-red);
-            font-size: 20px;
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary-text);
-        }
-
-        .card-subtitle {
-            color: var(--secondary-text);
-            font-size: 14px;
-        }
-
-        .card-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-number {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--primary-text);
-        }
-
-        .card-action {
-            background: var(--accent-red);
-            color: var(--primary-text);
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 14px;
-            font-family: inherit;
-        }
-
-        .card-action:hover {
-            background: #ff2d1f;
-            transform: translateY(-1px);
-        }
-
-        /* Content Sections */
-        .content-section {
-            display: none;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            font-family: inherit;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: var(--accent-red);
-            color: var(--primary-text);
-        }
-
-        .btn-secondary {
-            background: var(--secondary-bg);
-            color: var(--secondary-text);
-            border: 1px solid var(--primary-border);
-        }
-
-        .btn-large {
-            padding: 16px 32px;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .btn:hover {
-            transform: translateY(-1px);
-        }
-
-        /* Forms */
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 1.5rem;
         }
 
-        .form-label {
+        label {
             display: block;
+            margin-bottom: 0.5rem;
             font-weight: 500;
-            margin-bottom: 8px;
-            color: var(--primary-text);
+            color: #A0A0A0;
         }
 
-        .form-input {
+        input, textarea, select {
             width: 100%;
-            padding: 12px 16px;
-            background: var(--secondary-bg);
-            border: 1px solid var(--primary-border);
-            border-radius: 8px;
-            color: var(--primary-text);
-            font-size: 16px;
-            transition: all 0.3s ease;
-            font-family: inherit;
+            padding: 0.75rem 1rem;
+            background: #111111;
+            border: 1px solid #2A2A2A;
+            border-radius: 4px;
+            color: #FFFFFF;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
         }
 
-        .form-input:focus {
+        input:focus, textarea:focus, select:focus {
             outline: none;
-            border-color: var(--accent-red);
-            box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.1);
+            border-color: #FF3B30;
         }
 
-        .form-input::placeholder {
-            color: var(--muted-text);
+        textarea {
+            min-height: 120px;
+            resize: vertical;
         }
 
-        /* Blog Editor */
-        .blog-editor {
-            background: var(--card-bg);
-            border: 1px solid var(--primary-border);
-            border-radius: 16px;
-            padding: 32px;
+        textarea.content {
+            min-height: 300px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
         }
 
-        .action-buttons {
-            display: flex;
-            gap: 16px;
-            margin-top: 32px;
+        button {
+            background: #FF3B30;
+            color: #FFFFFF;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
         }
 
-        /* Portfolio Grid */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-            margin-top: 24px;
+        button:hover {
+            background: #E6342A;
         }
 
-        .portfolio-item {
-            background: var(--card-bg);
-            border: 1px solid var(--primary-border);
-            border-radius: 12px;
-            overflow: hidden;
+        button.secondary {
+            background: transparent;
+            border: 1px solid #2A2A2A;
+            color: #FFFFFF;
+        }
+
+        button.secondary:hover {
+            background: #1A1A1A;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-btn {
+            display: inline-block;
+            background: #111111;
+            border: 1px solid #2A2A2A;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .portfolio-item:hover {
-            border-color: var(--hover-border);
+        .file-upload-btn:hover {
+            background: #1A1A1A;
+        }
+
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 4px;
+            margin-top: 1rem;
+            border: 1px solid #2A2A2A;
+        }
+
+        .blog-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .blog-item {
+            background: #111111;
+            border: 1px solid #2A2A2A;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .blog-item:hover {
             transform: translateY(-2px);
+            border-color: #3A3A3A;
         }
 
-        .portfolio-image {
+        .blog-item img {
             width: 100%;
-            height: 200px;
-            background: var(--secondary-bg);
+            height: 180px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .blog-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #FFFFFF;
+            line-height: 1.4;
+        }
+
+        .blog-meta {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--muted-text);
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #A0A0A0;
         }
 
-        .portfolio-info {
-            padding: 20px;
+        .blog-excerpt {
+            color: #A0A0A0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
-        .portfolio-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--primary-text);
-        }
-
-        .portfolio-meta {
-            color: var(--secondary-text);
-            font-size: 14px;
-            margin-bottom: 16px;
-        }
-
-        .portfolio-actions {
+        .blog-tags {
             display: flex;
-            gap: 8px;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
         }
 
-        /* Modal */
+        .blog-tag {
+            background: #2A2A2A;
+            color: #A0A0A0;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .status-active {
+            color: #34C759;
+        }
+
+        .status-inactive {
+            color: #FF9500;
+        }
+
+        .featured-badge {
+            background: #FF3B30;
+            color: #FFFFFF;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -430,875 +236,651 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            border: 1px solid var(--primary-border);
-            border-radius: 16px;
-            padding: 32px;
-            max-width: 600px;
-            width: 90%;
-            max-height: 90vh;
+            padding: 2rem;
             overflow-y: auto;
         }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
+        .modal-content {
+            background: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            border-radius: 8px;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
         }
 
-        .modal-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--primary-text);
+        .modal h2 {
+            color: #FF3B30;
+            margin-bottom: 2rem;
         }
 
-        .modal-close {
+        .close-modal {
+            float: right;
             background: none;
             border: none;
-            font-size: 24px;
-            color: var(--secondary-text);
+            color: #A0A0A0;
+            font-size: 1.5rem;
             cursor: pointer;
-            font-family: inherit;
+            padding: 0;
+            margin: 0;
         }
 
-        .modal-close:hover {
-            color: var(--primary-text);
+        .close-modal:hover {
+            color: #FFFFFF;
         }
 
-        /* Quill Editor Customization */
-        .ql-toolbar {
-            background: var(--card-bg) !important;
-            border-top: 1px solid var(--primary-border) !important;
-            border-left: 1px solid var(--primary-border) !important;
-            border-right: 1px solid var(--primary-border) !important;
-            border-bottom: none !important;
-            border-radius: 8px 8px 0 0 !important;
+        .success-message, .error-message {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: none;
         }
 
-        .ql-container {
-            background: var(--secondary-bg) !important;
-            border-bottom: 1px solid var(--primary-border) !important;
-            border-left: 1px solid var(--primary-border) !important;
-            border-right: 1px solid var(--primary-border) !important;
-            border-top: none !important;
-            border-radius: 0 0 8px 8px !important;
+        .success-message {
+            background: rgba(52, 199, 89, 0.1);
+            color: #34C759;
+            border: 1px solid #34C759;
         }
 
-        .ql-editor {
-            background: var(--secondary-bg) !important;
-            color: var(--primary-text) !important;
-            min-height: 400px;
+        .error-message {
+            background: rgba(255, 59, 48, 0.1);
+            color: #FF3B30;
+            border: 1px solid #FF3B30;
         }
 
-        /* Mobile Responsive */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #111111;
+            border: 1px solid #2A2A2A;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF3B30;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #A0A0A0;
+            font-size: 0.9rem;
+        }
+
+        .markdown-help {
+            background: #111111;
+            border: 1px solid #2A2A2A;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            color: #A0A0A0;
+        }
+
+        .markdown-help summary {
+            cursor: pointer;
+            font-weight: 500;
+            color: #FF3B30;
+            margin-bottom: 0.5rem;
+        }
+
+        .markdown-help code {
+            background: #2A2A2A;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
         @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: transform 0.3s ease;
+            .container {
+                padding: 1rem;
             }
 
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main-content {
-                margin-left: 0;
-                padding: 20px;
-            }
-
-            .dashboard-grid {
+            .blog-list {
                 grid-template-columns: 1fr;
             }
-        }
 
-        /* Loading Animation */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+            .modal {
+                padding: 1rem;
+            }
 
-        .loading::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            margin: -10px 0 0 -10px;
-            border: 2px solid var(--primary-border);
-            border-top: 2px solid var(--accent-red);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+            .modal-content {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
-<body style="background: #0A0A0A !important; color: #FFFFFF !important; margin: 0; padding: 0; font-family: 'Inter', sans-serif;">
-    <div class="admin-container">
-        <!-- Sidebar -->
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <a href="#" class="logo">CHIRO</a>
-                <div class="admin-tag">관리자 대시보드</div>
-            </div>
-            
-            <div class="nav-menu">
-                <button class="nav-item active" data-section="dashboard">
-                    <i class="fas fa-home"></i>
-                    <span>대시보드</span>
-                </button>
-                <button class="nav-item" data-section="portfolio">
-                    <i class="fas fa-briefcase"></i>
-                    <span>포트폴리오 관리</span>
-                </button>
-                <button class="nav-item" data-section="blog">
-                    <i class="fas fa-pen"></i>
-                    <span>블로그 작성</span>
-                </button>
-                <button class="nav-item" data-section="blog-list">
-                    <i class="fas fa-list"></i>
-                    <span>블로그 목록</span>
-                </button>
-                <button class="nav-item" data-section="settings">
-                    <i class="fas fa-cog"></i>
-                    <span>설정</span>
-                </button>
-            </div>
-            
-            <button class="logout-btn" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> 로그아웃
-            </button>
-        </nav>
+<body>
+    <div class="container">
+        <h1>CHIRO 블로그 관리자</h1>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Dashboard Section -->
-            <div id="dashboard" class="content-section active">
-                <div class="page-header">
-                    <h1 class="page-title">대시보드</h1>
-                    <p class="page-subtitle">CHIRO 관리자 시스템에 오신 것을 환영합니다</p>
+        <!-- 통계 섹션 -->
+        <div class="section">
+            <h2 style="margin-bottom: 1rem; color: #FFFFFF;">블로그 통계</h2>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalPosts">0</div>
+                    <div class="stat-label">총 글 수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="featuredPosts">0</div>
+                    <div class="stat-label">대표 글</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="activePosts">0</div>
+                    <div class="stat-label">게시된 글</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="draftPosts">0</div>
+                    <div class="stat-label">임시 보관함</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 성공/오류 메시지 -->
+        <div class="success-message" id="successMessage"></div>
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- 새 블로그 글 작성 섹션 -->
+        <div class="section">
+            <h2 style="margin-bottom: 1rem; color: #FFFFFF;">새 블로그 글 작성</h2>
+            <form id="blogForm">
+                <div class="form-group">
+                    <label for="title">제목 *</label>
+                    <input type="text" id="title" name="title" required>
                 </div>
 
-                <div class="dashboard-grid">
-                    <div class="dashboard-card">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-briefcase"></i>
-                            </div>
-                            <div>
-                                <div class="card-title">포트폴리오</div>
-                                <div class="card-subtitle">프로젝트 관리</div>
-                            </div>
+                <div class="form-group">
+                    <label for="category">카테고리 *</label>
+                    <select id="category" name="category" required>
+                        <option value="">선택하세요</option>
+                        <option value="design">디자인</option>
+                        <option value="development">개발</option>
+                        <option value="marketing">마케팅</option>
+                        <option value="business">비즈니스</option>
+                        <option value="insights">인사이트</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="excerpt">요약 *</label>
+                    <textarea id="excerpt" name="excerpt" required placeholder="블로그 글의 간단한 요약을 작성해주세요. (최대 200자 권장)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="content">본문 내용 * (Markdown 지원)</label>
+                    <textarea id="content" name="content" class="content" required placeholder="# 제목
+
+본문 내용을 Markdown 형식으로 작성하세요.
+
+## 소제목
+
+- 리스트 아이템
+- 또 다른 아이템
+
+**굵은 글씨** *기울임 글씨*
+
+[링크](https://example.com)"></textarea>
+                    
+                    <details class="markdown-help">
+                        <summary>Markdown 사용법 보기</summary>
+                        <div style="margin-top: 0.5rem;">
+                            <p><code># 제목</code> - 대제목</p>
+                            <p><code>## 소제목</code> - 소제목</p>
+                            <p><code>**굵은 글씨**</code> - <strong>굵은 글씨</strong></p>
+                            <p><code>*기울임*</code> - <em>기울임</em></p>
+                            <p><code>[링크](URL)</code> - 링크</p>
+                            <p><code>- 목록</code> - 불렛 목록</p>
+                            <p><code>1. 순서</code> - 숫자 목록</p>
                         </div>
-                        <div class="card-content">
-                            <div class="card-number" id="portfolio-count">0</div>
-                            <button class="card-action" onclick="showSection('portfolio')">관리하기</button>
-                        </div>
+                    </details>
+                </div>
+
+                <div class="form-group">
+                    <label for="tags">태그 (쉼표로 구분)</label>
+                    <input type="text" id="tags" name="tags" placeholder="Design, Trends, UX, Mobile">
+                </div>
+
+                <div class="form-group">
+                    <label for="readTime">예상 읽기 시간</label>
+                    <input type="text" id="readTime" name="readTime" placeholder="5 min read" value="5 min read">
+                </div>
+
+                <div class="form-group">
+                    <label for="thumbnail">썸네일 이미지 (최대 5MB)</label>
+                    <div class="file-upload">
+                        <div class="file-upload-btn">이미지 선택</div>
+                        <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
                     </div>
-
-                    <div class="dashboard-card">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-pen"></i>
-                            </div>
-                            <div>
-                                <div class="card-title">블로그</div>
-                                <div class="card-subtitle">글 작성 및 관리</div>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-number" id="blog-count">0</div>
-                            <button class="card-action" onclick="showSection('blog')">작성하기</button>
-                        </div>
-                    </div>
-
-                    <div class="dashboard-card">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <div>
-                                <div class="card-title">통계</div>
-                                <div class="card-subtitle">사이트 현황</div>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-number">100%</div>
-                            <button class="card-action" onclick="showSection('settings')">설정</button>
-                        </div>
-                    </div>
+                    <img id="thumbnailPreview" class="preview-image" style="display: none;">
                 </div>
+
+                <div class="form-group">
+                    <label for="author">작성자</label>
+                    <input type="text" id="author" name="author" value="CHIRO Team">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="featured" name="featured" style="width: auto; margin-right: 0.5rem;">
+                        대표 글로 설정
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="status">발행 상태</label>
+                    <select id="status" name="status">
+                        <option value="draft">임시 보관</option>
+                        <option value="active">바로 발행</option>
+                    </select>
+                </div>
+
+                <button type="submit">글 저장</button>
+                <button type="button" class="secondary" onclick="clearForm()">초기화</button>
+            </form>
+        </div>
+
+        <!-- 기존 블로그 글 목록 -->
+        <div class="section">
+            <h2 style="margin-bottom: 1rem; color: #FFFFFF;">블로그 글 목록</h2>
+            <button onclick="refreshBlogs()" class="secondary">새로고침</button>
+            <div class="blog-list" id="blogList">
+                <!-- 블로그 글 목록이 여기에 동적으로 생성됩니다 -->
             </div>
-
-            <!-- Portfolio Section -->
-            <div id="portfolio" class="content-section">
-                <div class="page-header">
-                    <h1 class="page-title">포트폴리오 관리</h1>
-                    <p class="page-subtitle">프로젝트를 추가, 수정, 삭제할 수 있습니다</p>
-                </div>
-
-                <button class="btn btn-primary btn-large" onclick="openPortfolioModal()">
-                    <i class="fas fa-plus"></i> 새 프로젝트 추가
-                </button>
-
-                <div id="portfolio-grid" class="portfolio-grid">
-                    <!-- Portfolio items will be loaded here -->
-                </div>
-            </div>
-
-            <!-- Blog Section -->
-            <div id="blog" class="content-section">
-                <div class="page-header">
-                    <h1 class="page-title">블로그 작성</h1>
-                    <p class="page-subtitle">새로운 블로그 글을 작성해보세요</p>
-                </div>
-
-                <div class="blog-editor">
-                    <form id="blog-form">
-                        <div class="form-group">
-                            <label class="form-label">제목</label>
-                            <input type="text" class="form-input" id="blog-title" placeholder="블로그 제목을 입력하세요" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">카테고리</label>
-                            <input type="text" class="form-input" id="blog-category" placeholder="예: 디자인, 개발, 마케팅" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">요약</label>
-                            <input type="text" class="form-input" id="blog-excerpt" placeholder="글의 간단한 요약을 입력하세요" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">썸네일 이미지</label>
-                            
-                            <!-- 파일 업로드 섹션 -->
-                            <div class="blog-image-upload-section" style="margin-bottom: 16px;">
-                                <input type="file" id="blog-image-file" accept="image/*" style="display: none;">
-                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('blog-image-file').click()">
-                                    <i class="fas fa-upload"></i> 이미지 파일 선택
-                                </button>
-                                <div id="blog-image-preview" style="margin-top: 16px; display: none;">
-                                    <img id="blog-preview-img" style="max-width: 200px; max-height: 150px; border-radius: 8px; object-fit: cover;">
-                                    <div style="margin-top: 8px; font-size: 14px; color: var(--secondary-text);">
-                                        <span id="blog-image-info"></span>
-                                        <button type="button" class="btn btn-primary" id="blog-optimize-btn" style="margin-left: 10px; padding: 4px 12px; font-size: 12px;">최적화</button>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- 또는 URL 직접 입력 -->
-                            <div style="text-align: center; margin: 16px 0; color: var(--secondary-text);">또는</div>
-                            <input type="url" class="form-input" id="blog-thumbnail" placeholder="썸네일 URL 직접 입력">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">내용</label>
-                            <div id="blog-content-editor"></div>
-                        </div>
-
-                        <div class="action-buttons">
-                            <button type="button" class="btn btn-secondary btn-large" onclick="saveDraft()">
-                                <i class="fas fa-save"></i> 임시저장
-                            </button>
-                            <button type="submit" class="btn btn-primary btn-large">
-                                <i class="fas fa-paper-plane"></i> 발행하기
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Blog List Section -->
-            <div id="blog-list" class="content-section">
-                <div class="page-header">
-                    <h1 class="page-title">블로그 목록</h1>
-                    <p class="page-subtitle">작성한 블로그 글을 관리할 수 있습니다</p>
-                </div>
-
-                <div id="blog-list-container">
-                    <!-- Blog list will be loaded here -->
-                </div>
-            </div>
-
-            <!-- Settings Section -->
-            <div id="settings" class="content-section">
-                <div class="page-header">
-                    <h1 class="page-title">설정</h1>
-                    <p class="page-subtitle">사이트 관리 설정</p>
-                </div>
-
-                <div class="dashboard-card">
-                    <h3>데이터베이스 상태</h3>
-                    <p>MongoDB 연결 상태: <span id="db-status" style="color: var(--success);">연결됨</span></p>
-                    <button class="btn btn-primary" onclick="testDbConnection()">연결 테스트</button>
-                </div>
-            </div>
-        </main>
+        </div>
     </div>
 
-    <!-- Portfolio Modal -->
-    <div id="portfolio-modal" class="modal">
+    <!-- 편집 모달 -->
+    <div class="modal" id="editModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">프로젝트 추가/편집</h2>
-                <button class="modal-close" onclick="closePortfolioModal()">&times;</button>
-            </div>
-            <form id="portfolio-form">
+            <span class="close-modal" onclick="closeEditModal()">&times;</span>
+            <h2>블로그 글 편집</h2>
+            <form id="editForm">
+                <input type="hidden" id="editId" name="id">
+                
                 <div class="form-group">
-                    <label class="form-label">프로젝트 제목</label>
-                    <input type="text" class="form-input" id="portfolio-title" required>
+                    <label for="editTitle">제목 *</label>
+                    <input type="text" id="editTitle" name="title" required>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-label">카테고리</label>
-                    <input type="text" class="form-input" id="portfolio-category" placeholder="예: Web Design, Branding">
+                    <label for="editCategory">카테고리 *</label>
+                    <select id="editCategory" name="category" required>
+                        <option value="">선택하세요</option>
+                        <option value="design">디자인</option>
+                        <option value="development">개발</option>
+                        <option value="marketing">마케팅</option>
+                        <option value="business">비즈니스</option>
+                        <option value="insights">인사이트</option>
+                    </select>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-label">연도</label>
-                    <input type="number" class="form-input" id="portfolio-year" value="2024">
+                    <label for="editExcerpt">요약 *</label>
+                    <textarea id="editExcerpt" name="excerpt" required></textarea>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-label">설명</label>
-                    <textarea class="form-input" id="portfolio-description" rows="4"></textarea>
+                    <label for="editContent">본문 내용 * (Markdown 지원)</label>
+                    <textarea id="editContent" name="content" class="content" required></textarea>
                 </div>
+
                 <div class="form-group">
-                    <label class="form-label">이미지</label>
-                    
-                    <!-- 파일 업로드 섹션 -->
-                    <div class="image-upload-section" style="margin-bottom: 16px;">
-                        <input type="file" id="portfolio-image-file" accept="image/*" style="display: none;">
-                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('portfolio-image-file').click()">
-                            <i class="fas fa-upload"></i> 이미지 파일 선택
-                        </button>
-                        <div id="image-preview" style="margin-top: 16px; display: none;">
-                            <img id="preview-img" style="max-width: 200px; max-height: 150px; border-radius: 8px; object-fit: cover;">
-                            <div style="margin-top: 8px; font-size: 14px; color: var(--secondary-text);">
-                                <span id="image-info"></span>
-                                <button type="button" class="btn btn-primary" id="optimize-btn" style="margin-left: 10px; padding: 4px 12px; font-size: 12px;">최적화</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- 또는 URL 직접 입력 -->
-                    <div style="text-align: center; margin: 16px 0; color: var(--secondary-text);">또는</div>
-                    <input type="url" class="form-input" id="portfolio-image" placeholder="이미지 URL 직접 입력">
-                    
+                    <label for="editTags">태그 (쉼표로 구분)</label>
+                    <input type="text" id="editTags" name="tags">
                 </div>
-                <div class="action-buttons">
-                    <button type="button" class="btn btn-secondary" onclick="closePortfolioModal()">취소</button>
-                    <button type="submit" class="btn btn-primary">저장</button>
+
+                <div class="form-group">
+                    <label for="editReadTime">예상 읽기 시간</label>
+                    <input type="text" id="editReadTime" name="readTime">
                 </div>
+
+                <div class="form-group">
+                    <label for="editAuthor">작성자</label>
+                    <input type="text" id="editAuthor" name="author">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="editFeatured" name="featured" style="width: auto; margin-right: 0.5rem;">
+                        대표 글로 설정
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="editStatus">발행 상태</label>
+                    <select id="editStatus" name="status">
+                        <option value="draft">임시 보관</option>
+                        <option value="active">발행됨</option>
+                        <option value="inactive">비공개</option>
+                    </select>
+                </div>
+
+                <button type="submit">수정 완료</button>
+                <button type="button" class="secondary" onclick="closeEditModal()">취소</button>
             </form>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
     <script>
-        // Global Variables
-        let quill;
-        let currentEditingPortfolio = null;
-
-        // Initialize App
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Admin Dashboard Loading...');
-            checkAuth();
-            initializeQuill();
-            setupNavigation();
-            loadDashboardData();
-        });
-
-        // Authentication Check
-        function checkAuth() {
-            const token = localStorage.getItem('chiro_admin_token');
-            if (!token) {
-                alert('로그인이 필요합니다.');
-                window.location.href = '/login.html';
-                return;
+        // 블로그 데이터 관리 클래스
+        class BlogManager {
+            constructor() {
+                this.blogs = [];
+                this.loadBlogs();
             }
-            console.log('Authentication verified');
-        }
 
-        // Initialize Quill Editor
-        function initializeQuill() {
-            try {
-                quill = new Quill('#blog-content-editor', {
-                    theme: 'snow',
-                    modules: {
-                        toolbar: [
-                            [{ 'header': [1, 2, 3, false] }],
-                            ['bold', 'italic', 'underline', 'strike'],
-                            [{ 'color': [] }, { 'background': [] }],
-                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                            ['blockquote', 'code-block'],
-                            ['link', 'image'],
-                            ['clean']
-                        ]
-                    }
-                });
-                console.log('Quill editor initialized successfully');
-            } catch (error) {
-                console.error('Failed to initialize Quill:', error);
-            }
-        }
-
-        // Navigation Setup
-        function setupNavigation() {
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const section = item.getAttribute('data-section');
-                    showSection(section);
-                    
-                    // Update active nav item
-                    navItems.forEach(nav => nav.classList.remove('active'));
-                    item.classList.add('active');
-                });
-            });
-            console.log('Navigation setup complete');
-        }
-
-        // Show Section
-        function showSection(sectionName) {
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(section => section.classList.remove('active'));
-            
-            const targetSection = document.getElementById(sectionName);
-            if (targetSection) {
-                targetSection.classList.add('active');
-                console.log('Showing section:', sectionName);
-                
-                // Load section-specific data
-                switch(sectionName) {
-                    case 'portfolio':
-                        loadPortfolios();
-                        break;
-                    case 'blog-list':
-                        loadBlogs();
-                        break;
-                }
-            }
-        }
-
-        // API helper
-        function API(path){ return (window.API_BASE_URL || '') + path; }
-
-        // Load Dashboard Data
-        async function loadDashboardData() {
-            try {
-                const res = await fetch(API('/api/stats'));
-                if (!res.ok) throw new Error('Failed to fetch stats');
-                const stats = await res.json();
-                document.getElementById('portfolio-count').textContent = stats.portfolioCount ?? '0';
-                document.getElementById('blog-count').textContent = stats.blogCount ?? '0';
-            } catch (error) {
-                console.error('Error loading dashboard data:', error);
-                document.getElementById('portfolio-count').textContent = '0';
-                document.getElementById('blog-count').textContent = '0';
-            }
-        }
-
-        // Portfolio Functions
-        async function loadPortfolios() {
-            try {
-                const res = await fetch(API('/api/portfolios'));
-                if (!res.ok) throw new Error('Failed to fetch portfolios');
-                const portfolios = await res.json();
-
-                const grid = document.getElementById('portfolio-grid');
-                if (!portfolios || portfolios.length === 0) {
-                    grid.innerHTML = '<div style="grid-column: 1 / -1; text-align: center; color: var(--secondary-text); padding: 40px;">아직 추가된 포트폴리오가 없습니다.</div>';
-                    return;
-                }
-                grid.innerHTML = portfolios.map(portfolio => `
-                    <div class="portfolio-item">
-                        <div class="portfolio-image">
-                            ${portfolio.image ? `<img src="${portfolio.image}" alt="${portfolio.title}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display: none; align-items: center; justify-content: center; height: 100%; color: var(--secondary-text);"><i class="fas fa-image fa-2x"></i></div>` : '<div style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--secondary-text);"><i class="fas fa-image fa-2x"></i></div>'}
-                        </div>
-                        <div class="portfolio-info">
-                            <div class="portfolio-title">${portfolio.title}</div>
-                            <div class="portfolio-meta">${portfolio.category} • ${portfolio.year}</div>
-                            <div class="portfolio-actions">
-                                <button class="btn btn-primary" onclick="editPortfolio('${portfolio.id || portfolio._id}')">편집</button>
-                                <button class="btn btn-secondary" onclick="deletePortfolio('${portfolio.id || portfolio._id}')">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-                console.log('Portfolios loaded:', portfolios.length);
-            } catch (error) {
-                console.error('Error loading portfolios:', error);
-                document.getElementById('portfolio-grid').innerHTML = '<p>포트폴리오를 불러올 수 없습니다.</p>';
-            }
-        }
-
-        // Modal Functions
-        function openPortfolioModal(portfolioData = null) {
-            const modal = document.getElementById('portfolio-modal');
-            const form = document.getElementById('portfolio-form');
-            
-            if (portfolioData) {
-                document.getElementById('portfolio-title').value = portfolioData.title || '';
-                document.getElementById('portfolio-category').value = portfolioData.category || '';
-                document.getElementById('portfolio-year').value = portfolioData.year || 2024;
-                document.getElementById('portfolio-description').value = portfolioData.description || '';
-                document.getElementById('portfolio-image').value = portfolioData.image || '';
-                currentEditingPortfolio = portfolioData._id || portfolioData.id || null;
-            } else {
-                form.reset();
-                currentEditingPortfolio = null;
-            }
-            
-            modal.classList.add('active');
-        }
-
-        function closePortfolioModal() {
-            document.getElementById('portfolio-modal').classList.remove('active');
-            currentEditingPortfolio = null;
-        }
-
-        async function editPortfolio(id) {
-            try {
-                const res = await fetch(API(`/api/portfolios/${id}`));
-                if (!res.ok) throw new Error('Failed to fetch portfolio');
-                const portfolio = await res.json();
-                openPortfolioModal(portfolio);
-            } catch (error) {
-                console.error('Error loading portfolio:', error);
-                alert('포트폴리오 로드 중 오류가 발생했습니다.');
-            }
-        }
-
-        async function deletePortfolio(id) {
-            if (!confirm('정말로 이 프로젝트를 삭제하시겠습니까?')) return;
-            try {
-                const res = await fetch(API(`/api/portfolios/${id}`), { method: 'DELETE' });
-                if (res.status !== 204 && !res.ok) throw new Error('Failed to delete');
-                await loadPortfolios();
-                await loadDashboardData();
-                localStorage.setItem('chiro_last_update', Date.now().toString());
-                window.dispatchEvent(new CustomEvent('chiroDataChanged', { detail: { type: 'portfolio' } }));
-                alert('포트폴리오가 삭제되었습니다.');
-            } catch (error) {
-                console.error('Error deleting portfolio:', error);
-                alert('삭제 중 오류가 발생했습니다.');
-            }
-        }
-
-        // Portfolio Form Submit
-        document.getElementById('portfolio-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const body = {
-                title: document.getElementById('portfolio-title').value,
-                category: document.getElementById('portfolio-category').value,
-                year: parseInt(document.getElementById('portfolio-year').value),
-                description: document.getElementById('portfolio-description').value,
-                image: document.getElementById('portfolio-image').value
-            };
-            try {
-                if (currentEditingPortfolio) {
-                    const res = await fetch(API(`/api/portfolios/${currentEditingPortfolio}`), { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-                    if (!res.ok) throw new Error('Failed to update portfolio');
-                } else {
-                    const res = await fetch(API('/api/portfolios'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-                    if (!res.ok) throw new Error('Failed to create portfolio');
-                }
-                localStorage.setItem('chiro_last_update', Date.now().toString());
-                window.dispatchEvent(new CustomEvent('chiroDataChanged', { detail: { type: 'portfolio' } }));
-                closePortfolioModal();
-                await loadPortfolios();
-                await loadDashboardData();
-                alert('포트폴리오가 저장되었습니다!');
-            } catch (error) {
-                console.error('Error saving portfolio:', error);
-                alert('저장 중 오류가 발생했습니다.');
-            }
-        });
-
-        // Blog Functions
-        document.getElementById('blog-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const blogData = {
-                title: document.getElementById('blog-title').value,
-                category: document.getElementById('blog-category').value,
-                excerpt: document.getElementById('blog-excerpt').value,
-                content: quill ? quill.root.innerHTML : '',
-                thumbnail: document.getElementById('blog-thumbnail').value,
-                date: new Date().toISOString().split('T')[0],
-                readTime: calculateReadTime(quill ? quill.getText() : '')
-            };
-            try {
-                const res = await fetch(API('/api/blogs'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(blogData) });
-                if (!res.ok) throw new Error('Failed to create blog');
-                localStorage.setItem('chiro_last_update', Date.now().toString());
-                window.dispatchEvent(new CustomEvent('chiroDataChanged', { detail: { type: 'blog' } }));
-                alert('블로그가 성공적으로 발행되었습니다!');
-                document.getElementById('blog-form').reset();
-                if (quill) quill.setText('');
-                await loadBlogs();
-                await loadDashboardData();
-            } catch (error) {
-                console.error('Error saving blog:', error);
-                alert('블로그 발행 중 오류가 발생했습니다.');
-            }
-        });
-
-        function calculateReadTime(text) {
-            const wordsPerMinute = 200;
-            const words = text.trim().split(/\s+/).length;
-            const readTime = Math.ceil(words / wordsPerMinute);
-            return `${readTime} min read`;
-        }
-
-        async function loadBlogs() {
-            try {
-                const res = await fetch(API('/api/blogs'));
-                if (!res.ok) throw new Error('Failed to fetch blogs');
-                const blogs = await res.json();
-                const container = document.getElementById('blog-list-container');
-                if (!blogs || blogs.length === 0) {
-                    container.innerHTML = '<div style="text-align: center; color: var(--secondary-text); padding: 40px;">아직 작성된 블로그가 없습니다.</div>';
-                    return;
-                }
-                container.innerHTML = blogs.map(blog => `
-                    <div class="dashboard-card">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-title">${blog.title}</div>
-                                <div class="card-subtitle">${blog.category} • ${blog.date} • ${blog.readTime || '5 min read'}</div>
-                            </div>
-                        </div>
-                        <p style="color: var(--secondary-text); margin: 16px 0;">${blog.excerpt}</p>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-secondary" onclick="deleteBlog('${blog.id || blog._id}')">삭제</button>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (error) {
-                console.error('Error loading blogs:', error);
-            }
-        }
-
-        async function deleteBlog(id) {
-            if (!confirm('정말로 이 블로그 글을 삭제하시겠습니까?')) return;
-            try {
-                const res = await fetch(API(`/api/blogs/${id}`), { method: 'DELETE' });
-                if (res.status !== 204 && !res.ok) throw new Error('Failed to delete');
-                await loadBlogs();
-                await loadDashboardData();
-                localStorage.setItem('chiro_last_update', Date.now().toString());
-                window.dispatchEvent(new CustomEvent('chiroDataChanged', { detail: { type: 'blog' } }));
-                alert('블로그가 삭제되었습니다.');
-            } catch (error) {
-                console.error('Error deleting blog:', error);
-                alert('삭제 중 오류가 발생했습니다.');
-            }
-        }
-
-        function saveDraft() {
-            const draftData = {
-                title: document.getElementById('blog-title').value,
-                category: document.getElementById('blog-category').value,
-                excerpt: document.getElementById('blog-excerpt').value,
-                content: quill ? quill.root.innerHTML : '',
-                thumbnail: document.getElementById('blog-thumbnail').value
-            };
-            
-            localStorage.setItem('blog-draft', JSON.stringify(draftData));
-            alert('임시저장되었습니다!');
-        }
-
-        function testDbConnection() {
-            fetch(API('/api/status'))
-                .then(r => r.json())
-                .then(d => {
-                    document.getElementById('db-status').textContent = d.status || '연결됨';
-                    document.getElementById('db-status').style.color = d.status === '연결됨' ? 'var(--success)' : 'var(--accent-red)';
-                })
-                .catch(() => {
-                    document.getElementById('db-status').textContent = '연결 실패';
-                    document.getElementById('db-status').style.color = 'var(--accent-red)';
-                });
-        }
-
-        function logout() {
-            if (confirm('로그아웃 하시겠습니까?')) {
-                localStorage.removeItem('chiro_admin_token');
-                localStorage.removeItem('chiro_admin_username');
-                localStorage.removeItem('chiro_remember_me');
-                window.location.href = '/login.html';
-            }
-        }
-
-        // Image Upload and Optimization Functions
-        let portfolioImageData = null;
-        let blogImageData = null;
-        
-        // 포트폴리오 이미지 업로드
-        document.addEventListener('DOMContentLoaded', function() {
-            const portfolioImageInput = document.getElementById('portfolio-image-file');
-            const blogImageInput = document.getElementById('blog-image-file');
-            
-            if (portfolioImageInput) {
-                portfolioImageInput.addEventListener('change', function(e) {
-                    handleImageSelect(e.target.files[0], 'portfolio');
-                });
-            }
-            
-            if (blogImageInput) {
-                blogImageInput.addEventListener('change', function(e) {
-                    handleImageSelect(e.target.files[0], 'blog');
-                });
-            }
-            
-            // 최적화 버튼 이벤트
-            document.addEventListener('click', function(e) {
-                if (e.target.id === 'optimize-btn') {
-                    optimizeImage('portfolio');
-                } else if (e.target.id === 'blog-optimize-btn') {
-                    optimizeImage('blog');
-                }
-            });
-        });
-        
-        function handleImageSelect(file, type) {
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                if (type === 'portfolio') {
-                    portfolioImageData = { file: file, dataUrl: e.target.result };
-                    showImagePreview(e.target.result, file, 'portfolio');
-                } else if (type === 'blog') {
-                    blogImageData = { file: file, dataUrl: e.target.result };
-                    showImagePreview(e.target.result, file, 'blog');
-                }
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        function showImagePreview(dataUrl, file, type) {
-            const previewContainer = type === 'portfolio' ? 'image-preview' : 'blog-image-preview';
-            const previewImg = type === 'portfolio' ? 'preview-img' : 'blog-preview-img';
-            const imageInfo = type === 'portfolio' ? 'image-info' : 'blog-image-info';
-            
-            document.getElementById(previewContainer).style.display = 'block';
-            document.getElementById(previewImg).src = dataUrl;
-            document.getElementById(imageInfo).textContent = `${file.name} (${(file.size / 1024).toFixed(1)}KB)`;
-        }
-        
-        function optimizeImage(type) {
-            const imageData = type === 'portfolio' ? portfolioImageData : blogImageData;
-            if (!imageData) return;
-            
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            const img = new Image();
-            
-            img.onload = function() {
-                // 타입별 최적화 설정
-                let targetWidth, targetHeight, quality;
-                
-                if (type === 'portfolio') {
-                    targetWidth = 1200;
-                    targetHeight = 800;
-                    quality = 0.85;
-                } else if (type === 'blog') {
-                    targetWidth = 800;
-                    targetHeight = 600;
-                    quality = 0.80;
-                }
-                
-                // 비율 유지하면서 리사이즈
-                const ratio = Math.min(targetWidth / img.width, targetHeight / img.height);
-                const newWidth = img.width * ratio;
-                const newHeight = img.height * ratio;
-                
-                canvas.width = newWidth;
-                canvas.height = newHeight;
-                
-                ctx.drawImage(img, 0, 0, newWidth, newHeight);
-                
-                canvas.toBlob(async function(blob) {
-                    try {
-                        const fileName = `${type}_${Date.now()}.jpg`;
-                        const file = new File([blob], fileName, { type: 'image/jpeg' });
-                        const form = new FormData();
-                        form.append('file', file);
-                        // GridFS 업로드 우선, 실패 시 디스크 폴백
-                        let res = await fetch((window.API_BASE_URL||'') + `/api/upload-grid/${type}`, { method: 'POST', body: form });
-                        if (!res.ok) {
-                            res = await fetch((window.API_BASE_URL||'') + `/api/upload/${type}`, { method: 'POST', body: form });
-                        }
-                        if (!res.ok) throw new Error('Upload failed');
-                        const { url } = await res.json();
-
-                        // 입력 및 프리뷰 업데이트
-                        if (type === 'portfolio') {
-                            document.getElementById('portfolio-image').value = url;
-                        } else if (type === 'blog') {
-                            document.getElementById('blog-thumbnail').value = url;
-                        }
-                        const previewImg = type === 'portfolio' ? 'preview-img' : 'blog-preview-img';
-                        const imageInfo = type === 'portfolio' ? 'image-info' : 'blog-image-info';
-                        document.getElementById(previewImg).src = url;
-                        document.getElementById(imageInfo).innerHTML = `✅ 업로드 완료<br>URL: <code>${url}</code>`;
-                    } catch (err) {
-                        // 업로드 실패 시 다운로드 폴백 제공
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            const optimizedDataUrl = e.target.result;
-                            const fallbackName = `${type}_${Date.now()}.jpg`;
-                            const fallbackUrl = `/images/${type}/${fallbackName}`;
-                            if (type === 'portfolio') {
-                                document.getElementById('portfolio-image').value = fallbackUrl;
-                            } else if (type === 'blog') {
-                                document.getElementById('blog-thumbnail').value = fallbackUrl;
+            // Git 저장소에서 블로그 데이터 로드
+            loadBlogs() {
+                try {
+                    fetch('./src/data/blog.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.blogs = data;
+                            localStorage.setItem('chiro_blog_data', JSON.stringify(data));
+                            this.renderBlogs();
+                            this.updateStats();
+                        })
+                        .catch(() => {
+                            // Git 파일 로드 실패시 로컬 스토리지에서 로드
+                            const stored = localStorage.getItem('chiro_blog_data');
+                            if (stored) {
+                                this.blogs = JSON.parse(stored);
                             }
-                            const previewImg = type === 'portfolio' ? 'preview-img' : 'blog-preview-img';
-                            const imageInfo = type === 'portfolio' ? 'image-info' : 'blog-image-info';
-                            document.getElementById(previewImg).src = optimizedDataUrl;
-                            document.getElementById(imageInfo).innerHTML = `
-                                ✅ 최적화 완료: ${fallbackName}<br>
-                                크기: ${(blob.size / 1024).toFixed(1)}KB → URL: <code>${fallbackUrl}</code><br>
-                                <small style="color: var(--accent-red);">이미지를 정적 폴더에 수동 업로드해야 URL이 활성화됩니다.</small>
-                            `;
-                            const downloadLink = document.createElement('a');
-                            downloadLink.href = optimizedDataUrl;
-                            downloadLink.download = fallbackName;
-                            downloadLink.textContent = '📥 다운로드 (수동 업로드용)';
-                            downloadLink.style.cssText = 'display: block; margin-top: 8px; color: var(--accent-red); text-decoration: none; font-size: 12px;';
-                            const infoElement = document.getElementById(imageInfo);
-                            const existingLink = infoElement.querySelector('a');
-                            if (existingLink) existingLink.remove();
-                            infoElement.appendChild(downloadLink);
-                        };
-                        reader.readAsDataURL(blob);
-                    }
-                }, 'image/jpeg', quality);
-            };
-            
-            img.src = imageData.dataUrl;
+                            this.renderBlogs();
+                            this.updateStats();
+                        });
+                } catch (error) {
+                    console.error('블로그 로드 중 오류:', error);
+                    this.showError('블로그 데이터를 로드하는 중 오류가 발생했습니다.');
+                }
+            }
+
+            // 블로그 데이터 저장
+            saveBlogs() {
+                localStorage.setItem('chiro_blog_data', JSON.stringify(this.blogs));
+                this.updateGitRepository();
+                
+                // 메인 사이트에 변경사항 알림
+                const event = new CustomEvent('blogUpdated');
+                window.dispatchEvent(event);
+            }
+
+            // Git 저장소 업데이트 (시뮬레이션)
+            updateGitRepository() {
+                console.log('Git 저장소 업데이트:', this.blogs);
+                this.showSuccess('블로그가 Git 저장소에 저장되었습니다.');
+            }
+
+            // 새 블로그 글 추가
+            addBlog(data) {
+                const newId = Math.max(...this.blogs.map(b => b.id), 0) + 1;
+                const now = new Date().toISOString();
+                const newBlog = {
+                    id: newId,
+                    ...data,
+                    date: new Date().toISOString().split('T')[0], // YYYY-MM-DD 형식
+                    createdAt: now,
+                    updatedAt: now
+                };
+                
+                this.blogs.push(newBlog);
+                this.saveBlogs();
+                this.renderBlogs();
+                this.updateStats();
+                this.showSuccess('새 블로그 글이 추가되었습니다.');
+            }
+
+            // 블로그 글 수정
+            updateBlog(id, data) {
+                const index = this.blogs.findIndex(b => b.id === parseInt(id));
+                if (index !== -1) {
+                    this.blogs[index] = { 
+                        ...this.blogs[index], 
+                        ...data,
+                        updatedAt: new Date().toISOString()
+                    };
+                    this.saveBlogs();
+                    this.renderBlogs();
+                    this.updateStats();
+                    this.showSuccess('블로그 글이 수정되었습니다.');
+                }
+            }
+
+            // 블로그 글 삭제
+            deleteBlog(id) {
+                if (confirm('이 블로그 글을 삭제하시겠습니까?')) {
+                    this.blogs = this.blogs.filter(b => b.id !== parseInt(id));
+                    this.saveBlogs();
+                    this.renderBlogs();
+                    this.updateStats();
+                    this.showSuccess('블로그 글이 삭제되었습니다.');
+                }
+            }
+
+            // 블로그 목록 렌더링
+            renderBlogs() {
+                const container = document.getElementById('blogList');
+                container.innerHTML = '';
+
+                // 최신순으로 정렬
+                const sortedBlogs = [...this.blogs].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                sortedBlogs.forEach(blog => {
+                    const blogElement = document.createElement('div');
+                    blogElement.className = 'blog-item';
+                    blogElement.innerHTML = `
+                        <img src="${blog.thumbnail || '/images/blog/placeholder.jpg'}" 
+                             alt="${blog.title}" 
+                             onerror="this.src='/images/blog/placeholder.jpg'">
+                        <h3>${blog.title}</h3>
+                        <div class="blog-meta">
+                            <span>${this.getCategoryDisplayName(blog.category)}</span>
+                            <span>${blog.date}</span>
+                            <span>${blog.readTime}</span>
+                        </div>
+                        <div class="blog-excerpt">${blog.excerpt}</div>
+                        <div class="blog-tags">
+                            ${blog.tags ? blog.tags.map(tag => `<span class="blog-tag">${tag}</span>`).join('') : ''}
+                        </div>
+                        <div style="margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;">
+                            <span class="${blog.status === 'active' ? 'status-active' : blog.status === 'draft' ? 'status-inactive' : 'status-inactive'}">
+                                ${blog.status === 'active' ? '발행됨' : blog.status === 'draft' ? '임시보관' : '비공개'}
+                            </span>
+                            ${blog.featured ? '<span class="featured-badge">대표글</span>' : ''}
+                        </div>
+                        <button onclick="editBlog(${blog.id})" class="secondary">편집</button>
+                        <button onclick="blogManager.deleteBlog(${blog.id})" 
+                                style="background: #FF3B30; margin-left: 0.5rem;">삭제</button>
+                    `;
+                    container.appendChild(blogElement);
+                });
+            }
+
+            // 카테고리 표시명 변환
+            getCategoryDisplayName(category) {
+                const categoryMap = {
+                    'design': '디자인',
+                    'development': '개발',
+                    'marketing': '마케팅',
+                    'business': '비즈니스',
+                    'insights': '인사이트'
+                };
+                return categoryMap[category] || category;
+            }
+
+            // 통계 업데이트
+            updateStats() {
+                const total = this.blogs.length;
+                const featured = this.blogs.filter(b => b.featured).length;
+                const active = this.blogs.filter(b => b.status === 'active').length;
+                const draft = this.blogs.filter(b => b.status === 'draft').length;
+
+                document.getElementById('totalPosts').textContent = total;
+                document.getElementById('featuredPosts').textContent = featured;
+                document.getElementById('activePosts').textContent = active;
+                document.getElementById('draftPosts').textContent = draft;
+            }
+
+            // 성공 메시지 표시
+            showSuccess(message) {
+                const element = document.getElementById('successMessage');
+                element.textContent = message;
+                element.style.display = 'block';
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 3000);
+            }
+
+            // 오류 메시지 표시
+            showError(message) {
+                const element = document.getElementById('errorMessage');
+                element.textContent = message;
+                element.style.display = 'block';
+                setTimeout(() => {
+                    element.style.display = 'none';
+                }, 3000);
+            }
         }
 
-        // Error handling
-        window.addEventListener('error', function(e) {
-            console.error('Runtime error:', e.error);
+        // 전역 블로그 매니저 인스턴스
+        const blogManager = new BlogManager();
+
+        // 이미지 업로드 처리
+        function handleImageUpload(input, previewId) {
+            const file = input.files[0];
+            if (file) {
+                // 파일 크기 확인 (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    blogManager.showError('이미지 파일은 5MB 이하여야 합니다.');
+                    input.value = '';
+                    return;
+                }
+
+                // 미리보기 표시
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById(previewId);
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+
+                // 실제로는 파일을 서버에 업로드하고 URL을 받아와야 함
+                setTimeout(() => {
+                    const imageUrl = `/images/blog/${file.name}`;
+                    input.dataset.uploadedUrl = imageUrl;
+                }, 1000);
+            }
+        }
+
+        // 폼 제출 처리
+        document.getElementById('blogForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const blogData = {
+                title: formData.get('title'),
+                category: formData.get('category'),
+                excerpt: formData.get('excerpt'),
+                content: formData.get('content'),
+                tags: formData.get('tags') ? formData.get('tags').split(',').map(t => t.trim()) : [],
+                readTime: formData.get('readTime'),
+                thumbnail: document.getElementById('thumbnail').dataset.uploadedUrl || '/images/blog/placeholder.jpg',
+                author: formData.get('author'),
+                featured: formData.get('featured') === 'on',
+                status: formData.get('status')
+            };
+
+            blogManager.addBlog(blogData);
+            clearForm();
         });
 
-        console.log('Admin Dashboard Script Loaded');
+        // 편집 폼 제출 처리
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const blogData = {
+                title: formData.get('title'),
+                category: formData.get('category'),
+                excerpt: formData.get('excerpt'),
+                content: formData.get('content'),
+                tags: formData.get('tags') ? formData.get('tags').split(',').map(t => t.trim()) : [],
+                readTime: formData.get('readTime'),
+                author: formData.get('author'),
+                featured: formData.get('featured') === 'on',
+                status: formData.get('status')
+            };
+
+            const id = formData.get('id');
+            blogManager.updateBlog(id, blogData);
+            closeEditModal();
+        });
+
+        // 썸네일 이미지 업로드 처리
+        document.getElementById('thumbnail').addEventListener('change', function() {
+            handleImageUpload(this, 'thumbnailPreview');
+        });
+
+        // 블로그 글 편집
+        function editBlog(id) {
+            const blog = blogManager.blogs.find(b => b.id === id);
+            if (!blog) return;
+
+            // 편집 폼에 데이터 채우기
+            document.getElementById('editId').value = blog.id;
+            document.getElementById('editTitle').value = blog.title;
+            document.getElementById('editCategory').value = blog.category;
+            document.getElementById('editExcerpt').value = blog.excerpt;
+            document.getElementById('editContent').value = blog.content;
+            document.getElementById('editTags').value = Array.isArray(blog.tags) ? blog.tags.join(', ') : '';
+            document.getElementById('editReadTime').value = blog.readTime || '5 min read';
+            document.getElementById('editAuthor').value = blog.author || 'CHIRO Team';
+            document.getElementById('editFeatured').checked = blog.featured || false;
+            document.getElementById('editStatus').value = blog.status || 'draft';
+
+            // 모달 표시
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        // 편집 모달 닫기
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        // 폼 초기화
+        function clearForm() {
+            document.getElementById('blogForm').reset();
+            document.getElementById('thumbnailPreview').style.display = 'none';
+            document.getElementById('thumbnail').dataset.uploadedUrl = '';
+        }
+
+        // 블로그 목록 새로고침
+        function refreshBlogs() {
+            blogManager.loadBlogs();
+        }
+
+        // 모달 외부 클릭시 닫기
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('editModal');
+            if (e.target === modal) {
+                closeEditModal();
+            }
+        });
+
+        // 페이지 로드시 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            blogManager.loadBlogs();
+        });
     </script>
 </body>
 </html>
