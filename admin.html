@@ -9,12 +9,28 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
+    <!-- CSS Override for Admin Page -->
+    <style>
+        /* FORCE ADMIN STYLES - NO INHERITANCE */
+        html, body {
+            background-color: #0A0A0A !important;
+            color: #FFFFFF !important;
+            font-family: 'Inter', sans-serif !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+    </style>
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans:wght@400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
+        /* CRITICAL ADMIN PAGE OVERRIDE - HIGHEST PRIORITY */
+        html { background: #0A0A0A !important; }
+        body { background: #0A0A0A !important; color: #FFFFFF !important; }
+        
         /* CSS Reset and Base */
         *, *::before, *::after {
             box-sizing: border-box;
@@ -29,11 +45,13 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0A0A0A;
-            color: #FFFFFF;
-            overflow-x: hidden;
-            line-height: 1.5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+            background: #0A0A0A !important;
+            color: #FFFFFF !important;
+            overflow-x: hidden !important;
+            line-height: 1.5 !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
         
         /* Variables */
@@ -53,9 +71,10 @@
 
         /* Layout */
         .admin-container {
-            display: flex;
-            min-height: 100vh;
-            width: 100%;
+            display: flex !important;
+            min-height: 100vh !important;
+            width: 100% !important;
+            background: #0A0A0A !important;
         }
 
         /* Sidebar */
@@ -522,7 +541,7 @@
         }
     </style>
 </head>
-<body>
+<body style="background: #0A0A0A !important; color: #FFFFFF !important; margin: 0; padding: 0; font-family: 'Inter', sans-serif;">
     <div class="admin-container">
         <!-- Sidebar -->
         <nav class="sidebar">
