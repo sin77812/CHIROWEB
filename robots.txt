@@ -1,0 +1,36 @@
+# Chiro Web Design robots.txt
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /private/
+Disallow: /admin.html
+Disallow: /login.html
+Disallow: /admin_*.html
+
+# 네이버 봇
+User-agent: Yeti
+Allow: /
+Crawl-delay: 1
+
+# 구글 봇
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# 다음 봇
+User-agent: Daumoa
+Allow: /
+Crawl-delay: 1
+
+# 이미지 크롤링 허용
+User-agent: Googlebot-Image
+Allow: /images/
+Allow: /portfolio/
+
+# 비디오 크롤링 허용
+User-agent: Googlebot-Video
+Allow: /videos/
+
+Sitemap: https://chiro-psi.vercel.app/sitemap.xml
