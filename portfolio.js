@@ -128,7 +128,7 @@ async function loadPortfolioData() {
         const displayPortfolios = portfolios.filter(item => featuredIds.includes(item.id));
         
         portfolioGrid.innerHTML = displayPortfolios.map(item => `
-            <div class="portfolio-item" data-category="${item.category}">
+            <div class="portfolio-item visible" data-category="${item.category}">
                 <div class="portfolio-image">
                     <img src="${item.thumbnail}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='images/portfolio/placeholder.jpg';">
                     <div class="portfolio-overlay">
