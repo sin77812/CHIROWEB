@@ -91,6 +91,7 @@ const portfolioData = [
                 year: 2024,
                 description: "개인 맞춤 운동 프로그램을 제공하는 헬스장",
                 thumbnail: "images/portfolio/ONLYGYM.jpg",
+                url: "https://www.onlygym247.com/",
                 featured: false
             },
             {
@@ -100,6 +101,7 @@ const portfolioData = [
                 year: 2024,
                 description: "남성 전용 의료 서비스를 제공하는 전문 클리닉",
                 thumbnail: "images/portfolio/mansolution.jpg",
+                url: "https://mansolution.co.kr/",
                 featured: false
             }
 ];

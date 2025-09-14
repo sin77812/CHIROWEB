@@ -409,11 +409,115 @@
         console.log('Portfolio page initialized successfully');
     });
     
-    // Load portfolio data from global portfolioData
+    // Portfolio data - direct copy from portfolio.js
+    const portfolioPageData = [
+        {
+            id: "1",
+            title: "NBPKOREA",
+            category: "web",
+            year: 2024,
+            description: "프리미엄 헬스케어 브랜드의 디지털 플랫폼 구축",
+            thumbnail: "images/portfolio/nbpkorea.jpg",
+            url: "http://www.nbpkorea.com",
+            featured: true
+        },
+        {
+            id: "2",
+            title: "고요속의미식",
+            category: "branding",
+            year: 2024,
+            description: "프리미엄 다이닝 브랜드 아이덴티티 디자인",
+            thumbnail: "images/portfolio/goyomisik.jpg",
+            url: "https://www.goyomisik.co.kr",
+            featured: true
+        },
+        {
+            id: "3",
+            title: "리얼PT",
+            category: "web",
+            year: 2024,
+            description: "피트니스 플랫폼 웹사이트 및 시스템 개발",
+            thumbnail: "images/portfolio/LPT.jpg",
+            url: "https://www.realpt.co.kr",
+            featured: true
+        },
+        {
+            id: "4",
+            title: "유어모먼트 스튜디오",
+            category: "branding",
+            year: 2024,
+            description: "프리미엄 포토 스튜디오 브랜드 디자인",
+            thumbnail: "images/portfolio/STUDIO.jpg",
+            url: "https://bit.ly/3YJnJxJ",
+            featured: true
+        },
+        {
+            id: "5",
+            title: "후니 인테리어",
+            category: "web",
+            year: 2024,
+            description: "인테리어 전문 기업 웹사이트 디자인 및 개발",
+            thumbnail: "images/portfolio/FUNI.jpg",
+            url: "https://www.funiinterior.com/",
+            featured: true
+        },
+        {
+            id: "6",
+            title: "K&J Entertainment",
+            category: "branding",
+            year: 2024,
+            description: "엔터테인먼트 기업 브랜드 아이덴티티 구축",
+            thumbnail: "images/portfolio/K&J.jpg",
+            url: "https://bit.ly/48K3t9t",
+            featured: true
+        },
+        {
+            id: "7",
+            title: "니드커피",
+            category: "branding",
+            year: 2024,
+            description: "스페셜티 커피 브랜드 디자인 및 마케팅",
+            thumbnail: "images/portfolio/NEDCOFY.jpg",
+            url: "https://www.instagram.com/needcoffee.co/",
+            featured: false
+        },
+        {
+            id: "8",
+            title: "그레이스 스피치",
+            category: "web",
+            year: 2024,
+            description: "스피치 교육 플랫폼 웹사이트 구축",
+            thumbnail: "images/portfolio/gracespeech.jpg",
+            url: "https://gracespeech.modoo.at/",
+            featured: false
+        },
+        {
+            id: "9",
+            title: "온리짐",
+            category: "web",
+            year: 2024,
+            description: "개인 맞춤 운동 프로그램을 제공하는 헬스장",
+            thumbnail: "images/portfolio/ONLYGYM.jpg",
+            url: "https://www.onlygym247.com/",
+            featured: false
+        },
+        {
+            id: "10",
+            title: "맨솔루션",
+            category: "web",
+            year: 2024,
+            description: "남성 전용 의료 서비스를 제공하는 전문 클리닉",
+            thumbnail: "images/portfolio/mansolution.jpg",
+            url: "https://mansolution.co.kr/",
+            featured: false
+        }
+    ];
+
+    // Load portfolio data 
     async function loadPortfolioData() {
-        // Use global portfolioData from portfolio.js
-        const portfolios = window.portfolioData || [];
+        const portfolios = portfolioPageData;
         const portfolioGrid = document.getElementById('portfolioGrid');
+        console.log('Loading portfolio page data:', portfolios.length);
         
         if (portfolioGrid && portfolios.length > 0) {
             console.log('Loading portfolio page data:', portfolios.length);
