@@ -23,11 +23,32 @@
             // Reset any stuck body overflow first
             document.body.style.overflow = '';
             
+            // Handle mobile-specific adjustments
+            handleMobileLayout();
+            
             setupScrollBehavior();
             setupMobileMenu();
             setupSectionIndicator();
             setupSmoothScrolling();
             updateActiveSection();
+        }
+        
+        // Handle mobile layout adjustments
+        function handleMobileLayout() {
+            const navCta = document.querySelector('.nav-cta');
+            const isMobile = window.innerWidth <= 768;
+            
+            if (navCta) {
+                if (isMobile) {
+                    // Remove nav-cta on mobile to prevent overlap
+                    navCta.style.display = 'none';
+                    navCta.style.visibility = 'hidden';
+                } else {
+                    // Show nav-cta on desktop
+                    navCta.style.display = '';
+                    navCta.style.visibility = '';
+                }
+            }
         }
         
         // Scroll Behavior for Navigation Hide/Show
@@ -253,6 +274,8 @@
             if (window.innerWidth > 768 && isMenuOpen) {
                 closeMobileMenu();
             }
+            // Re-handle mobile layout on resize
+            handleMobileLayout();
         }, 250));
         
         // Initialize intersection observer for better performance
