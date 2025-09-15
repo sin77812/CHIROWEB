@@ -37,13 +37,17 @@
     <meta name="ICBM" content="37.4563, 126.7052">
     
     <!-- Combined CSS for Vercel -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="icons.css">
+    <link rel="stylesheet" href="styles.css" data-critical>
+    <link rel="stylesheet" href="icons.css" data-critical>
+    <link rel="stylesheet" href="performance-optimizations.css" data-critical>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    
+    <!-- Resource Preloader (Critical) -->
+    <script src="resource-preloader.js" data-critical></script>
     
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -638,13 +642,17 @@
     }
     </script>
 
+    <!-- Performance Optimization Scripts -->
+    <script src="image-optimization.js" data-critical></script>
+    <script src="video-optimization.js" data-critical></script>
+    
+    <!-- Core Application Scripts -->
     <script src="api-config.js"></script>
     <script src="data-manager.js"></script>
     <script src="hero.js"></script>
     <script src="portfolio.js"></script>
     <script src="horizontal-scroll.js"></script>
     <script src="navigation.js"></script>
-    <script src="video-optimization.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

@@ -1,0 +1,412 @@
+/* Performance Optimization CSS */
+
+/* Critical above-the-fold styles */
+.hero-section {
+    min-height: 100vh;
+    background: #0A0A0A;
+    position: relative;
+    overflow: hidden;
+    contain: layout style paint;
+    will-change: transform;
+}
+
+.main-navigation {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    contain: layout style;
+    transform: translateZ(0);
+}
+
+/* Performance optimizations for images */
+.portfolio-image-optimized {
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+    will-change: opacity;
+    contain: layout;
+}
+
+.portfolio-image-optimized.loaded {
+    opacity: 1;
+}
+
+.portfolio-image {
+    position: relative;
+    overflow: hidden;
+    background: #1a1a1a;
+    border-radius: 8px;
+    contain: layout style;
+    transform: translateZ(0);
+}
+
+/* Video optimization styles */
+.hero-video, 
+.horizontal-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+.hero-video-container,
+.horizontal-video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    contain: layout style;
+}
+
+/* Loading states and animations */
+.image-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: inherit;
+    contain: strict;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.placeholder-shimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    border-radius: inherit;
+}
+
+.placeholder-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    opacity: 0.3;
+    z-index: 1;
+}
+
+/* Loading spinner */
+.loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #2a2a2a;
+    border-top: 2px solid #ff3b30;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    contain: strict;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Performance-optimized portfolio grid */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    contain: layout style;
+}
+
+.portfolio-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
+    contain: layout style;
+    transform: translateZ(0);
+}
+
+.portfolio-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.portfolio-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    padding: 2rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    contain: layout style;
+}
+
+.portfolio-item:hover .portfolio-overlay {
+    transform: translateY(0);
+}
+
+/* Navigation optimizations */
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    contain: layout;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+    contain: layout;
+}
+
+/* Critical font loading optimization */
+@font-face {
+    font-family: 'Pretendard';
+    font-display: swap;
+    src: local('Pretendard');
+}
+
+@font-face {
+    font-family: 'Black Han Sans';
+    font-display: swap;
+    src: local('Black Han Sans');
+}
+
+/* Reduce layout shift */
+img, video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* GPU acceleration for smooth animations */
+.animate {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+/* Optimize scroll performance */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+    contain: layout style;
+}
+
+/* Critical content priority */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 8rem 0 4rem;
+    text-align: center;
+    contain: layout style;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    will-change: transform;
+    contain: layout style;
+}
+
+/* Responsive optimizations */
+@media (max-width: 768px) {
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .nav-container {
+        padding: 1rem;
+    }
+    
+    .hero-content {
+        padding: 6rem 1rem 2rem;
+    }
+    
+    /* Reduce animations on mobile for better performance */
+    .portfolio-item:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .portfolio-overlay {
+        transform: translateY(0);
+        position: static;
+        background: rgba(0, 0, 0, 0.8);
+    }
+}
+
+/* Print optimizations */
+@media print {
+    .hero-video-container,
+    .horizontal-video-container,
+    .loading-spinner,
+    .image-placeholder {
+        display: none;
+    }
+    
+    .portfolio-item {
+        break-inside: avoid;
+    }
+}
+
+/* Dark mode optimizations (already dark theme) */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .portfolio-overlay {
+        background: rgba(0, 0, 0, 0.95);
+    }
+    
+    .image-placeholder {
+        background: #000;
+    }
+}
+
+/* Bandwidth-aware styles */
+@media (prefers-reduced-data: reduce) {
+    .hero-video-container,
+    .horizontal-video-container {
+        display: none;
+    }
+    
+    .portfolio-image-optimized {
+        background-color: #1a1a1a;
+    }
+}
+
+/* Container queries for responsive design */
+@container (max-width: 600px) {
+    .portfolio-item {
+        border-radius: 4px;
+    }
+}
+
+/* Focus management for accessibility and performance */
+:focus-visible {
+    outline: 2px solid #ff3b30;
+    outline-offset: 2px;
+}
+
+/* Optimize text rendering */
+.hero-title,
+.section-title {
+    text-rendering: optimizeSpeed;
+    contain: layout style;
+}
+
+body {
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optimize form elements */
+input, textarea, select {
+    contain: layout style;
+    will-change: border-color;
+}
+
+/* Critical resource hints via CSS */
+.preload-hint::before {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    background-image: url('images/portfolio/nbpkorea.jpg');
+    background-image: url('images/portfolio/goyomisik.jpg');
+    background-image: url('images/portfolio/FUNI.jpg');
+    background-image: url('images/portfolio/mansolution.jpg');
+    visibility: hidden;
+}
+
+/* Performance monitoring styles */
+.performance-monitor {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: monospace;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.performance-monitor.visible {
+    opacity: 1;
+}
+
+/* Intersection observer optimizations */
+[data-observe] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    will-change: opacity, transform;
+}
+
+[data-observe].observed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Content loading states */
+.content-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.content-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: loading-sweep 1.5s infinite;
+}
+
+@keyframes loading-sweep {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
