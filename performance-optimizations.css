@@ -49,28 +49,29 @@
 /* Video optimization styles */
 .hero-video, 
 .horizontal-video {
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
     object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
     will-change: transform;
     backface-visibility: hidden;
     transform: translateZ(0);
+    z-index: -2 !important;
 }
 
 .hero-video-container,
 .horizontal-video-container,
 .hero-video-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     overflow: hidden;
     contain: layout style;
-    z-index: 0;
+    z-index: -1 !important;
 }
 
 /* Loading states and animations */
@@ -178,12 +179,12 @@
     contain: layout;
 }
 
-/* Container z-index fixes */
+/* Container z-index fixes - FORCED */
 .about-hero-section .container,
 .contact-hero-section .container,
 .portfolio-hero-section .container {
-    position: relative;
-    z-index: 10;
+    position: relative !important;
+    z-index: 999 !important;
 }
 
 /* Video overlay z-index */
@@ -242,13 +243,13 @@ body {
     contain: layout style;
 }
 
-/* Critical content priority */
+/* Critical content priority - FORCED OVERLAY */
 .hero-content,
 .about-hero-content,
 .contact-hero-content,
 .portfolio-hero-content {
-    position: relative;
-    z-index: 10;
+    position: relative !important;
+    z-index: 999 !important;
     padding: 8rem 0 4rem;
     text-align: center;
     contain: layout style;
@@ -261,7 +262,9 @@ body {
 .about-hero-content,
 .contact-hero-content,
 .portfolio-hero-content {
-    padding: 0;
+    padding: 0 !important;
+    position: relative !important;
+    z-index: 999 !important;
 }
 
 .hero-title {
