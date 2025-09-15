@@ -1443,7 +1443,7 @@ section {
   position: relative;
   height: 100vh;
   overflow: hidden;
-  background: #0A0A0A;
+  background: transparent;
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
@@ -1458,7 +1458,7 @@ section {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1;
+  z-index: -1;
 }
 
 .horizontal-video {
