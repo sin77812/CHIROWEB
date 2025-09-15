@@ -71,8 +71,8 @@
     
     // Optimize individual image
     function optimizeImage(img, index) {
-        // Skip if already processed
-        if (img.dataset.optimized) return;
+        // Skip if already processed or already loaded
+        if (img.dataset.optimized || img.classList.contains('loaded')) return;
         
         // Add unique ID for tracking
         if (!img.id) {

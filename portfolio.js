@@ -141,12 +141,12 @@ function loadPortfolioData() {
             <div class="portfolio-item visible" data-category="${item.category}">
                 <div class="portfolio-image">
                     <img 
-                        data-src="${item.thumbnail}" 
+                        src="${item.thumbnail}" 
                         alt="${item.title}" 
                         loading="lazy" 
                         data-fallback="https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}"
                         onerror="this.onerror=null; this.src=this.dataset.fallback || 'images/portfolio/placeholder.jpg';"
-                        class="portfolio-image-optimized">
+                        class="portfolio-image-optimized loaded">
                     <div class="portfolio-overlay">
                         <div class="portfolio-info">
                             <h3 class="project-title">${item.title}</h3>

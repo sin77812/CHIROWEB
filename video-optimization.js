@@ -76,12 +76,17 @@
             
             // Enhanced loading states
             video.addEventListener('loadstart', () => {
-                video.style.opacity = '0';
-                addVideoLoadingIndicator(video);
+                if (!video.hasAttribute('data-loading-disabled')) {
+                    video.style.opacity = '0.3';
+                    addVideoLoadingIndicator(video);
+                }
             });
             
             video.addEventListener('loadedmetadata', () => {
                 console.log(`Video metadata loaded: ${video.id}`);
+                if (!video.hasAttribute('data-loading-disabled')) {
+                    video.style.opacity = '0.7';
+                }
             });
             
             video.addEventListener('canplaythrough', () => {
@@ -218,7 +223,8 @@
         const nonCriticalVideos = document.querySelectorAll('video:not([data-priority="critical"])');
         nonCriticalVideos.forEach(video => {
             video.pause();
-            video.style.display = 'none';
+            video.style.opacity = '0.1';
+            video.setAttribute('data-paused-low-bandwidth', 'true');
         });
     }
     
