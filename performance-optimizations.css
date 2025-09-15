@@ -59,6 +59,8 @@
     backface-visibility: hidden;
     transform: translateZ(0);
     z-index: -2 !important;
+    opacity: 1 !important;
+    display: block !important;
 }
 
 .hero-video-container,
@@ -72,6 +74,8 @@
     overflow: hidden;
     contain: layout style;
     z-index: -1 !important;
+    opacity: 1 !important;
+    display: block !important;
 }
 
 /* Loading states and animations */
