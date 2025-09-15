@@ -10,20 +10,12 @@
       "handle": "filesystem"
     },
     {
-      "src": "^/(admin)/?$",
-      "dest": "/admin.html"
-    },
-    {
-      "src": "^/(login)/?$",
-      "dest": "/login.html"
-    },
-    {
-      "src": "^/(blog)/?$",
-      "dest": "/blog.html"
-    },
-    {
       "src": "^/(portfolio)/?$",
       "dest": "/portfolio.html"
+    },
+    {
+      "src": "^/(about)/?$",
+      "dest": "/about.html"
     },
     {
       "src": "^/(contact)/?$",
