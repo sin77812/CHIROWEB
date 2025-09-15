@@ -33,6 +33,20 @@
     <link rel="stylesheet" href="performance-optimizations.css">
     <link rel="stylesheet" href="icons.css">
     
+    <!-- Force z-index hierarchy -->
+    <style>
+    .about-hero-content, .hero-content, .contact-hero-content, .portfolio-hero-content {
+        position: relative !important;
+        z-index: 999 !important;
+    }
+    .hero-video-background, .hero-video-container, .horizontal-video-container {
+        z-index: -1 !important;
+    }
+    .hero-video, .horizontal-video {
+        z-index: -2 !important;
+    }
+    </style>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

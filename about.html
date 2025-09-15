@@ -33,6 +33,20 @@
     <link rel="stylesheet" href="performance-optimizations.css">
     <link rel="stylesheet" href="icons.css">
     
+    <!-- Force z-index hierarchy -->
+    <style>
+    .about-hero-content, .hero-content, .contact-hero-content, .portfolio-hero-content {
+        position: relative !important;
+        z-index: 999 !important;
+    }
+    .hero-video-background, .hero-video-container, .horizontal-video-container {
+        z-index: -1 !important;
+    }
+    .hero-video, .horizontal-video {
+        z-index: -2 !important;
+    }
+    </style>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -149,7 +163,7 @@
                     </div>
                     <h3 class="philosophy-title">Fast</h3>
                     <p class="philosophy-description">
-                        빠른 실행력으로 변화하는 시장에 대응합니다.<br>
+                        빠른 실행력으로 원하는 결과를 빠르게<br>
                         신속한 의사결정과 효율적인 워크플로우를 추구합니다.
                     </p>
                 </div>
