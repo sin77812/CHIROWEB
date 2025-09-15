@@ -64,20 +64,19 @@
                 video.id = `video-${index}`;
             }
             
-            // Priority-based loading
+            // Priority-based loading - set all videos to auto preload
             const isCritical = video.closest('.hero-video, .hero-video-background, .hero-section');
+            video.setAttribute('preload', 'auto'); // Force auto preload for all videos
             if (isCritical) {
-                video.setAttribute('preload', 'auto');
                 video.dataset.priority = 'critical';
             } else {
-                video.setAttribute('preload', 'none');
                 video.dataset.priority = 'normal';
             }
             
             // Enhanced loading states
             video.addEventListener('loadstart', () => {
                 if (!video.hasAttribute('data-loading-disabled')) {
-                    video.style.opacity = '0.3';
+                    video.style.opacity = '1';
                     addVideoLoadingIndicator(video);
                 }
             });
@@ -85,7 +84,7 @@
             video.addEventListener('loadedmetadata', () => {
                 console.log(`Video metadata loaded: ${video.id}`);
                 if (!video.hasAttribute('data-loading-disabled')) {
-                    video.style.opacity = '0.7';
+                    video.style.opacity = '1';
                 }
             });
             
@@ -147,9 +146,10 @@
     }
     
     function queueVideoLoad(video) {
-        if (isLowBandwidth && video.dataset.priority !== 'critical') {
-            return;
-        }
+        // Remove low bandwidth check to ensure all videos load
+        // if (isLowBandwidth && video.dataset.priority !== 'critical') {
+        //     return;
+        // }
         
         videoLoadQueue.push(video);
         
@@ -184,9 +184,8 @@
             console.log(`Video ${video.id} loaded in ${loadTime.toFixed(2)}ms`);
             
             video.classList.add('loaded');
-            if (!isLowBandwidth) {
-                playVideoSafely(video);
-            }
+            // Always try to play videos regardless of bandwidth
+            playVideoSafely(video);
         }, { once: true });
     }
     
@@ -210,13 +209,14 @@
     }
     
     function initBandwidthOptimization() {
-        if (isLowBandwidth) {
-            // Pause non-critical videos on slow connections
-            pauseNonCriticalVideos();
-            
-            // Add option to enable videos manually
-            addLowBandwidthNotification();
-        }
+        // Disable bandwidth optimization to ensure videos always show
+        // if (isLowBandwidth) {
+        //     // Pause non-critical videos on slow connections
+        //     pauseNonCriticalVideos();
+        //     
+        //     // Add option to enable videos manually
+        //     addLowBandwidthNotification();
+        // }
     }
     
     function pauseNonCriticalVideos() {
@@ -264,12 +264,10 @@
     }
     
     function initVideoPreloading() {
-        // Preload hero video immediately for better UX
-        const heroVideos = document.querySelectorAll('[data-priority="critical"]');
-        heroVideos.forEach(video => {
-            if (!isLowBandwidth) {
-                video.load();
-            }
+        // Preload ALL videos immediately for better UX
+        const allVideos = document.querySelectorAll('video');
+        allVideos.forEach(video => {
+            video.load(); // Force load all videos regardless of bandwidth
         });
     }
     
