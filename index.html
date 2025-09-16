@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logos/chirologo.png">
+    <link rel="apple-touch-icon" href="assets/images/logos/chirologo.png">
+    
+    <!-- SEO 메타 태그 -->
+    <title>치로웹디자인 | 인천 홈페이지 제작 전문 업체 | 80만원부터</title>
+    <meta name="description" content="인천 최고의 가성비 웹디자인! 스타트업·중소기업 맞춤형 홈페이지 제작. 80만원부터 시작하는 합리적인 가격. 무료 상담 가능. 반응형 웹사이트 전문.">
+    <meta name="keywords" content="인천 웹디자인, 홈페이지 제작, 웹사이트 제작, 인천 홈페이지 제작, 가성비 웹디자인, 스타트업 홈페이지, 중소기업 웹사이트, 반응형 웹디자인, Chiro">
+    <meta name="author" content="치로웹디자인">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://chiro-psi.vercel.app/">
+    
+    <!-- Open Graph 메타 태그 -->
+    <meta property="og:title" content="치로웹디자인 - 인천 홈페이지 제작 전문">
+    <meta property="og:description" content="80만원부터 시작! 스타트업과 중소기업을 위한 맞춤형 웹디자인">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chiro-psi.vercel.app/">
+    <meta property="og:image" content="https://chiro-psi.vercel.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="치로웹디자인">
+    <meta property="og:locale" content="ko_KR">
+    
+    <!-- Twitter Card 메타 태그 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="치로웹디자인 | 인천 홈페이지 제작">
+    <meta name="twitter:description" content="80만원부터! 합리적인 가격의 맞춤형 웹디자인">
+    <meta name="twitter:image" content="https://chiro-psi.vercel.app/twitter-image.png">
+    
+    <!-- 지역 SEO -->
+    <meta name="geo.region" content="KR-28">
+    <meta name="geo.placename" content="인천광역시">
+    <meta name="geo.position" content="37.4563;126.7052">
+    <meta name="ICBM" content="37.4563, 126.7052">
+    
+    <!-- Combined CSS for Vercel -->
+    <link rel="stylesheet" href="./assets/css/main.css?v=20241203" data-critical>
+    <link rel="stylesheet" href="./assets/css/icons.css" data-critical>
+    
+    <!-- Removed inline z-index overrides; rely on stylesheet stacking -->
+    
+    <!-- Font Optimization -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=optional" rel="stylesheet">
+    
+    <!-- Font Loading Detection -->
+    <script>
+    if ('fonts' in document) {
+        Promise.all([
+            document.fonts.load('400 1em "Black Han Sans"'),
+        ]).then(() => {
+            document.documentElement.classList.add('fonts-loaded');
+        }).catch(() => {
+            document.documentElement.classList.add('fonts-fallback');
+        });
+    }
+    </script>
+    
+    <!-- Resource Preloader (Critical) -->
+    <script src="./assets/js/utils/resource-preloader.js" data-critical></script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body style="background: #0A0A0A; margin: 0; padding: 0;">
+    
+    <!-- Main Navigation -->
+    <nav class="main-navigation">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="#hero" class="nav-logo">
+                <span class="nav-logo-text">CHIRO</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="/" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="./pages/portfolio/portfolio.html" class="nav-link">Portfolio</a></li>
+                <li class="nav-item"><a href="./pages/about/about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="./pages/contact/contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            
+            <!-- CTA Button -->
+            <div class="nav-cta">
+                <a href="#contact" class="nav-contact-btn">Start Project</a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+                <span class="nav-toggle-line"></span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div class="nav-mobile-menu">
+        <a href="index.html" class="nav-mobile-link active">Home</a>
+        <a href="portfolio.html" class="nav-mobile-link">Portfolio</a>
+        <a href="about.html" class="nav-mobile-link">About</a>
+        <a href="contact.html" class="nav-mobile-link">Contact</a>
+        <a href="#contact" class="nav-mobile-link nav-mobile-cta">Start Project</a>
+    </div>
+    
+    <!-- Section Indicator -->
+    <div class="nav-indicator">
+        <div class="nav-indicator-dot active" data-target="#hero" data-section="Hero"></div>
+        <div class="nav-indicator-dot" data-target="#portfolio" data-section="Portfolio"></div>
+        <div class="nav-indicator-dot" data-target="#services" data-section="Services"></div>
+        <div class="nav-indicator-dot" data-target="#pricing" data-section="Pricing"></div>
+        <div class="nav-indicator-dot" data-target="#contact" data-section="Contact"></div>
+    </div>
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <!-- Background Video -->
+        <div class="hero-video-container">
+            <video class="hero-video" autoplay muted loop playsinline preload="auto">
+                <source src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/video/bennervideo.mp4" type="video/mp4">
+            </video>
+            <div class="hero-video-overlay"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="hero-content">
+            <!-- Top Left: Main Text -->
+            <div class="hero-top-left">
+                <div class="hero-main-text">
+                    <h1 class="hero-title-line slide-up stagger-1">Integrated</h1>
+                    <h1 class="hero-title-line slide-up stagger-2">Brand eXperience</h1>
+                    <h1 class="hero-title-line slide-up stagger-3">Solutions</h1>
+                    <p class="hero-subtitle slide-up stagger-4">for your Brand</p>
+                </div>
+            </div>
+            
+            <!-- Top Right: Project Badge -->
+            <div class="hero-top-right">
+                <div class="hero-badge slide-down stagger-2">
+                    <span class="badge-number">37+</span>
+                    <span class="badge-text">Projects</span>
+                </div>
+            </div>
+            
+            <!-- Center: Typing Animation -->
+            <div class="hero-center">
+                <div class="hero-logo">
+                    <h1 class="logo-text scale-in">CHIRO</h1>
+                </div>
+                <div class="typing-container">
+                    <span class="typing-text" id="typingText"></span>
+                    <span class="typing-cursor">|</span>
+                </div>
+            </div>
+            
+            <!-- Bottom Left: Social Links -->
+            <div class="hero-bottom-left">
+                <div class="social-links slide-up stagger-5">
+                    <a href="https://www.youtube.com/channel/UC-mYXhA_p0FEIFsQzTSbuRg" target="_blank" class="social-link">Youtube</a>
+                    <span class="social-divider">|</span>
+                    <a href="https://www.instagram.com/75web_chiro?igsh=MWR0NzF3Mmc0M2EzcQ==" target="_blank" class="social-link">Instagram</a>
+                    <span class="social-divider">|</span>
+                    <a href="https://blog.naver.com/tlsdnjs812" target="_blank" class="social-link">Blog</a>
+                    <span class="social-divider">|</span>
+                    <a href="https://kmong.com/@%EC%B9%98%EB%A1%9C%EC%9B%B9%EB%94%94%EC%9E%90%EC%9D%B8" target="_blank" class="social-link">Kmong</a>
+                </div>
+                <div class="copyright slide-up stagger-6">
+                    <p>&copy; Chiro. All rights reserved.</p>
+                </div>
+            </div>
+            
+            <!-- Bottom Right: Contact CTA -->
+            <div class="hero-bottom-right">
+                <div class="scroll-indicator slide-up stagger-5">
+                    <p class="scroll-text">SCROLL TO DISCOVER</p>
+                    <p class="scroll-subtitle">CLICK ON ME</p>
+                    <div class="scroll-arrows">
+                        <div class="scroll-arrow"></div>
+                        <div class="scroll-arrow"></div>
+                    </div>
+                </div>
+                <a href="#contact" class="contact-cta slide-up stagger-6">
+                    <span class="cta-number">01</span>
+                    <span class="cta-text">Contact</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio-section section-portfolio">
+        <div class="container">
+            <!-- Section Title -->
+            <div class="section-header">
+                <h2 class="section-title">Selected Works</h2>
+                <p class="section-subtitle">Showcasing our latest digital experiences</p>
+            </div>
+            
+            <!-- Portfolio Grid -->
+            <div class="portfolio-grid">
+                <!-- Project 1 -->
+                <div class="portfolio-item" data-category="Web">
+                    <a href="https://nbpkorea.vercel.app/" target="_blank" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/nbpkorea.jpg" alt="NBPKOREA" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <div class="portfolio-info">
+                                    <h3 class="project-title">NBPKOREA</h3>
+                                    <p class="project-category">Gas Equipment</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="portfolio-item" data-category="Web">
+                    <a href="https://hospi-7sfl.vercel.app/" target="_blank" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/mansolution.jpg" alt="Man Solution" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <div class="portfolio-info">
+                                    <h3 class="project-title">Man Solution</h3>
+                                    <p class="project-category">Men's Health</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="portfolio-item" data-category="Web">
+                    <a href="https://funiture-olive.vercel.app/" target="_blank" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/FUNI.jpg" alt="FUNI" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <div class="portfolio-info">
+                                    <h3 class="project-title">FUNI</h3>
+                                    <p class="project-category">Interior Design</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="portfolio-item" data-category="Web">
+                    <a href="https://photo-cyan-five.vercel.app/" target="_blank" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/STUDIO.jpg" alt="Studio" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <div class="portfolio-info">
+                                    <h3 class="project-title">STUDIO</h3>
+                                    <p class="project-category">Photo Studio</p>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- View All Button -->
+            <div class="portfolio-cta">
+                <a href="#portfolio" class="btn-secondary">
+                    View All Projects
+                    <span class="btn-arrow">→</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section (Horizontal Scroll) -->
+    <section id="services" class="horizontal-scroll-section">
+        <!-- Background Video -->
+        <div class="horizontal-video-container">
+            <video class="horizontal-video" autoplay muted loop playsinline preload="auto" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23111111'/%3E%3C/svg%3E">
+                <source src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/video/secondvideo.mp4" type="video/mp4">
+            </video>
+            <div class="horizontal-video-overlay"></div>
+        </div>
+        
+        <!-- Horizontal Scroll Container -->
+        <div class="horizontal-container">
+            <div class="horizontal-wrapper">
+                <!-- Panel 1: Strategy -->
+                <div class="horizontal-panel" data-panel="1">
+                    <div class="panel-content">
+                        <div class="panel-main-title">STRATEGY</div>
+                        <div class="panel-subtitle">Business Analysis</div>
+                        <div class="panel-description">시장 분석, 경쟁사 리서치, 타겟 정의</div>
+                    </div>
+                </div>
+                
+                <!-- Panel 2: Planning -->
+                <div class="horizontal-panel" data-panel="2">
+                    <div class="panel-content">
+                        <div class="panel-main-title">PLANNING</div>
+                        <div class="panel-subtitle">Service Blueprint</div>
+                        <div class="panel-description">유저 플로우, 와이어프레임, 정보 구조</div>
+                    </div>
+                </div>
+                
+                <!-- Panel 3: Design -->
+                <div class="horizontal-panel" data-panel="3">
+                    <div class="panel-content">
+                        <div class="panel-main-title">DESIGN</div>
+                        <div class="panel-subtitle">Visual Identity</div>
+                        <div class="panel-description">UI/UX, 브랜드 시스템, 프로토타입</div>
+                    </div>
+                </div>
+                
+                <!-- Panel 4: Develop -->
+                <div class="horizontal-panel" data-panel="4">
+                    <div class="panel-content">
+                        <div class="panel-main-title">DEVELOP</div>
+                        <div class="panel-subtitle">Implementation</div>
+                        <div class="panel-description">프론트엔드, 백엔드, 최적화</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress Indicators -->
+        <div class="progress-indicators">
+            <div class="progress-dot active" data-dot="1"></div>
+            <div class="progress-dot" data-dot="2"></div>
+            <div class="progress-dot" data-dot="3"></div>
+            <div class="progress-dot" data-dot="4"></div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing-section section-pricing">
+        <div class="container">
+            <!-- Section Header -->
+            <div class="section-header">
+                <h2 class="section-title">Simple Pricing</h2>
+                <p class="section-subtitle">Choose the package that fits your needs</p>
+            </div>
+            
+            <!-- Pricing Cards -->
+            <div class="pricing-grid">
+                <!-- Startup Tier -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Startup</h3>
+                        <p class="pricing-subtitle">Perfect for new businesses</p>
+                        <div class="pricing-price">
+                            <span class="price-amount">80만원</span>
+                            <span class="price-period">/ 프로젝트</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>웹사이트 디자인 & 개발</li>
+                        <li>반응형 디자인</li>
+                        <li>기본 SEO 설정</li>
+                        <li>3회 수정</li>
+                        <li>1개월 유지보수</li>
+                    </ul>
+                    <a href="#contact" class="pricing-cta btn-secondary pricing-cta-hover">Get Started</a>
+                </div>
+                
+                <!-- Growth Tier -->
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Growth</h3>
+                        <p class="pricing-subtitle">For growing businesses</p>
+                        <div class="pricing-price">
+                            <span class="price-amount">180만원</span>
+                            <span class="price-period">/ 프로젝트</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>웹사이트 + 브랜드 아이덴티티</li>
+                        <li>반응형 디자인</li>
+                        <li>고급 SEO 최적화</li>
+                        <li>CMS 개발</li>
+                        <li>5회 수정</li>
+                        <li>3개월 유지보수</li>
+                        <li>기본 마케팅 설정</li>
+                    </ul>
+                    <a href="#contact" class="pricing-cta btn-primary">Get Started</a>
+                </div>
+                
+                <!-- Scale Tier -->
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Scale</h3>
+                        <p class="pricing-subtitle">For established businesses</p>
+                        <div class="pricing-price">
+                            <span class="price-amount">300만원</span>
+                            <span class="price-period">/ 프로젝트</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>전체 디지털 솔루션</li>
+                        <li>웹사이트 + 브랜드 + 마케팅</li>
+                        <li>고급 기능 개발</li>
+                        <li>성능 최적화</li>
+                        <li>무제한 수정</li>
+                        <li>6개월 유지보수</li>
+                        <li>마케팅 캠페인 설정</li>
+                        <li>월간 리포트</li>
+                    </ul>
+                    <a href="#contact" class="pricing-cta btn-secondary pricing-cta-hover">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section section-contact" id="contact">
+        <div class="container">
+            <!-- Section Header -->
+            <div class="section-header">
+                <h2 class="section-title">아직도 고민하세요?</h2>
+                <p class="section-subtitle">경쟁사는 이미 시작했습니다. 지금이 기회입니다.</p>
+            </div>
+            
+            <!-- Contact Content -->
+            <div class="contact-content">
+                <!-- CTA Button -->
+                <div class="contact-cta">
+                    <a href="contact.html" class="cta-button">무료 상담하기</a>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="icon icon-mail"></i></div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <p>chiroweb75@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="icon icon-chat"></i></div>
+                        <div class="contact-details">
+                            <h4>상담가능시간</h4>
+                            <p>평일 언제든지</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="icon icon-clock"></i></div>
+                        <div class="contact-details">
+                            <h4>Working Hours</h4>
+                            <p>Mon - Fri, 9AM - 6PM KST</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="site-footer">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <h3>CHIRO</h3>
+                        <p>Creating digital excellence through innovative design and development.</p>
+                    </div>
+                    <div class="footer-links">
+                        <div class="footer-column">
+                            <h4>Services</h4>
+                            <ul>
+                                <li><a href="#services">Web Development</a></li>
+                                <li><a href="#services">Brand Identity</a></li>
+                                <li><a href="#services">Digital Marketing</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Company</h4>
+                            <ul>
+                                <li><a href="#about">About</a></li>
+                                <li><a href="#portfolio">Portfolio</a></li>
+                                <li><a href="#contact">Contact</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Connect</h4>
+                            <ul>
+                                <li><a href="https://www.youtube.com/channel/UC-mYXhA_p0FEIFsQzTSbuRg" target="_blank">Youtube</a></li>
+                                <li><a href="https://www.instagram.com/75web_chiro?igsh=MWR0NzF3Mmc0M2EzcQ==" target="_blank">Instagram</a></li>
+                                <li><a href="https://blog.naver.com/tlsdnjs812" target="_blank">Blog</a></li>
+                                <li><a href="https://kmong.com/@%EC%B9%98%EB%A1%9C%EC%9B%B9%EB%94%94%EC%9E%90%EC%9D%B8" target="_blank">Kmong</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2024 Chiro. All rights reserved.</p>
+                </div>
+            </footer>
+        </div>
+    </section>
+
+    <!-- 구조화된 데이터 (Schema Markup) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "@id": "https://chiro-psi.vercel.app/#organization",
+        "name": "치로웹디자인",
+        "alternateName": "치로 웹디자인",
+        "url": "https://chiro-psi.vercel.app",
+        "logo": "https://chiro-psi.vercel.app/logo.png",
+        "image": "https://chiro-psi.vercel.app/office-image.jpg",
+        "description": "인천 지역 최고의 가성비 웹디자인 전문 업체. 스타트업과 중소기업을 위한 맞춤형 홈페이지 제작.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "인천광역시 연수구",
+            "addressLocality": "인천",
+            "addressRegion": "인천광역시",
+            "postalCode": "21900",
+            "addressCountry": "KR"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 37.4563,
+            "longitude": 126.7052
+        },
+        "telephone": "+82-32-123-4567",
+        "email": "hello@chiro.com",
+        "priceRange": "₩800,000 - ₩3,000,000",
+        "openingHoursSpecification": [{
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "09:00",
+            "closes": "18:00"
+        }],
+        "areaServed": [{
+            "@type": "City",
+            "name": "인천"
+        }, {
+            "@type": "Country",
+            "name": "대한민국"
+        }],
+        "serviceType": ["웹디자인", "홈페이지 제작", "반응형 웹사이트 제작", "랜딩페이지 제작"],
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "47"
+        },
+        "founder": {
+            "@type": "Person",
+            "name": "Chiro Team"
+        },
+        "sameAs": [
+            "https://www.youtube.com/channel/UC-mYXhA_p0FEIFsQzTSbuRg",
+            "https://www.instagram.com/75web_chiro",
+            "https://blog.naver.com/tlsdnjs812",
+            "https://kmong.com/@%EC%B9%98%EB%A1%9C%EC%9B%B9%EB%94%94%EC%9E%90%EC%9D%B8"
+        ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://chiro-psi.vercel.app",
+        "name": "치로웹디자인",
+        "description": "인천 최고의 가성비 웹디자인! 스타트업·중소기업 맞춤형 홈페이지 제작",
+        "publisher": {
+            "@type": "Organization",
+            "name": "치로웹디자인"
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://chiro-psi.vercel.app/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": "웹디자인 서비스",
+        "provider": {
+            "@type": "Organization",
+            "name": "치로웹디자인",
+            "url": "https://chiro-psi.vercel.app"
+        },
+        "areaServed": {
+            "@type": "Country",
+            "name": "대한민국"
+        },
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "웹디자인 서비스 패키지",
+            "itemListElement": [{
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "베이직 패키지",
+                    "description": "5페이지 반응형 웹사이트, 기본 SEO 최적화 포함"
+                },
+                "price": "800000",
+                "priceCurrency": "KRW"
+            }, {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "프리미엄 패키지",
+                    "description": "10페이지 반응형 웹사이트, 고급 SEO 최적화, 블로그 기능"
+                },
+                "price": "1800000",
+                "priceCurrency": "KRW"
+            }, {
+                "@type": "Offer",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "맞춤형 패키지",
+                    "description": "무제한 페이지, 맞춤 기능 개발, 1년 유지보수 포함"
+                },
+                "price": "3000000",
+                "priceCurrency": "KRW"
+            }]
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "홈",
+            "item": "https://chiro-psi.vercel.app/"
+        }]
+    }
+    </script>
+
+    <!-- Performance Optimization Scripts -->
+    <script src="./assets/js/utils/image-optimization.js" data-critical></script>
+    <!-- <script src="./assets/js/utils/video-optimization.js" data-critical></script> -->
+    
+    <!-- Core Application Scripts -->
+    <script src="./assets/js/api/api-config.js"></script>
+    <script src="./assets/js/api/data-manager.js"></script>
+    <script src="./pages/home/components/hero.js"></script>
+    <script src="./pages/home/navigation.js"></script>
+    <script src="./pages/home/components/horizontal-scroll.js"></script>
+    <!-- <script src="../portfolio/portfolio.js"></script> -->
+    <script src="./pages/home/main.js"></script>
+</body>
+</html>
