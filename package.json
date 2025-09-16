@@ -1,8 +1,0 @@
-{
-  "name": "chiro-frontend",
-  "version": "1.0.0",
-  "description": "CHIRO 웹사이트 프론트엔드",
-  "scripts": {
-    "build": "echo 'Static frontend - no build needed'"
-  }
-}

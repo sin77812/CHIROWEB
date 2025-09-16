@@ -1,4 +1,18 @@
 {
+  "functions": {
+    "pages/home/index.html": {
+      "runtime": "static"
+    },
+    "pages/portfolio/portfolio.html": {
+      "runtime": "static"
+    },
+    "pages/about/about.html": {
+      "runtime": "static"
+    },
+    "pages/contact/contact.html": {
+      "runtime": "static"
+    }
+  },
   "rewrites": [
     {
       "source": "/",
@@ -15,17 +29,6 @@
     {
       "source": "/contact",
       "destination": "/pages/contact/contact.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=86400"
-        }
-      ]
     }
   ]
 }
