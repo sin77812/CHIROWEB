@@ -124,11 +124,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         observer.observe(video);
         
-        // Mobile video handling
+        // Mobile video handling - Video is now enabled on mobile
+        /*
         if (window.innerWidth <= 768) {
             video.style.display = 'none';
             document.querySelector('.hero-video-overlay').style.background = 'rgba(10, 10, 10, 0.8)';
         }
+        */
     }
 });
 

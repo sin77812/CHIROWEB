@@ -226,13 +226,15 @@
 @font-face {
     font-family: 'Pretendard';
     font-display: swap;
-    src: local('Pretendard');
+    src: local('Pretendard'),
+         url('https://chiro-web.s3.ap-northeast-2.amazonaws.com/ponts/PretendardVariable.woff2') format('woff2');
 }
 
 @font-face {
     font-family: 'Black Han Sans';
     font-display: swap;
-    src: local('Black Han Sans');
+    src: local('Black Han Sans'),
+         url('https://chiro-web.s3.ap-northeast-2.amazonaws.com/ponts/BlackHanSans.woff2') format('woff2');
 }
 
 /* Reduce layout shift */
