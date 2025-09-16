@@ -29,24 +29,33 @@
             setupScrollBehavior();
             setupMobileMenu();
             setupSectionIndicator();
-            setupSmoothScrolling();
-            updateActiveSection();
+            // setupSmoothScrolling(); // MOVED to main.js
+            // updateActiveSection(); // MOVED to main.js
         }
         
         // Handle mobile layout adjustments
         function handleMobileLayout() {
-            const navCta = document.querySelector('.nav-cta');
+            const contactBtn = document.querySelector('.nav-contact-btn');
+            const navCtaContainer = document.querySelector('.nav-cta');
             const isMobile = window.innerWidth <= 768;
-            
-            if (navCta) {
+
+            if (contactBtn) {
                 if (isMobile) {
-                    // Remove nav-cta on mobile to prevent overlap
-                    navCta.style.display = 'none';
-                    navCta.style.visibility = 'hidden';
+                    // Hide only the contact button on mobile, not the whole container
+                    contactBtn.style.display = 'none';
                 } else {
-                    // Show nav-cta on desktop
-                    navCta.style.display = '';
-                    navCta.style.visibility = '';
+                    // Show contact button on desktop
+                    contactBtn.style.display = '';
+                }
+            }
+            
+            // Also ensure the container itself isn't hidden by JS if it affects layout
+            if (navCtaContainer) {
+                if(isMobile) {
+                    // Use a class to hide instead of direct style manipulation for easier CSS debugging
+                    navCtaContainer.classList.add('mobile-hidden');
+                } else {
+                    navCtaContainer.classList.remove('mobile-hidden');
                 }
             }
         }
@@ -82,7 +91,7 @@
                 }
                 
                 lastScrollY = currentScrollY;
-                updateActiveSection();
+                // updateActiveSection(); // MOVED to main.js
                 ticking = false;
             }
         }
@@ -126,51 +135,6 @@
             navToggle.classList.remove('active');
             mobileMenu.classList.remove('active');
             document.body.style.overflow = '';
-        }
-        
-        // Section Indicator Functionality
-        function setupSectionIndicator() {
-            indicatorDots.forEach(dot => {
-                dot.addEventListener('click', () => {
-                    const targetSection = dot.getAttribute('data-target');
-                    const targetElement = document.querySelector(targetSection);
-                    
-                    if (targetElement) {
-                        const offsetTop = targetElement.offsetTop; // No offset needed for full viewport sections
-                        
-                        window.scrollTo({
-                            top: offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-        }
-        
-        // Smooth Scrolling for Navigation Links
-        function setupSmoothScrolling() {
-            navLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    const href = link.getAttribute('href');
-                    
-                    // Handle anchor links
-                    if (href && href.startsWith('#')) {
-                        e.preventDefault();
-                        const targetElement = document.querySelector(href);
-                        
-                        if (targetElement) {
-                            const offsetTop = targetElement.offsetTop;
-                            
-                            window.scrollTo({
-                                top: offsetTop,
-                                behavior: 'smooth'
-                            });
-                            
-                            closeMobileMenu();
-                        }
-                    }
-                });
-            });
         }
         
         // Update Active Section Based on Scroll Position

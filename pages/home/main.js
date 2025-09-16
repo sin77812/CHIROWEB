@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initContactForm();
     initScrollToTop();
     initIntersectionObservers();
+    initNavigationHighlighting();
 });
 
 // Smooth scrolling for all anchor links

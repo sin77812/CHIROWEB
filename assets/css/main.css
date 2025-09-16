@@ -1501,6 +1501,8 @@ section {
   .pricing-features li {
     font-size: var(--font-caption);
     padding: var(--space-min) 0;
+    position: relative; /* 아이콘 위치 기준점 */
+    padding-left: 20px; /* 아이콘이 들어갈 공간 확보 */
   }
 }
 

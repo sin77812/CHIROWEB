@@ -56,7 +56,7 @@ window.addEventListener('load', () => {
             end: () => `+=${scrollDistance}`,  // extraViewTime 제거
             pin: true,
             pinType: 'fixed',
-            scrub: true,
+            scrub: 1,
             invalidateOnRefresh: true,
             anticipatePin: 0,
             fastScrollEnd: true,
@@ -84,7 +84,6 @@ window.addEventListener('load', () => {
     // 패널 이동 애니메이션
     tl.to(wrapper, {
         x: -scrollDistance,
-        ease: "none",
         force3D: true,
         transformOrigin: "0 0"
     });
