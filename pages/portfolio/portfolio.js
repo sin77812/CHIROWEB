@@ -10,7 +10,7 @@ const portfolioData = [
                 category: "web",
                 year: 2024,
                 description: "친환경 가스히터 설비 전문업체의 기업 웹사이트",
-                thumbnail: "images/portfolio/nbpkorea.jpg",
+                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/nbpkorea.jpg",
                 url: "https://nbpkorea.vercel.app/",
                 featured: true
             },
@@ -20,7 +20,7 @@ const portfolioData = [
                 category: "web",
                 year: 2024,
                 description: "일본식 프렌치 레스토랑의 우아하고 세련된 브랜드 웹사이트",
-                thumbnail: "images/portfolio/goyomisik.jpg",
+                thumbnail: "../../assets/images/portfolio/goyomisik.jpg",
                 url: "https://japanese-french.vercel.app/",
                 featured: true
             },
@@ -30,7 +30,7 @@ const portfolioData = [
                 category: "web", 
                 year: 2024,
                 description: "개인 맞춤형 피트니스 솔루션 헬스장 웹사이트",
-                thumbnail: "images/portfolio/LPT.jpg",
+                thumbnail: "../../assets/images/portfolio/LPT.jpg",
                 url: "https://gym-umber-three.vercel.app/",
                 featured: true
             },
@@ -40,7 +40,7 @@ const portfolioData = [
                 category: "web",
                 year: 2024, 
                 description: "특별한 순간을 기록하는 프리미엄 사진관 웹사이트",
-                thumbnail: "images/portfolio/STUDIO.jpg",
+                thumbnail: "../../assets/images/portfolio/STUDIO.jpg",
                 url: "https://photo-cyan-five.vercel.app/",
                 featured: true
             },
@@ -50,7 +50,7 @@ const portfolioData = [
                 category: "web",
                 year: 2024,
                 description: "창의적인 공간 디자인을 전문으로 하는 인테리어 회사",
-                thumbnail: "images/portfolio/FUNI.jpg",
+                thumbnail: "../../assets/images/portfolio/FUNI.jpg",
                 url: "https://funiture-olive.vercel.app/",
                 featured: false
             },
@@ -60,7 +60,7 @@ const portfolioData = [
                 category: "web",
                 year: 2024,
                 description: "엔터테인먼트 업계의 혁신을 추구하는 기업 웹사이트",
-                thumbnail: "images/portfolio/K&J.jpg",
+                thumbnail: "../../assets/images/portfolio/K&J.jpg",
                 url: "https://kjco.vercel.app/",
                 featured: false
             },
@@ -70,7 +70,7 @@ const portfolioData = [
                 category: "web",
                 year: 2024,
                 description: "성수동의 감성 넘치는 스페셜티 커피숍 웹사이트",
-                thumbnail: "images/portfolio/NEDCOFY.jpg",
+                thumbnail: "../../assets/images/portfolio/NEDCOFY.jpg",
                 url: "https://coffee-sigma-tawny.vercel.app/",
                 featured: false
             },
@@ -80,7 +80,7 @@ const portfolioData = [
                 category: "web",
                 year: 2024,
                 description: "전문적인 스피치 교육을 제공하는 학원 웹사이트",
-                thumbnail: "images/portfolio/gracespeech.jpg",
+                thumbnail: "../../assets/images/portfolio/gracespeech.jpg",
                 url: "https://grace-speech.vercel.app/",
                 featured: false
             },
@@ -90,7 +90,7 @@ const portfolioData = [
                 category: "web",
                 year: 2024,
                 description: "개인 맞춤 운동 프로그램을 제공하는 헬스장",
-                thumbnail: "images/portfolio/ONLYGYM.jpg",
+                thumbnail: "../../assets/images/portfolio/ONLYGYM.jpg",
                 url: "https://www.onlygym247.com/",
                 featured: false
             },
@@ -100,7 +100,7 @@ const portfolioData = [
                 category: "web",
                 year: 2024,
                 description: "남성 전용 의료 서비스를 제공하는 전문 클리닉",
-                thumbnail: "images/portfolio/mansolution.jpg",
+                thumbnail: "../../assets/images/portfolio/mansolution.jpg",
                 url: "https://mansolution.co.kr/",
                 featured: false
             }
@@ -145,7 +145,7 @@ function loadPortfolioData() {
                         alt="${item.title}" 
                         loading="lazy" 
                         data-fallback="https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}"
-                        onerror="this.onerror=null; this.src=this.dataset.fallback || 'images/portfolio/placeholder.jpg';"
+                        onerror="this.onerror=null; this.src=this.dataset.fallback || '../../assets/images/portfolio/placeholder.jpg';"
                         class="portfolio-image-optimized loaded">
                     <div class="portfolio-overlay">
                         <div class="portfolio-info">
@@ -187,37 +187,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // 메인 페이지에서만 포트폴리오 로드
     if (document.querySelector('.portfolio-section')) {
         console.log('Main page detected, loading portfolio...');
-        // 여러 번 시도
+        // 한 번만 실행
         loadPortfolioData();
-        setTimeout(loadPortfolioData, 100);
-        setTimeout(loadPortfolioData, 500);
-        setTimeout(loadPortfolioData, 1000);
     }
     
-    initPortfolioAnimations();
 });
-
-// Initialize portfolio animations
-function initPortfolioAnimations() {
-    const portfolioSection = document.querySelector('.portfolio-section');
-    
-    if (!portfolioSection) return;
-    
-    // Intersection Observer for scroll animations
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.2,
-        rootMargin: '-50px 0px'
-    });
-    
-    observer.observe(portfolioSection);
-}
 
 // Initialize image loading with fade-in effect
 function initImageLoading() {

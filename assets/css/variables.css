@@ -1,0 +1,99 @@
+/* CSS Variables - CHIRO Design System */
+
+:root {
+  /* Background Colors */
+  --primary-bg: #0A0A0A;
+  --secondary-bg: #111111;
+  --card-bg: #1A1A1A;
+  
+  /* Navigation */
+  --nav-height: 80px;
+  
+  /* Text Colors */
+  --primary-text: #FFFFFF;
+  --secondary-text: #A0A0A0;
+  --disabled-text: #666666;
+  
+  /* Accent Colors */
+  --accent-red: #FF3B30;
+  --accent-blue: #007AFF;
+  --success: #34C759;
+  --warning: #FF9500;
+  
+  /* Border Colors */
+  --primary-border: #2A2A2A;
+  --secondary-border: #1F1F1F;
+  --hover-border: #3A3A3A;
+  
+  /* Typography */
+  --font-en-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-en-secondary: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-korean: 'Pretendard', 'Spoqa Han Sans Neo', sans-serif;
+  --font-code: 'JetBrains Mono', Monaco, 'Cascadia Code', monospace;
+  --font-title: 'Black Han Sans', sans-serif;
+  --font-primary: var(--font-en-primary);
+  
+  /* Font Sizes */
+  --font-display-large: 4.5rem;  /* 72px */
+  --font-display: 3.5rem;        /* 56px */
+  --font-h1: 3rem;               /* 48px */
+  --font-h2: 2.25rem;            /* 36px */
+  --font-h3: 1.75rem;            /* 28px */
+  --font-h4: 1.5rem;             /* 24px */
+  --font-body-large: 1.25rem;    /* 20px */
+  --font-body: 1rem;             /* 16px */
+  --font-caption: 0.875rem;      /* 14px */
+  --font-micro: 0.75rem;         /* 12px */
+  
+  /* Font Weights */
+  --font-thin: 100;
+  --font-light: 300;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-black: 900;
+  
+  /* Spacing */
+  --space-section: 160px;
+  --space-component: 80px;
+  --space-element: 40px;
+  --space-text: 24px;
+  --space-min: 8px;
+  
+  /* Animation */
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-very-slow: 1000ms;
+  
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* Layout */
+  --container-max-width: 1440px;
+  --container-padding: 5%;
+  --grid-gap: 24px;
+  --border-radius: 8px;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.6;
+  --line-height-loose: 1.8;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  :root {
+    --font-display-large: 3rem;
+    --font-display: 2.5rem;
+    --font-h1: 2rem;
+    --font-h2: 1.75rem;
+    --font-h3: 1.5rem;
+    --space-section: 80px;
+    --space-component: 40px;
+    --space-element: 24px;
+    --container-padding: 20px;
+  }
+}

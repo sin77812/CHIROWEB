@@ -1,5 +1,35 @@
 /* Contact Page Styles */
 
+/* Font Loading Optimization */
+.contact-hero-title, 
+.form-title, 
+h1, h2, h3 {
+  /* Initial state - system fonts for fast rendering */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+  font-weight: 900;
+  transition: font-family 0.1s ease;
+}
+
+/* After web fonts loaded successfully */
+.fonts-loaded .contact-hero-title,
+.fonts-loaded .form-title,
+.fonts-loaded h1, 
+.fonts-loaded h2, 
+.fonts-loaded h3 {
+  font-family: "Black Han Sans", sans-serif;
+  font-weight: 400;
+}
+
+/* Fallback if web fonts fail to load */
+.fonts-fallback .contact-hero-title,
+.fonts-fallback .form-title,
+.fonts-fallback h1, 
+.fonts-fallback h2, 
+.fonts-fallback h3 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+  font-weight: 900;
+}
+
 /* Contact Hero Section */
 .contact-hero-section {
   min-height: 60vh;
@@ -494,6 +524,78 @@
 .success-btn.secondary:hover {
   background: var(--card-bg);
   color: var(--primary-text);
+}
+
+/* Success Page Styles */
+.success-page {
+  text-align: center !important;
+  padding: 40px !important;
+  background: var(--card-bg) !important;
+  border-radius: 12px !important;
+  margin-top: 20px !important;
+}
+
+.success-content {
+  margin-top: 40px !important;
+}
+
+.success-content .success-icon {
+  margin-bottom: 24px !important;
+}
+
+.success-content h2 {
+  color: #FFFFFF !important;
+  margin: 24px 0 16px 0 !important;
+  font-size: 28px !important;
+  font-weight: 600 !important;
+}
+
+.success-content p {
+  color: #A0A0A0 !important;
+  margin: 0 0 32px 0 !important;
+  line-height: 1.5 !important;
+  font-size: 16px !important;
+}
+
+.success-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.success-actions a,
+.success-actions button {
+  padding: 16px 32px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+}
+
+.success-actions a {
+  background: #FF3B30;
+  color: #FFFFFF;
+}
+
+.success-actions a:hover {
+  background: #E63328;
+  transform: translateY(-2px);
+}
+
+.success-actions button {
+  background: transparent;
+  color: #A0A0A0;
+  border: 1px solid #2A2A2A;
+}
+
+.success-actions button:hover {
+  background: #1A1A1A;
+  color: #FFFFFF;
+  border-color: #3A3A3A;
 }
 
 /* Contact Information */

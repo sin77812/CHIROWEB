@@ -275,6 +275,78 @@ Caption: 14px
 - 비디오 배경 → 정적 이미지
 - 플로팅 요소 → 고정 배치
 
+📁 프로젝트 구조 (2024년 12월 기준)
+
+## 현재 문제점
+- 루트 디렉토리에 모든 파일이 혼재되어 있음
+- 페이지별 파일 구분이 불명확
+- 중복된 CSS/JS 파일들
+- 불필요한 테스트 파일들 산재
+- 비디오 파일들이 체계적으로 관리되지 않음
+
+## 새로운 폴더 구조 (제안)
+```
+realchiro/
+├── pages/                  # 페이지별 분리
+│   ├── home/
+│   │   ├── index.html
+│   │   ├── home.css
+│   │   ├── home.js
+│   │   └── components/
+│   │       ├── hero.js
+│   │       ├── horizontal-scroll.js
+│   │       └── portfolio-grid.js
+│   ├── about/
+│   │   ├── about.html
+│   │   ├── about.css
+│   │   └── about.js
+│   ├── portfolio/
+│   │   ├── portfolio.html
+│   │   ├── portfolio.css
+│   │   └── portfolio.js
+│   └── contact/
+│       ├── contact.html
+│       ├── contact.css
+│       └── contact.js
+├── assets/
+│   ├── css/
+│   │   ├── global.css      # 전역 스타일
+│   │   ├── variables.css   # CSS 변수
+│   │   └── components.css  # 공통 컴포넌트
+│   ├── js/
+│   │   ├── utils/          # 유틸리티 함수들
+│   │   ├── api/            # API 관련
+│   │   └── libs/           # 외부 라이브러리
+│   ├── images/
+│   │   ├── portfolio/
+│   │   ├── logos/
+│   │   └── og/
+│   └── videos/
+│       ├── hero-video.mp4
+│       ├── horizontal-scroll.mp4
+│       └── about-video.mp4
+├── dist/                   # 빌드된 파일들
+├── docs/
+│   ├── CLAUDE.md
+│   └── README.md
+└── config/
+    ├── vercel.json
+    ├── robots.txt
+    └── sitemap.xml
+```
+
+## 제거할 파일들
+- debug-*.html (테스트 파일들)
+- test-*.html
+- 중복된 CSS 파일들 (about.css, hero.css 등)
+- 사용하지 않는 비디오 파일들
+- node_modules (재설치 필요)
+
+## 통합할 파일들
+- 모든 CSS를 global.css, components.css, variables.css로 통합
+- 페이지별 JS 파일들을 각 페이지 폴더로 이동
+- 공통 JS 유틸리티들을 assets/js/utils/로 이동
+
 ✅ 필수 준수 사항
 
 모든 텍스트는 #FFFFFF 또는 #A0A0A0만 사용
@@ -285,7 +357,6 @@ Caption: 14px
 이미지는 WebP 포맷 우선 사용
 폰트는 Variable Font 사용 (용량 최적화)
 
-
 🚫 절대 금지 사항
 
 밝은 배경 사용 금지
@@ -295,3 +366,11 @@ Caption: 14px
 3초 이상의 애니메이션 금지
 팝업 광고 금지
 Comic Sans 폰트 금지
+
+📋 재구성 단계
+1. 새 폴더 구조 생성
+2. 파일들을 적절한 위치로 이동
+3. HTML 파일들의 경로 수정
+4. CSS 파일들 통합
+5. 불필요한 파일 제거
+6. 테스트 및 검증

@@ -5,28 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="/">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logos/chirologo.png">
+    <link rel="apple-touch-icon" href="assets/images/logos/chirologo.png">
+    
     <!-- SEO 메타 태그 -->
-    <title>Chiro 웹디자인 | 인천 홈페이지 제작 전문 업체 | 80만원부터</title>
+    <title>치로웹디자인 | 인천 홈페이지 제작 전문 업체 | 80만원부터</title>
     <meta name="description" content="인천 최고의 가성비 웹디자인! 스타트업·중소기업 맞춤형 홈페이지 제작. 80만원부터 시작하는 합리적인 가격. 무료 상담 가능. 반응형 웹사이트 전문.">
     <meta name="keywords" content="인천 웹디자인, 홈페이지 제작, 웹사이트 제작, 인천 홈페이지 제작, 가성비 웹디자인, 스타트업 홈페이지, 중소기업 웹사이트, 반응형 웹디자인, Chiro">
-    <meta name="author" content="Chiro 웹디자인">
+    <meta name="author" content="치로웹디자인">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://chiro-psi.vercel.app/">
     
     <!-- Open Graph 메타 태그 -->
-    <meta property="og:title" content="Chiro 웹디자인 - 인천 홈페이지 제작 전문">
+    <meta property="og:title" content="치로웹디자인 - 인천 홈페이지 제작 전문">
     <meta property="og:description" content="80만원부터 시작! 스타트업과 중소기업을 위한 맞춤형 웹디자인">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chiro-psi.vercel.app/">
     <meta property="og:image" content="https://chiro-psi.vercel.app/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:site_name" content="Chiro 웹디자인">
+    <meta property="og:site_name" content="치로웹디자인">
     <meta property="og:locale" content="ko_KR">
     
     <!-- Twitter Card 메타 태그 -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Chiro 웹디자인 | 인천 홈페이지 제작">
+    <meta name="twitter:title" content="치로웹디자인 | 인천 홈페이지 제작">
     <meta name="twitter:description" content="80만원부터! 합리적인 가격의 맞춤형 웹디자인">
     <meta name="twitter:image" content="https://chiro-psi.vercel.app/twitter-image.png">
     
@@ -37,31 +41,33 @@
     <meta name="ICBM" content="37.4563, 126.7052">
     
     <!-- Combined CSS for Vercel -->
-    <link rel="stylesheet" href="styles.css" data-critical>
-    <link rel="stylesheet" href="icons.css" data-critical>
-    <link rel="stylesheet" href="performance-optimizations.css" data-critical>
+    <link rel="stylesheet" href="../../assets/css/main.css?v=20241203" data-critical>
+    <link rel="stylesheet" href="../../assets/css/icons.css" data-critical>
     
-    <!-- Force z-index hierarchy -->
-    <style>
-    .about-hero-content, .hero-content, .contact-hero-content, .portfolio-hero-content {
-        position: relative !important;
-        z-index: 999 !important;
-    }
-    .hero-video-background, .hero-video-container, .horizontal-video-container {
-        z-index: -1 !important;
-    }
-    .hero-video, .horizontal-video {
-        z-index: -2 !important;
-    }
-    </style>
+    <!-- Removed inline z-index overrides; rely on stylesheet stacking -->
     
-    <!-- Google Fonts -->
+    <!-- Font Optimization -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=optional" rel="stylesheet">
+    
+    <!-- Font Loading Detection -->
+    <script>
+    if ('fonts' in document) {
+        Promise.all([
+            document.fonts.load('400 1em "Black Han Sans"'),
+        ]).then(() => {
+            document.documentElement.classList.add('fonts-loaded');
+        }).catch(() => {
+            document.documentElement.classList.add('fonts-fallback');
+        });
+    }
+    </script>
     
     <!-- Resource Preloader (Critical) -->
-    <script src="resource-preloader.js" data-critical></script>
+    <script src="./assets/js/utils/resource-preloader.js" data-critical></script>
     
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -79,10 +85,10 @@
             
             <!-- Desktop Menu -->
             <ul class="nav-menu">
-                <li class="nav-item"><a href="index.html" class="nav-link active">Home</a></li>
-                <li class="nav-item"><a href="portfolio.html" class="nav-link">Portfolio</a></li>
-                <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="/" class="nav-link active">Home</a></li>
+                <li class="nav-item"><a href="./pages/portfolio/portfolio.html" class="nav-link">Portfolio</a></li>
+                <li class="nav-item"><a href="./pages/about/about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="./pages/contact/contact.html" class="nav-link">Contact</a></li>
             </ul>
             
             <!-- CTA Button -->
@@ -121,7 +127,7 @@
         <!-- Background Video -->
         <div class="hero-video-container">
             <video class="hero-video" autoplay muted loop playsinline preload="auto">
-                <source src="bennervideo.mp4" type="video/mp4">
+                <source src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/video/bennervideo.mp4" type="video/mp4">
             </video>
             <div class="hero-video-overlay"></div>
         </div>
@@ -160,13 +166,13 @@
             <!-- Bottom Left: Social Links -->
             <div class="hero-bottom-left">
                 <div class="social-links slide-up stagger-5">
-                    <a href="#" class="social-link">Behance</a>
+                    <a href="https://www.youtube.com/channel/UC-mYXhA_p0FEIFsQzTSbuRg" target="_blank" class="social-link">Youtube</a>
                     <span class="social-divider">|</span>
-                    <a href="#" class="social-link">Instagram</a>
+                    <a href="https://www.instagram.com/75web_chiro?igsh=MWR0NzF3Mmc0M2EzcQ==" target="_blank" class="social-link">Instagram</a>
                     <span class="social-divider">|</span>
-                    <a href="#" class="social-link">LinkedIn</a>
+                    <a href="https://blog.naver.com/tlsdnjs812" target="_blank" class="social-link">Blog</a>
                     <span class="social-divider">|</span>
-                    <a href="#" class="social-link">Dribbble</a>
+                    <a href="https://kmong.com/@%EC%B9%98%EB%A1%9C%EC%9B%B9%EB%94%94%EC%9E%90%EC%9D%B8" target="_blank" class="social-link">Kmong</a>
                 </div>
                 <div class="copyright slide-up stagger-6">
                     <p>&copy; Chiro. All rights reserved.</p>
@@ -204,80 +210,62 @@
             <div class="portfolio-grid">
                 <!-- Project 1 -->
                 <div class="portfolio-item" data-category="Web">
-                    <div class="portfolio-image">
-                        <img src="https://picsum.photos/600/400?random=1" alt="Project 1" loading="lazy">
-                        <div class="portfolio-overlay">
-                            <div class="portfolio-info">
-                                <h3 class="project-title">Minimal E-commerce</h3>
-                                <p class="project-category">Web Design</p>
+                    <a href="https://nbpkorea.vercel.app/" target="_blank" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/nbpkorea.jpg" alt="NBPKOREA" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <div class="portfolio-info">
+                                    <h3 class="project-title">NBPKOREA</h3>
+                                    <p class="project-category">Gas Equipment</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 
                 <!-- Project 2 -->
-                <div class="portfolio-item" data-category="Branding">
-                    <div class="portfolio-image">
-                        <img src="https://picsum.photos/600/400?random=2" alt="Project 2" loading="lazy">
-                        <div class="portfolio-overlay">
-                            <div class="portfolio-info">
-                                <h3 class="project-title">Tech Startup Identity</h3>
-                                <p class="project-category">Brand Identity</p>
+                <div class="portfolio-item" data-category="Web">
+                    <a href="https://hospi-7sfl.vercel.app/" target="_blank" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/mansolution.jpg" alt="Man Solution" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <div class="portfolio-info">
+                                    <h3 class="project-title">Man Solution</h3>
+                                    <p class="project-category">Men's Health</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 
                 <!-- Project 3 -->
                 <div class="portfolio-item" data-category="Web">
-                    <div class="portfolio-image">
-                        <img src="https://picsum.photos/600/400?random=3" alt="Project 3" loading="lazy">
-                        <div class="portfolio-overlay">
-                            <div class="portfolio-info">
-                                <h3 class="project-title">SaaS Dashboard</h3>
-                                <p class="project-category">Web Development</p>
+                    <a href="https://funiture-olive.vercel.app/" target="_blank" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/FUNI.jpg" alt="FUNI" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <div class="portfolio-info">
+                                    <h3 class="project-title">FUNI</h3>
+                                    <p class="project-category">Interior Design</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 
                 <!-- Project 4 -->
-                <div class="portfolio-item" data-category="Marketing">
-                    <div class="portfolio-image">
-                        <img src="https://picsum.photos/600/400?random=4" alt="Project 4" loading="lazy">
-                        <div class="portfolio-overlay">
-                            <div class="portfolio-info">
-                                <h3 class="project-title">Digital Campaign</h3>
-                                <p class="project-category">Digital Marketing</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Project 5 -->
-                <div class="portfolio-item" data-category="Branding">
-                    <div class="portfolio-image">
-                        <img src="https://picsum.photos/600/400?random=5" alt="Project 5" loading="lazy">
-                        <div class="portfolio-overlay">
-                            <div class="portfolio-info">
-                                <h3 class="project-title">Restaurant Rebrand</h3>
-                                <p class="project-category">Brand Identity</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Project 6 -->
                 <div class="portfolio-item" data-category="Web">
-                    <div class="portfolio-image">
-                        <img src="https://picsum.photos/600/400?random=6" alt="Project 6" loading="lazy">
-                        <div class="portfolio-overlay">
-                            <div class="portfolio-info">
-                                <h3 class="project-title">Portfolio Website</h3>
-                                <p class="project-category">Web Design</p>
+                    <a href="https://photo-cyan-five.vercel.app/" target="_blank" class="portfolio-link">
+                        <div class="portfolio-image">
+                            <img src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/STUDIO.jpg" alt="Studio" loading="lazy">
+                            <div class="portfolio-overlay">
+                                <div class="portfolio-info">
+                                    <h3 class="project-title">STUDIO</h3>
+                                    <p class="project-category">Photo Studio</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
             
@@ -295,8 +283,8 @@
     <section id="services" class="horizontal-scroll-section">
         <!-- Background Video -->
         <div class="horizontal-video-container">
-            <video class="horizontal-video" autoplay muted loop playsinline preload="auto">
-                <source src="secondvideo.mp4" type="video/mp4">
+            <video class="horizontal-video" autoplay muted loop playsinline preload="auto" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23111111'/%3E%3C/svg%3E">
+                <source src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/video/secondvideo.mp4" type="video/mp4">
             </video>
             <div class="horizontal-video-overlay"></div>
         </div>
@@ -453,7 +441,7 @@
                         <div class="contact-icon"><i class="icon icon-mail"></i></div>
                         <div class="contact-details">
                             <h4>Email</h4>
-                            <p>chiro75web@gmail.com</p>
+                            <p>chiroweb75@gmail.com</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -500,9 +488,10 @@
                         <div class="footer-column">
                             <h4>Connect</h4>
                             <ul>
-                                <li><a href="#" target="_blank">Behance</a></li>
-                                <li><a href="#" target="_blank">Instagram</a></li>
-                                <li><a href="#" target="_blank">LinkedIn</a></li>
+                                <li><a href="https://www.youtube.com/channel/UC-mYXhA_p0FEIFsQzTSbuRg" target="_blank">Youtube</a></li>
+                                <li><a href="https://www.instagram.com/75web_chiro?igsh=MWR0NzF3Mmc0M2EzcQ==" target="_blank">Instagram</a></li>
+                                <li><a href="https://blog.naver.com/tlsdnjs812" target="_blank">Blog</a></li>
+                                <li><a href="https://kmong.com/@%EC%B9%98%EB%A1%9C%EC%9B%B9%EB%94%94%EC%9E%90%EC%9D%B8" target="_blank">Kmong</a></li>
                             </ul>
                         </div>
                     </div>
@@ -520,7 +509,7 @@
         "@context": "https://schema.org",
         "@type": "ProfessionalService",
         "@id": "https://chiro-psi.vercel.app/#organization",
-        "name": "Chiro 웹디자인",
+        "name": "치로웹디자인",
         "alternateName": "치로 웹디자인",
         "url": "https://chiro-psi.vercel.app",
         "logo": "https://chiro-psi.vercel.app/logo.png",
@@ -566,9 +555,10 @@
             "name": "Chiro Team"
         },
         "sameAs": [
-            "https://www.facebook.com/chirodesign",
-            "https://www.instagram.com/chiro_design",
-            "https://blog.naver.com/chirodesign"
+            "https://www.youtube.com/channel/UC-mYXhA_p0FEIFsQzTSbuRg",
+            "https://www.instagram.com/75web_chiro",
+            "https://blog.naver.com/tlsdnjs812",
+            "https://kmong.com/@%EC%B9%98%EB%A1%9C%EC%9B%B9%EB%94%94%EC%9E%90%EC%9D%B8"
         ]
     }
     </script>
@@ -578,11 +568,11 @@
         "@context": "https://schema.org",
         "@type": "WebSite",
         "url": "https://chiro-psi.vercel.app",
-        "name": "Chiro 웹디자인",
+        "name": "치로웹디자인",
         "description": "인천 최고의 가성비 웹디자인! 스타트업·중소기업 맞춤형 홈페이지 제작",
         "publisher": {
             "@type": "Organization",
-            "name": "Chiro 웹디자인"
+            "name": "치로웹디자인"
         },
         "potentialAction": {
             "@type": "SearchAction",
@@ -599,7 +589,7 @@
         "serviceType": "웹디자인 서비스",
         "provider": {
             "@type": "Organization",
-            "name": "Chiro 웹디자인",
+            "name": "치로웹디자인",
             "url": "https://chiro-psi.vercel.app"
         },
         "areaServed": {
@@ -655,16 +645,16 @@
     </script>
 
     <!-- Performance Optimization Scripts -->
-    <script src="image-optimization.js" data-critical></script>
-    <!-- <script src="video-optimization.js" data-critical></script> -->
+    <script src="./assets/js/utils/image-optimization.js" data-critical></script>
+    <!-- <script src="./assets/js/utils/video-optimization.js" data-critical></script> -->
     
     <!-- Core Application Scripts -->
-    <script src="api-config.js"></script>
-    <script src="data-manager.js"></script>
-    <script src="hero.js"></script>
-    <script src="portfolio.js"></script>
-    <script src="horizontal-scroll.js"></script>
-    <script src="navigation.js"></script>
-    <script src="main.js"></script>
+    <script src="./assets/js/api/api-config.js"></script>
+    <script src="./assets/js/api/data-manager.js"></script>
+    <script src="./pages/home/components/hero.js"></script>
+    <script src="./pages/home/navigation.js"></script>
+    <script src="./pages/home/components/horizontal-scroll.js"></script>
+    <!-- <script src="../portfolio/portfolio.js"></script> -->
+    <script src="./pages/home/main.js"></script>
 </body>
 </html>

@@ -56,8 +56,14 @@
             // Performance optimizations
             video.style.pointerEvents = 'none';
             video.style.userSelect = 'none';
-            video.style.backfaceVisibility = 'hidden';
-            video.style.transform = 'translateZ(0)';
+            // Avoid forcing GPU/compositing transforms for horizontal section video
+            if (!video.closest('.horizontal-scroll-section')) {
+                video.style.backfaceVisibility = 'hidden';
+                video.style.transform = 'translateZ(0)';
+            } else {
+                video.style.backfaceVisibility = '';
+                video.style.transform = '';
+            }
             
             // Add unique ID for tracking
             if (!video.id) {

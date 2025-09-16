@@ -259,7 +259,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **CHIRO** - Digital Excellence Agency
 
-- 📧 **Email**: chiro75web@gmail.com
+- 📧 **Email**: chiroweb75@gmail.com
 - 🌐 **Website**: [CHIRO Portfolio](https://github.com/sin77812/CHIRO)
 - 💼 **LinkedIn**: [Connect with us](https://linkedin.com/company/chiro)
 

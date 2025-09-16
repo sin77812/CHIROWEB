@@ -191,19 +191,101 @@
                 const form = document.getElementById('contactForm');
                 const successMessage = document.getElementById('successMessage');
                 
+                console.log('Submit button:', submitBtn);
+                console.log('Form:', form);
+                console.log('Success message:', successMessage);
+                
                 // Show loading state
                 form.classList.add('form-loading');
                 submitBtn.querySelector('span').textContent = '전송 중...';
                 
-                // Simulate API call
-                setTimeout(() => {
-                    // Hide form and show success message
-                    form.style.display = 'none';
-                    successMessage.classList.add('show');
+                // Collect form data
+                const formData = {
+                    name: form.name.value,
+                    email: form.email.value,
+                    company: form.company.value,
+                    phone: form.phone.value,
+                    projectType: form.projectType.value,
+                    budget: form.budget.value,
+                    timeline: form.timeline.value,
+                    message: form.message.value
+                };
+                
+                // EmailJS parameters
+                const serviceID = 'service_chiro';  // You'll need to create this in EmailJS
+                const templateID = 'template_sd1mg8b';  // You'll need to create this in EmailJS
+                
+                // Send email using EmailJS
+                emailjs.send(serviceID, templateID, {
+                    to_email: 'chiroweb75@gmail.com',
+                    from_name: formData.name,
+                    user_email: formData.email,
+                    company: formData.company || '미입력',
+                    phone: formData.phone || '미입력',
+                    project_type: formData.projectType,
+                    budget: formData.budget,
+                    timeline: formData.timeline,
+                    message: formData.message,
+                    send_date: new Date().toLocaleString('ko-KR')
+                })
+                .then(() => {
+                    console.log('EmailJS 전송 성공!');
                     
-                    // Scroll to success message
-                    successMessage.scrollIntoView({ behavior: 'smooth' });
-                }, 2000);
+                    // Update progress bar to show step 3 complete
+                    const progressSteps = document.querySelectorAll('.progress-step');
+                    progressSteps.forEach(step => {
+                        step.classList.add('active');
+                    });
+                    
+                    // Hide form and show success message
+                    const form = document.getElementById('contactForm');
+                    const formContainer = document.querySelector('.contact-form-container');
+                    
+                    if (form) {
+                        form.innerHTML = `
+                            <div class="success-content" style="text-align: center; padding: 40px;">
+                                <div class="success-icon" style="margin-bottom: 24px;">
+                                    <i class="icon icon-check" style="font-size: 48px; color: #34C759;"></i>
+                                </div>
+                                <h2 style="color: #FFFFFF; margin: 24px 0 16px 0; font-size: 28px; font-weight: 600;">전송 완료!</h2>
+                                <p style="color: #A0A0A0; margin: 0 0 32px 0; line-height: 1.5; font-size: 16px;">
+                                    상담 신청이 성공적으로 접수되었습니다.<br>
+                                    곧 연락드리겠습니다.
+                                </p>
+                                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                                    <a href="../home/index.html" style="
+                                        display: inline-block;
+                                        background: #FF3B30;
+                                        color: #FFFFFF;
+                                        text-decoration: none;
+                                        padding: 16px 32px;
+                                        border-radius: 8px;
+                                        transition: all 0.3s ease;
+                                        font-weight: 500;
+                                    ">홈으로 돌아가기</a>
+                                    <button onclick="location.reload()" style="
+                                        background: transparent;
+                                        color: #A0A0A0;
+                                        border: 1px solid #2A2A2A;
+                                        padding: 16px 32px;
+                                        border-radius: 8px;
+                                        cursor: pointer;
+                                        transition: all 0.3s ease;
+                                        font-weight: 500;
+                                    ">다른 프로젝트 신청</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }, (error) => {
+                    // Error handling
+                    console.error('EmailJS 에러:', error);
+                    alert('메일 전송에 실패했습니다. 다시 시도해주세요.');
+                    
+                    // Reset loading state
+                    form.classList.remove('form-loading');
+                    submitBtn.querySelector('span').textContent = '상담 신청하기';
+                });
             }
             
             window.resetForm = function() {

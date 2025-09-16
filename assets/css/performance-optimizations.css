@@ -47,7 +47,18 @@
 }
 
 /* Video optimization styles */
-.hero-video, 
+.hero-video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    opacity: 1 !important;
+    display: block !important;
+}
+
+/* Avoid GPU transforms on horizontal section video to prevent Safari/iOS blackouts */
 .horizontal-video {
     width: 100% !important;
     height: 100% !important;
@@ -55,10 +66,9 @@
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
-    will-change: transform;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-    z-index: -2 !important;
+    will-change: auto !important;
+    backface-visibility: visible !important;
+    transform: none !important;
     opacity: 1 !important;
     display: block !important;
 }
@@ -72,8 +82,8 @@
     width: 100% !important;
     height: 100% !important;
     overflow: hidden;
-    contain: layout style;
-    z-index: -1 !important;
+    /* Avoid containment that can cause occlusion during pin/unpin */
+    contain: none !important;
     opacity: 1 !important;
     display: block !important;
 }
@@ -237,9 +247,9 @@ img, video {
     transform: translateZ(0);
 }
 
-/* Optimize scroll performance */
+/* Optimize scroll performance - Disabled for GSAP compatibility */
 html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
 }
 
 body {

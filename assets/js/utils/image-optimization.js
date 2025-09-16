@@ -10,7 +10,7 @@
         retryDelay: 1000,
         webpSupport: null,
         avifSupport: null,
-        placeholderService: 'https://via.placeholder.com',
+        // placeholderService: 'https://via.placeholder.com', // Removed to avoid external dependency
         compressionQuality: 85
     };
     
@@ -80,13 +80,14 @@
         }
         
         // Set loading strategy based on position
-        const isCritical = img.closest('.hero-section, .hero-video-background') || 
+        const isCritical = img.closest('.hero-section, .hero-video-background, .portfolio-section') || 
                           img.getBoundingClientRect().top < window.innerHeight;
         
-        if (isCritical) {
+        if (isCritical && img.src) {
             img.dataset.priority = 'critical';
             preloadImage(img);
-        } else {
+            // Don't apply lazy loading to images with src already loaded
+        } else if (!img.src || img.dataset.src) {
             img.dataset.priority = 'normal';
             setupLazyLoading(img);
         }
@@ -148,14 +149,19 @@
     
     // Setup lazy loading for non-critical images
     function setupLazyLoading(img) {
-        // Store original src and clear it for lazy loading
-        if (img.src && !img.dataset.src) {
-            img.dataset.src = img.src;
-            img.src = '';
+        // Only apply lazy loading if image doesn't have a valid src or has data-src
+        if (!img.src || img.dataset.src) {
+            // Store original src and clear it for lazy loading
+            if (img.src && !img.dataset.src) {
+                img.dataset.src = img.src;
+                img.src = '';
+            }
+            
+            // Add placeholder only if image doesn't have src
+            if (!img.src) {
+                addImagePlaceholder(img);
+            }
         }
-        
-        // Add placeholder
-        addImagePlaceholder(img);
         
         // Add intersection observer
         if ('IntersectionObserver' in window) {
@@ -273,11 +279,13 @@
             return;
         }
         
-        // Generate placeholder image
-        const placeholder = generatePlaceholderImage(img);
-        if (placeholder) {
-            img.src = placeholder;
-            img.classList.add('image-placeholder-fallback');
+        // Show CSS placeholder instead of external image
+        img.classList.add('image-placeholder-fallback');
+        img.style.display = 'none'; // Hide broken image
+        
+        // Show placeholder element
+        if (!img.parentNode.querySelector('.image-placeholder')) {
+            addImagePlaceholder(img);
         }
     }
     
@@ -355,13 +363,10 @@
         }
     }
     
-    // Generate placeholder image URL
+    // Generate placeholder image URL - use CSS instead of external service
     function generatePlaceholderImage(img) {
-        const width = img.offsetWidth || img.dataset.width || 300;
-        const height = img.offsetHeight || img.dataset.height || 200;
-        const text = img.alt || 'Image';
-        
-        return `${IMAGE_CONFIG.placeholderService}/${width}x${height}/1a1a1a/666666?text=${encodeURIComponent(text)}`;
+        // Instead of external service, return null to use CSS placeholder
+        return null;
     }
     
     // Preload critical images
@@ -451,8 +456,13 @@
             }
             
             .image-placeholder-fallback {
-                background-color: #1a1a1a;
-                color: #666;
+                display: none !important;
+            }
+            
+            .image-placeholder-fallback + .image-placeholder {
+                opacity: 1;
+                background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+                border: 1px solid #333;
             }
             
             /* Ensure images don't cause layout shift */

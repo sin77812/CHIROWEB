@@ -93,23 +93,31 @@
 .nav-link:hover,
 .nav-link.active {
   color: var(--primary-text);
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
 }
 
-/* Underline Animation */
+/* Enhanced Underline Animation */
 .nav-link::after {
   content: '';
   position: absolute;
   bottom: -4px;
-  left: 0;
+  left: 50%;
   width: 0;
   height: 2px;
-  background: var(--accent-red);
-  transition: width 0.3s var(--ease-default);
+  background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  transform: translateX(-50%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1px;
 }
 
 .nav-link:hover::after,
 .nav-link.active::after {
   width: 100%;
+  background-position: 0% 0;
+  background: var(--accent-red);
+  box-shadow: 0 0 8px rgba(255, 59, 48, 0.4);
 }
 
 /* CTA Button */
@@ -358,9 +366,9 @@
   }
 }
 
-/* Smooth Scrolling */
+/* Smooth Scrolling - Disabled for GSAP compatibility */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 /* Section scroll margin for fixed navigation */

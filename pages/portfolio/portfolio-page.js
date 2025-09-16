@@ -379,9 +379,16 @@
                 const card = button.closest('.portfolio-card');
                 const title = card.querySelector('.project-title').textContent;
                 
-                // For demo - show alert
-                // In production, this would open a modal or navigate to detail page
-                alert(`Opening details for: ${title}\n\nThis would normally open a detailed project view.`);
+                // Find the matching project in portfolioPageData
+                const project = portfolioPageData.find(item => item.title === title);
+                
+                if (project && project.url) {
+                    // Open project URL in new tab
+                    window.open(project.url, '_blank');
+                } else {
+                    // Fallback for projects without URL
+                    alert(`Project details for: ${title}\n\nURL not available yet.`);
+                }
             });
         });
         
@@ -423,8 +430,8 @@
             category: "web",
             year: 2024,
             description: "프리미엄 헬스케어 브랜드의 디지털 플랫폼 구축",
-            thumbnail: "images/portfolio/nbpkorea.jpg",
-            url: "http://www.nbpkorea.com",
+            thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/nbpkorea.jpg",
+            url: "https://nbpkorea.vercel.app/",
             featured: true
         },
         {
@@ -433,18 +440,18 @@
             category: "branding",
             year: 2024,
             description: "프리미엄 다이닝 브랜드 아이덴티티 디자인",
-            thumbnail: "images/portfolio/goyomisik.jpg",
-            url: "https://www.goyomisik.co.kr",
+            thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/goyomisik.jpg",
+            url: "https://japanese-french.vercel.app/",
             featured: true
         },
         {
             id: "3",
-            title: "리얼PT",
+            title: "LIFE PT",
             category: "web",
             year: 2024,
-            description: "피트니스 플랫폼 웹사이트 및 시스템 개발",
-            thumbnail: "images/portfolio/LPT.jpg",
-            url: "https://www.realpt.co.kr",
+            description: "목표달성 시스템 코칭",
+            thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/LPT.jpg",
+            url: "https://lpt-nu.vercel.app/",
             featured: true
         },
         {
@@ -453,8 +460,8 @@
             category: "branding",
             year: 2024,
             description: "프리미엄 포토 스튜디오 브랜드 디자인",
-            thumbnail: "images/portfolio/STUDIO.jpg",
-            url: "https://bit.ly/3YJnJxJ",
+            thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/STUDIO.jpg",
+            url: "https://photo-cyan-five.vercel.app/",
             featured: true
         },
         {
@@ -463,8 +470,8 @@
             category: "web",
             year: 2024,
             description: "인테리어 전문 기업 웹사이트 디자인 및 개발",
-            thumbnail: "images/portfolio/FUNI.jpg",
-            url: "https://www.funiinterior.com/",
+            thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/FUNI.jpg",
+            url: "https://funiture-olive.vercel.app/",
             featured: true
         },
         {
@@ -473,7 +480,7 @@
             category: "branding",
             year: 2024,
             description: "엔터테인먼트 기업 브랜드 아이덴티티 구축",
-            thumbnail: "images/portfolio/K&J.jpg",
+            thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/K%26J.jpg",
             url: "https://bit.ly/48K3t9t",
             featured: true
         },
@@ -483,8 +490,8 @@
             category: "branding",
             year: 2024,
             description: "스페셜티 커피 브랜드 디자인 및 마케팅",
-            thumbnail: "images/portfolio/NEDCOFY.jpg",
-            url: "https://www.instagram.com/needcoffee.co/",
+            thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/NEDCOFY.jpg",
+            url: "https://coffee-sigma-tawny.vercel.app/",
             featured: false
         },
         {
@@ -493,8 +500,8 @@
             category: "web",
             year: 2024,
             description: "스피치 교육 플랫폼 웹사이트 구축",
-            thumbnail: "images/portfolio/gracespeech.jpg",
-            url: "https://gracespeech.modoo.at/",
+            thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/gracespeech.jpg",
+            url: "https://grace-speech.vercel.app/",
             featured: false
         },
         {
@@ -503,8 +510,8 @@
             category: "web",
             year: 2024,
             description: "개인 맞춤 운동 프로그램을 제공하는 헬스장",
-            thumbnail: "images/portfolio/ONLYGYM.jpg",
-            url: "https://www.onlygym247.com/",
+            thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/ONLYGYM.jpg",
+            url: "https://gym-umber-three.vercel.app/",
             featured: false
         },
         {
@@ -513,8 +520,28 @@
             category: "web",
             year: 2024,
             description: "남성 전용 의료 서비스를 제공하는 전문 클리닉",
-            thumbnail: "images/portfolio/mansolution.jpg",
-            url: "https://mansolution.co.kr/",
+            thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/mansolution.jpg",
+            url: "https://hospi-7sfl.vercel.app/",
+            featured: false
+        },
+        {
+            id: "11",
+            title: "나나몰",
+            category: "web",
+            year: 2024,
+            description: "온라인 쇼핑몰 플랫폼 구축",
+            thumbnail: "../../assets/images/portfolio/nanamall.jpg",
+            url: "https://nana-lilac.vercel.app/",
+            featured: false
+        },
+        {
+            id: "12",
+            title: "과일가게",
+            category: "web",
+            year: 2024,
+            description: "신선한 과일 온라인 쇼핑몰",
+            thumbnail: "../../assets/images/portfolio/fruits.jpg",
+            url: "https://furits.vercel.app/",
             featured: false
         }
     ];
@@ -549,7 +576,7 @@
                 <div class="portfolio-item visible" data-category="${item.category}" data-year="${item.year}">
                     <div class="portfolio-card">
                         <div class="portfolio-image">
-                            <img src="${item.thumbnail || item.image || 'images/portfolio/placeholder.jpg'}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='images/portfolio/placeholder.jpg'">
+                            <img src="${item.thumbnail || item.image || '../../assets/images/portfolio/placeholder.jpg'}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.src='../../assets/images/portfolio/placeholder.jpg'">
                                 <div class="portfolio-overlay">
                                     <div class="project-info">
                                         <h3 class="project-title">${item.title}</h3>

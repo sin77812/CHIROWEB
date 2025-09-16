@@ -1,8 +1,46 @@
 /* CHIRO - Combined Styles for Vercel Deployment */
 
 /* Font Imports */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional');
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+/* Font Loading Optimization */
+.hero-title-line,
+.section-title,
+.logo-text,
+.nav-logo-text,
+h1, h2, h3, h4 {
+  /* Initial state - system fonts for immediate rendering */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+  font-weight: 900;
+  transition: font-family 0.1s ease;
+}
+
+/* After Black Han Sans loaded */
+.fonts-loaded .hero-title-line,
+.fonts-loaded .section-title,
+.fonts-loaded .logo-text,
+.fonts-loaded .nav-logo-text,
+.fonts-loaded h1, 
+.fonts-loaded h2, 
+.fonts-loaded h3,
+.fonts-loaded h4 {
+  font-family: "Black Han Sans", sans-serif;
+  font-weight: 400;
+}
+
+/* Fallback if fonts fail to load */
+.fonts-fallback .hero-title-line,
+.fonts-fallback .section-title,
+.fonts-fallback .logo-text,
+.fonts-fallback .nav-logo-text,
+.fonts-fallback h1, 
+.fonts-fallback h2, 
+.fonts-fallback h3,
+.fonts-fallback h4 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+  font-weight: 900;
+}
 
 /* Colors */
 :root {
@@ -103,7 +141,7 @@ html {
 /* Enable smooth scrolling only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
 }
 
@@ -194,12 +232,42 @@ section {
   font-family: var(--font-en-primary);
   font-size: var(--font-body);
   color: var(--secondary-text);
-  transition: color var(--duration-normal) var(--ease-default);
+  text-decoration: none;
+  padding: 8px 0;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .nav-link:hover,
 .nav-link.active {
   color: var(--primary-text);
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+/* Enhanced Underline Animation */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-red), transparent);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  transform: translateX(-50%);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1px;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 100%;
+  background-position: 0% 0;
+  background: var(--accent-red);
+  box-shadow: 0 0 8px rgba(255, 59, 48, 0.4);
 }
 
 .nav-contact-btn {
@@ -421,8 +489,8 @@ section {
   overflow: hidden;
   border-radius: 12px;
   background: var(--card-bg);
-  opacity: 0;
-  transform: translateY(50px);
+  opacity: 1;
+  transform: translateY(0);
   transition: all var(--duration-slow) var(--ease-default);
 }
 
@@ -1444,11 +1512,32 @@ section {
   height: 100vh;
   overflow: hidden;
   background: transparent;
+  /* Avoid transforms on pinned element to prevent video blackouts */
+  overscroll-behavior: contain;
+  /* Keep above subsequent sections during pin */
+  z-index: 900;
+  /* 안정적인 고정을 위한 추가 속성들 */
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
-  overscroll-behavior: contain;
-  z-index: 1;
+}
+
+.horizontal-scroll-section.is-pinned {
+  z-index: 900 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100vh !important;
+  transform: translateZ(0) !important;
+}
+
+.horizontal-scroll-section.is-pinned .horizontal-container {
+  z-index: 910 !important;
+}
+
+.horizontal-scroll-section.is-pinned .panel-content {
+  z-index: 920 !important;
 }
 
 /* Background Video */
@@ -1458,14 +1547,20 @@ section {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: -1;
+  z-index: 5;
+  pointer-events: none;
 }
 
 .horizontal-video {
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
   object-fit: cover;
   object-position: center;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  opacity: 1 !important;
+  display: block !important;
 }
 
 .horizontal-video-overlay {
@@ -1474,19 +1569,39 @@ section {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(10, 10, 10, 0.6);
+  background: rgba(10, 10, 10, 0.3);
   z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+/* When pinned, lift video/overlay to viewport-fixed to avoid repaint glitches */
+.horizontal-scroll-section.is-pinned .horizontal-video-container {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 901 !important;
+}
+
+.horizontal-scroll-section.is-pinned .horizontal-video-overlay {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 902 !important;
 }
 
 /* Horizontal Container */
 .horizontal-container {
   position: relative;
-  z-index: 3;
+  z-index: 10;
   height: 100vh;
   overflow: hidden;
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  /* Avoid transforms on container; wrapper handles transforms */
+  contain: layout style paint;
 }
 
 .horizontal-wrapper {
@@ -1494,159 +1609,11 @@ section {
   width: 400vw;
   height: 100vh;
   will-change: transform;
-}
-
-/* Horizontal Panels */
-.horizontal-panel {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.panel-content {
-  text-align: center;
-  opacity: 1;
-  /* Visually center within viewport minus fixed nav overlay */
-  transform: translateY(calc(-1 * var(--nav-height) / 2));
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.panel-content.active {
-  opacity: 1;
-  transform: translateY(calc(-1 * var(--nav-height) / 2));
-}
-
-/* Typography */
-.panel-main-title {
-  font-family: "Black Han Sans", sans-serif;
-  font-size: 140px;
-  font-weight: 400;
-  color: #FFFFFF;
-  line-height: 0.9;
-  margin-bottom: 40px;
-  letter-spacing: -3px;
-  text-transform: uppercase;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-}
-
-.panel-subtitle {
-  font-family: var(--font-en-primary);
-  font-size: 24px;
-  font-weight: 600;
-  color: #FF3B30;
-  margin-bottom: 24px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-}
-
-.panel-description {
-  font-family: var(--font-korean);
-  font-size: 18px;
-  font-weight: 400;
-  color: #A0A0A0;
-  line-height: 1.6;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-/* Progress Indicators */
-.progress-indicators {
-  position: fixed;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 16px;
-  z-index: 10;
-}
-
-.progress-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.progress-dot.active {
-  background: #FF3B30;
-  transform: scale(1.2);
-}
-
-.progress-dot:hover {
-  background: rgba(255, 255, 255, 0.6);
-}
-
-.progress-dot.active:hover {
-  background: #FF3B30;
-}
-
-/* Mobile Responsive for Horizontal Scroll */
-@media (max-width: 768px) {
-  .panel-main-title {
-    font-size: 90px;
-    margin-bottom: 32px;
-    letter-spacing: -2px;
-    line-height: 0.8;
-  }
-  
-  .panel-subtitle {
-    font-size: 20px;
-    margin-bottom: 20px;
-    letter-spacing: 2px;
-  }
-  
-  .panel-description {
-    font-size: 16px;
-    max-width: 300px;
-    padding: 0 20px;
-  }
-  
-  .progress-indicators {
-    bottom: 40px;
-  }
-  
-  .progress-dot {
-    width: 10px;
-    height: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .panel-main-title {
-    font-size: 70px;
-    letter-spacing: -1px;
-    margin-bottom: 24px;
-  }
-  
-  .panel-subtitle {
-    font-size: 18px;
-    letter-spacing: 1.5px;
-  }
-  
-  .panel-description {
-    font-size: 14px;
-    max-width: 280px;
-  }
-}
-
-/* Animation States */
-.panel-main-title,
-.panel-subtitle,
-.panel-description {
-  opacity: 1 !important;
-  transform: none !important;
-  visibility: visible !important;
-}
-
-/* Performance Optimizations for Horizontal */
-.horizontal-wrapper {
+  transform: translateZ(0);
   backface-visibility: hidden;
+  /* 스무스한 스크롤을 위한 최적화 */
   perspective: 1000px;
+  transform-style: preserve-3d;
 }
 
 .horizontal-panel {
@@ -1654,6 +1621,14 @@ section {
 }
 
 .panel-content {
+  text-align: center;
+  opacity: 1;
+  /* Visually center within viewport minus fixed nav overlay */
+  transform: translateY(0);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  top: 0;
+  z-index: 20;
   will-change: transform, opacity;
 }
 
@@ -2034,10 +2009,7 @@ section {
   perspective: 1000px;
 }
 
-/* Service panels: compensate fixed nav so content is visually centered */
-.horizontal-scroll-section .panel-content {
-  transform: translateY(calc(-1 * var(--nav-height) / 2)) !important;
-}
+
 
 /* Reduce Motion for Accessibility */
 @media (prefers-reduced-motion: reduce) {
@@ -2047,5 +2019,101 @@ section {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== HORIZONTAL SCROLL PANEL STYLES ===== */
+
+/* Horizontal Panels */
+.horizontal-panel {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 11;
+}
+
+.panel-content {
+  text-align: center;
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  top: 0;
+  z-index: 20;
+}
+
+.panel-content.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Typography */
+.panel-main-title {
+  font-family: "Black Han Sans", sans-serif;
+  font-size: 140px;
+  font-weight: 400;
+  color: #FFFFFF;
+  line-height: 0.9;
+  margin-bottom: 40px;
+  letter-spacing: -3px;
+  text-transform: uppercase;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 30;
+}
+
+.panel-subtitle {
+  font-family: var(--font-en-primary);
+  font-size: 24px;
+  font-weight: 600;
+  color: #FF3B30;
+  line-height: 1.2;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.panel-description {
+  font-family: var(--font-korean);
+  font-size: 18px;
+  font-weight: 400;
+  color: #A0A0A0;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .panel-main-title {
+    font-size: 80px;
+    margin-bottom: 20px;
+  }
+  
+  .panel-subtitle {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+  
+  .panel-description {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .panel-main-title {
+    font-size: 60px;
+    letter-spacing: -1px;
+  }
+  
+  .panel-subtitle {
+    font-size: 16px;
+  }
+  
+  .panel-description {
+    font-size: 14px;
   }
 }
