@@ -48,6 +48,10 @@ window.addEventListener('load', () => {
     // 마지막 패널을 위한 추가 시간 (화면 높이의 80%)
     const extraViewTime = window.innerHeight * 0.8;
     
+    // 모바일 감지 및 pinType 결정
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const pinType = isMobile ? 'transform' : 'fixed';
+    
     // 메인 횡스크롤 타임라인 - 하나로 통합
     let tl = gsap.timeline({
         scrollTrigger: {
@@ -55,10 +59,10 @@ window.addEventListener('load', () => {
             start: "top top",
             end: () => `+=${scrollDistance}`,  // extraViewTime 제거
             pin: true,
-            pinType: 'fixed',
+            pinType: pinType,
             scrub: 1,
             invalidateOnRefresh: true,
-            anticipatePin: 0,
+            anticipatePin: isMobile ? 1 : 0,
             fastScrollEnd: true,
             preventOverlaps: true,
             onToggle: (self) => {
@@ -132,9 +136,9 @@ window.addEventListener('load', () => {
     const dots = document.querySelectorAll('.progress-dot');
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
-            // 클릭한 패널 위치로 이동 (80% 범위 내에서)
-            const targetProgress = (index / (panels.length - 1)) * 0.8;
-            const targetScroll = horizontalSection.offsetTop + ((scrollDistance + extraViewTime) * targetProgress);
+            // 메인 타임라인 end와 일치하도록 계산 (extraViewTime 제거)
+            const targetProgress = index / (panels.length - 1);
+            const targetScroll = horizontalSection.offsetTop + (scrollDistance * targetProgress);
             
             // Use native smooth scroll to avoid ScrollToPlugin dependency
             try {
@@ -145,9 +149,9 @@ window.addEventListener('load', () => {
         });
     });
     
-    // 리사이즈 처리 최적화
+    // 리사이즈 처리 최적화 (모바일 주소창 변화 대응)
     let resizeTimer;
-    window.addEventListener('resize', () => {
+    const handleResize = () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
             // 스크롤 위치를 기억하고 새로고침
@@ -157,8 +161,16 @@ window.addEventListener('load', () => {
             if (currentProgress > 0) {
                 tl.scrollTrigger.progress(currentProgress);
             }
-        }, 250);
-    });
+        }, isMobile ? 100 : 250); // 모바일에서는 더 빠른 반응
+    };
+    
+    window.addEventListener('resize', handleResize);
+    // 모바일 오리엔테이션 변화 대응
+    if (isMobile) {
+        window.addEventListener('orientationchange', () => {
+            setTimeout(handleResize, 200); // 오리엔테이션 변화 후 약간의 지연
+        });
+    }
     
     // 페이지 새로고침 시 스크롤 위치 복원
     ScrollTrigger.addEventListener('refresh', () => {
@@ -199,24 +211,23 @@ window.addEventListener('load', () => {
         panels: panels.length
     });
     
-    // 추가 디버깅: 스크롤 진행 상황 모니터링
-    ScrollTrigger.create({
-        trigger: horizontalSection,
-        start: "top top",
-        end: () => `+=${scrollDistance + extraViewTime}`,
-        onUpdate: (self) => {
-            const data = {
-                progress: self.progress.toFixed(3),
-                scrollY: window.scrollY,
-                wrapperTransform: wrapper.style.transform,
-                isPinned: horizontalSection.classList.contains('is-pinned'),
-                containerZIndex: window.getComputedStyle(document.querySelector('.horizontal-container')).zIndex,
-                panelZIndex: window.getComputedStyle(panels[0]).zIndex,
-                videoZIndex: window.getComputedStyle(document.querySelector('.horizontal-video-container')).zIndex
-            };
-            console.log('ScrollTrigger Progress:', JSON.stringify(data, null, 2));
-        }
-    });
+    // 디버깅용 ScrollTrigger (프로덕션에서는 제거 권장)
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        ScrollTrigger.create({
+            trigger: horizontalSection,
+            start: "top top",
+            end: () => `+=${scrollDistance}`,  // 메인 타임라인과 동일한 end 사용
+            onUpdate: (self) => {
+                const data = {
+                    progress: self.progress.toFixed(3),
+                    scrollY: window.scrollY,
+                    wrapperTransform: wrapper.style.transform,
+                    isPinned: horizontalSection.classList.contains('is-pinned')
+                };
+                console.log('ScrollTrigger Progress:', JSON.stringify(data, null, 2));
+            }
+        });
+    }
     
     // 요소 가시성 체크
     const checkVisibility = () => {

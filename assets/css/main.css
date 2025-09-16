@@ -737,6 +737,43 @@ section {
     --space-element: 24px;
   }
   
+  /* iOS 주소창 호환성을 위한 안전한 뷰포트 높이 */
+  .hero-section,
+  .horizontal-scroll-section,
+  .nav-mobile-menu {
+    height: 100svh !important;
+    min-height: 100svh !important;
+  }
+  
+  /* 폴백: 브라우저가 svh를 지원하지 않을 경우 */
+  @supports not (height: 100svh) {
+    .hero-section,
+    .horizontal-scroll-section,
+    .nav-mobile-menu {
+      height: 100vh !important;
+      min-height: 100vh !important;
+    }
+  }
+  
+  /* 모바일 스크롤 안정화 */
+  body {
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .horizontal-scroll-section {
+    overscroll-behavior: contain;
+    /* iOS에서 핀 안정성 향상 */
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+  }
+  
+  /* 스크롤-투-탑 버튼이 가로 섹션에서 간섭하지 않도록 */
+  .horizontal-scroll-section .scroll-to-top {
+    pointer-events: none !important;
+    opacity: 0 !important;
+  }
+  
   .nav-menu {
     display: none;
   }
@@ -1324,6 +1361,10 @@ section {
   padding-bottom: var(--space-element);
   border-bottom: 1px solid var(--secondary-border);
   margin-bottom: var(--space-element);
+}
+
+.pricing-card.featured .pricing-header {
+  margin-top: 10px;
 }
 
 .pricing-title {
