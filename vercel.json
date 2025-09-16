@@ -1,0 +1,31 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/pages/home/index.html"
+    },
+    {
+      "source": "/portfolio",
+      "destination": "/pages/portfolio/portfolio.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/pages/about/about.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/pages/contact/contact.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400"
+        }
+      ]
+    }
+  ]
+}
