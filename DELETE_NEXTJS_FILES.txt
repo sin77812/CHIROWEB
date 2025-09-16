@@ -1,0 +1,8 @@
+These files need to be deleted from CHIROWEB repository:
+- package.json
+- package-lock.json
+- next.config.js (if exists)
+- .next/ folder (if exists)
+- node_modules/ folder (if exists)
+
+After deletion, the site will deploy as a static HTML site.

@@ -2,6 +2,11 @@
 (function() {
     'use strict';
     
+    // Check if we're in browser environment
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+        return;
+    }
+    
     document.addEventListener('DOMContentLoaded', function() {
         console.log('Portfolio page DOM loaded - starting initialization');
         
