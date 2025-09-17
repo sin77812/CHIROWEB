@@ -102,8 +102,38 @@ window.addEventListener('load', () => {
                 const dots = document.querySelectorAll('.progress-dot');
                 let progress = self.progress;
                 
+                // iOS 전용: 역스크롤 시 진행률 보정
+                if (isiOS) {
+                    const currentScrollY = window.pageYOffset;
+                    const sectionTop = horizontalSection.offsetTop;
+                    const sectionHeight = scrollDistance;
+                    
+                    // 섹션 내에서의 상대적 위치 계산
+                    if (currentScrollY >= sectionTop && currentScrollY <= sectionTop + sectionHeight) {
+                        const relativeScroll = currentScrollY - sectionTop;
+                        const correctedProgress = Math.min(Math.max(relativeScroll / sectionHeight, 0), 1);
+                        
+                        // 기존 progress와 차이가 크면 보정된 값 사용
+                        if (Math.abs(correctedProgress - progress) > 0.1) {
+                            progress = correctedProgress;
+                            
+                            // wrapper transform도 수동으로 보정
+                            const correctedX = -scrollDistance * progress;
+                            wrapper.style.transform = `translateX(${correctedX}px)`;
+                            
+                            console.log('iOS: Progress corrected from', self.progress.toFixed(3), 'to', progress.toFixed(3));
+                        }
+                    }
+                }
+                
                 // 현재 패널 계산
                 let current = Math.min(Math.floor(progress * panels.length), panels.length - 1);
+                
+                // iOS에서 패널 경계에서 더 정확한 계산
+                if (isiOS && progress > 0) {
+                    const exactPanel = progress * (panels.length - 1);
+                    current = Math.round(exactPanel);
+                }
                 
                 dots.forEach((dot, i) => {
                     dot.classList.toggle('active', i === current);
@@ -359,7 +389,21 @@ window.addEventListener('load', () => {
                 
                 // 3번 연속 감지되면 강제 해제
                 if (stuckCounter >= 3) {
-                    console.log('iOS: Detected stuck state, forcing unpin');
+                    console.log('iOS: Detected stuck state, forcing unpin and position correction');
+                    
+                    // 현재 어떤 패널에 있어야 하는지 계산
+                    const shouldBeAtProgress = Math.max((currentScrollY - horizontalSection.offsetTop) / scrollDistance, 0);
+                    const targetPanelIndex = Math.min(Math.floor(shouldBeAtProgress * panels.length), panels.length - 1);
+                    
+                    // wrapper를 올바른 위치로 이동
+                    const correctX = -scrollDistance * shouldBeAtProgress;
+                    wrapper.style.transform = `translateX(${correctX}px)`;
+                    
+                    // 점 표시도 업데이트
+                    const dots = document.querySelectorAll('.progress-dot');
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === targetPanelIndex);
+                    });
                     
                     // 강제 pin 해제
                     horizontalSection.classList.remove('is-pinned');
@@ -375,6 +419,7 @@ window.addEventListener('load', () => {
                         tl.scrollTrigger.refresh();
                     }
                     
+                    console.log('iOS: Corrected to panel', targetPanelIndex, 'with progress', shouldBeAtProgress.toFixed(3));
                     stuckCounter = 0;
                 }
             } else {
@@ -386,6 +431,61 @@ window.addEventListener('load', () => {
         
         // iOS에서만 스크롤 모니터링
         window.addEventListener('scroll', iosStuckDetection, { passive: true });
+        
+        // iOS 전용: 부드러운 역스크롤을 위한 추가 모니터링
+        let lastPanelIndex = -1;
+        const iosSmoothReverse = () => {
+            const isPinned = horizontalSection.classList.contains('is-pinned');
+            if (!isPinned) return;
+            
+            const currentScrollY = window.pageYOffset;
+            const sectionTop = horizontalSection.offsetTop;
+            const relativeScroll = currentScrollY - sectionTop;
+            const progress = Math.min(Math.max(relativeScroll / scrollDistance, 0), 1);
+            const panelIndex = Math.round(progress * (panels.length - 1));
+            
+            // 패널이 바뀔 때 wrapper 위치 강제 보정
+            if (panelIndex !== lastPanelIndex && panelIndex >= 0 && panelIndex < panels.length) {
+                const targetX = -scrollDistance * (panelIndex / (panels.length - 1));
+                const currentTransform = wrapper.style.transform;
+                const currentX = currentTransform ? parseFloat(currentTransform.match(/-?\d+\.?\d*/)) || 0 : 0;
+                
+                // 현재 위치와 목표 위치가 많이 다르면 보정
+                if (Math.abs(currentX - targetX) > scrollDistance * 0.1) {
+                    wrapper.style.transform = `translateX(${targetX}px)`;
+                    console.log('iOS: Panel transition corrected from', currentX, 'to', targetX, 'for panel', panelIndex);
+                }
+                
+                lastPanelIndex = panelIndex;
+            }
+        };
+        
+        // 더 자주 체크 (60fps 목표)
+        let smoothTimer;
+        const startSmoothMonitoring = () => {
+            if (smoothTimer) clearInterval(smoothTimer);
+            smoothTimer = setInterval(iosSmoothReverse, 16); // ~60fps
+        };
+        
+        const stopSmoothMonitoring = () => {
+            if (smoothTimer) clearInterval(smoothTimer);
+        };
+        
+        // pin 상태일 때만 모니터링
+        const pinObserver = new MutationObserver(() => {
+            const isPinned = horizontalSection.classList.contains('is-pinned');
+            if (isPinned) {
+                startSmoothMonitoring();
+            } else {
+                stopSmoothMonitoring();
+                lastPanelIndex = -1;
+            }
+        });
+        
+        pinObserver.observe(horizontalSection, { 
+            attributes: true, 
+            attributeFilter: ['class'] 
+        });
         
         // iOS 전용: 5초 이상 galactic 상태면 강제 해제
         let stuckTimer = null;
