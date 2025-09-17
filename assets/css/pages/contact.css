@@ -599,14 +599,14 @@
 }
 
 .contact-label {
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--primary-text);
   margin-bottom: 4px;
 }
 
 .contact-value {
-  font-size: 14px;
+  font-size: 17px;
   text-decoration: none;
   transition: color 0.3s var(--ease-default);
 }

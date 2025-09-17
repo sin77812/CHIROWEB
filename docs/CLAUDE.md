@@ -177,7 +177,7 @@ Section 2: Contact Info
 - 이메일: hello@chiro.com
 - 카카오톡 ID
 - 영업시간
-- 예상 응답 시간: 24시간 내
+- 예상 응답 시간: 12시간 내
 
 📐 레이아웃 시스템
 그리드
