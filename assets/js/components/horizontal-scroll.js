@@ -69,7 +69,34 @@ window.addEventListener('load', () => {
             preventOverlaps: true,
             onToggle: (self) => {
                 horizontalSection.classList.toggle('is-pinned', self.isActive);
+                
+                // iOS 전용: pin 해제 시 강제 정리
+                if (isiOS && !self.isActive) {
+                    setTimeout(() => {
+                        horizontalSection.style.position = '';
+                        horizontalSection.style.top = '';
+                        horizontalSection.style.left = '';
+                        horizontalSection.style.width = '';
+                        horizontalSection.style.height = '';
+                        horizontalSection.style.transform = '';
+                    }, 50);
+                }
             },
+            onLeave: isiOS ? (self) => {
+                // iOS 전용: 섹션을 벗어날 때 강제 해제
+                horizontalSection.classList.remove('is-pinned');
+                horizontalSection.style.position = '';
+                horizontalSection.style.top = '';
+                horizontalSection.style.left = '';
+                horizontalSection.style.width = '';
+                horizontalSection.style.height = '';
+                horizontalSection.style.transform = '';
+                console.log('iOS: Force unpin on leave');
+            } : undefined,
+            onEnterBack: isiOS ? (self) => {
+                // iOS 전용: 역방향으로 재진입할 때 정상화
+                console.log('iOS: Re-entering horizontal section');
+            } : undefined,
             onUpdate: (self) => {
                 // Progress dots 업데이트를 여기서 처리
                 const dots = document.querySelectorAll('.progress-dot');
@@ -309,6 +336,104 @@ window.addEventListener('load', () => {
     
     // 페이지 로드 후 초기 체크
     setTimeout(checkVisibility, 1000);
+    
+    // iOS 전용: 갇힘 상태 감지 및 해제
+    if (isiOS) {
+        let lastScrollY = window.pageYOffset;
+        let stuckCounter = 0;
+        let isScrollingUp = false;
+        
+        const iosStuckDetection = () => {
+            const currentScrollY = window.pageYOffset;
+            const scrollDirection = currentScrollY < lastScrollY ? 'up' : 'down';
+            isScrollingUp = scrollDirection === 'up';
+            
+            // 횡스크롤 섹션이 pin된 상태인지 확인
+            const isPinned = horizontalSection.classList.contains('is-pinned');
+            const sectionRect = horizontalSection.getBoundingClientRect();
+            const isAtTop = sectionRect.top <= 0;
+            
+            // 위로 스크롤하는데 여전히 pin된 상태이고 섹션이 화면 상단에 있다면
+            if (isScrollingUp && isPinned && isAtTop) {
+                stuckCounter++;
+                
+                // 3번 연속 감지되면 강제 해제
+                if (stuckCounter >= 3) {
+                    console.log('iOS: Detected stuck state, forcing unpin');
+                    
+                    // 강제 pin 해제
+                    horizontalSection.classList.remove('is-pinned');
+                    horizontalSection.style.position = '';
+                    horizontalSection.style.top = '';
+                    horizontalSection.style.left = '';
+                    horizontalSection.style.width = '';
+                    horizontalSection.style.height = '';
+                    horizontalSection.style.transform = '';
+                    
+                    // ScrollTrigger 새로고침
+                    if (tl.scrollTrigger) {
+                        tl.scrollTrigger.refresh();
+                    }
+                    
+                    stuckCounter = 0;
+                }
+            } else {
+                stuckCounter = 0;
+            }
+            
+            lastScrollY = currentScrollY;
+        };
+        
+        // iOS에서만 스크롤 모니터링
+        window.addEventListener('scroll', iosStuckDetection, { passive: true });
+        
+        // iOS 전용: 5초 이상 galactic 상태면 강제 해제
+        let stuckTimer = null;
+        const startStuckTimer = () => {
+            if (stuckTimer) clearTimeout(stuckTimer);
+            stuckTimer = setTimeout(() => {
+                if (horizontalSection.classList.contains('is-pinned')) {
+                    console.log('iOS: 5초 타임아웃으로 강제 해제');
+                    horizontalSection.classList.remove('is-pinned');
+                    horizontalSection.style.position = '';
+                    horizontalSection.style.top = '';
+                    horizontalSection.style.left = '';
+                    horizontalSection.style.width = '';
+                    horizontalSection.style.height = '';
+                    horizontalSection.style.transform = '';
+                    if (tl.scrollTrigger) {
+                        tl.scrollTrigger.refresh();
+                    }
+                }
+            }, 5000);
+        };
+        
+        // iOS에서 pin 상태가 되면 타이머 시작
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                    const isPinned = horizontalSection.classList.contains('is-pinned');
+                    if (isPinned) {
+                        startStuckTimer();
+                    } else {
+                        if (stuckTimer) clearTimeout(stuckTimer);
+                    }
+                }
+            });
+        });
+        
+        observer.observe(horizontalSection, { 
+            attributes: true, 
+            attributeFilter: ['class'] 
+        });
+        
+        // 페이지 가시성 변경 시 상태 초기화
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && horizontalSection.classList.contains('is-pinned')) {
+                if (stuckTimer) clearTimeout(stuckTimer);
+            }
+        });
+    }
     
     // 스크롤 시 체크 (디버깅용)
     let scrollCheckTimeout;
