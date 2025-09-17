@@ -1475,14 +1475,10 @@ section {
   height: 100vh;
   overflow: hidden;
   background: transparent;
-  /* Avoid transforms on pinned element to prevent video blackouts */
-  overscroll-behavior: contain;
   /* Keep above subsequent sections during pin */
   z-index: 900;
-  /* 안정적인 고정을 위한 추가 속성들 */
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  /* iOS에서 탄성 스크롤과 충돌 방지 - 모바일만 auto */
+  overscroll-behavior: contain;
 }
 
 /* iOS Safari 뷰포트 높이 문제 해결 */
@@ -1494,6 +1490,10 @@ section {
   .horizontal-container {
     height: 100dvh;
   }
+  
+  .horizontal-panel {
+    height: 100dvh;
+  }
 }
 
 /* 대체 방안: svh 지원 */
@@ -1503,6 +1503,10 @@ section {
   }
   
   .horizontal-container {
+    height: 100svh;
+  }
+  
+  .horizontal-panel {
     height: 100svh;
   }
 }
@@ -1524,7 +1528,6 @@ section {
   left: 0 !important;
   width: 100% !important;
   height: 100vh !important;
-  transform: translateZ(0) !important;
 }
 
 .horizontal-scroll-section.is-pinned .horizontal-container {
@@ -1546,12 +1549,22 @@ section {
   pointer-events: none;
 }
 
-/* 모바일에서 터치 이벤트 완전 차단 */
+/* 모바일에서 iOS 최적화 설정 */
 @media (max-width: 768px) {
   .horizontal-video-container,
   .horizontal-video-container * {
     pointer-events: none !important;
     touch-action: none !important;
+  }
+  
+  /* iOS에서 탄성 스크롤 허용 - 횡스크롤 안정성 개선 */
+  .horizontal-scroll-section {
+    overscroll-behavior: auto;
+  }
+  
+  /* 모바일에서만 백페이스 가시성 필요시 적용 */
+  .horizontal-scroll-section.is-pinned {
+    backface-visibility: hidden;
   }
 }
 

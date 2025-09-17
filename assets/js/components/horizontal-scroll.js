@@ -29,56 +29,70 @@ window.addEventListener('load', () => {
         return;
     }
     
-    // 스크롤 거리 정확히 계산
+    // 스크롤 거리 계산 함수 (동적으로 참조)
     const getScrollDistance = () => {
         const wrapperWidth = wrapper.scrollWidth;
         const windowWidth = window.innerWidth;
         const distance = wrapperWidth - windowWidth;
-        console.log('Scroll calculation:', {
-            wrapperWidth,
-            windowWidth,
-            distance,
-            panelCount: panels.length,
-            panelWidth: panels[0]?.offsetWidth
-        });
         return distance;
     };
-    const scrollDistance = getScrollDistance();
     
     // 마지막 패널을 위한 추가 시간 (화면 높이의 80%)
     const extraViewTime = window.innerHeight * 0.8;
     
-    // 모바일 감지 및 pinType 결정 (단순화)
+    // 모바일 감지 및 iOS 최적화
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    const pinType = 'fixed'; // 모든 기기에서 fixed 사용
+    const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
     
-    // 메인 횡스크롤 타임라인 - 하나로 통합
+    // iOS에서 normalizeScroll 활성화
+    if (isiOS && ScrollTrigger.normalizeScroll) {
+        ScrollTrigger.normalizeScroll(true);
+        console.log('iOS normalizeScroll activated');
+    }
+    
+    // iOS 전용 동적 계산 함수: 위 getScrollDistance 재사용
+    
+    // 메인 횡스크롤 타임라인 - iOS 최적화
     let tl = gsap.timeline({
         scrollTrigger: {
             trigger: horizontalSection,
             start: "top top",
-            end: () => `+=${scrollDistance}`,
+            end: () => `+=${getScrollDistance()}`,
             pin: true,
-            pinType: pinType,
+            // iOS에서는 pinType 자동 감지, 기타는 fixed
+            pinType: isiOS ? undefined : 'fixed',
             scrub: 1,
+            anticipatePin: 1,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-                // Progress dots 업데이트 (단순화)
                 const dots = document.querySelectorAll('.progress-dot');
-                const progress = self.progress;
-                const current = Math.min(Math.floor(progress * panels.length), panels.length - 1);
                 
-                dots.forEach((dot, i) => {
-                    dot.classList.toggle('active', i === current);
-                });
+                if (isiOS) {
+                    // iOS: transform 기반 동기화
+                    const distance = getScrollDistance();
+                    const x = Math.max(0, Math.min(-(gsap.getProperty(wrapper, "x") || 0), distance));
+                    const idx = Math.round(gsap.utils.mapRange(0, distance, 0, panels.length - 1, x));
+                    
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === idx);
+                    });
+                } else {
+                    // 기타 기기: 기존 방식
+                    const progress = self.progress;
+                    const current = Math.min(Math.floor(progress * panels.length), panels.length - 1);
+                    
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === current);
+                    });
+                }
             }
         }
     });
     
-    // 패널 이동 애니메이션
+    // 패널 이동 애니메이션 - iOS 최적화
     tl.to(wrapper, {
-        x: -scrollDistance,
-        force3D: true,
+        x: () => -getScrollDistance(),
+        force3D: !isiOS, // iOS에서는 force3D 비활성화
         transformOrigin: "0 0"
     });
     
@@ -127,12 +141,13 @@ window.addEventListener('load', () => {
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
             const targetProgress = index / (panels.length - 1);
-            const targetScroll = horizontalSection.offsetTop + (scrollDistance * targetProgress);
+            const currentScrollDistance = getScrollDistance();
+            const targetScroll = horizontalSection.offsetTop + (currentScrollDistance * targetProgress);
             
-            // 기본 smooth scroll 사용
+            // iOS에서는 smooth 비활성화
             window.scrollTo({ 
                 top: targetScroll, 
-                behavior: 'smooth' 
+                behavior: isiOS ? 'auto' : 'smooth' 
             });
         });
     });
@@ -186,9 +201,9 @@ window.addEventListener('load', () => {
     
     // 디버깅 정보
     console.log('Horizontal scroll initialized:', {
-        scrollDistance,
+        scrollDistance: getScrollDistance(),
         extraViewTime,
-        totalEnd: scrollDistance + extraViewTime,
+        totalEnd: getScrollDistance() + extraViewTime,
         panels: panels.length
     });
     
@@ -197,7 +212,7 @@ window.addEventListener('load', () => {
         ScrollTrigger.create({
             trigger: horizontalSection,
             start: "top top",
-            end: () => `+=${scrollDistance}`,  // 메인 타임라인과 동일한 end 사용
+            end: () => `+=${getScrollDistance()}`,  // 메인 타임라인과 동일한 end 사용
             onUpdate: (self) => {
                 const data = {
                     progress: self.progress.toFixed(3),
