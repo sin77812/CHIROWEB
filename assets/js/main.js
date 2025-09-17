@@ -6,40 +6,8 @@
     if (window.mainJsInitialized) return;
     window.mainJsInitialized = true;
     
-    // iOS 주소창 높이 변화 대응 (모바일 전용)
-    const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-        // CSS 변수로 실제 뷰포트 높이 설정
-        const setVH = () => {
-            const vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-            
-            // 모바일 디버깅용 (프로덕션에서는 제거 가능)
-            console.log('Viewport height updated:', window.innerHeight);
-        };
-        
-        // 초기 설정
-        setVH();
-        
-        // 리사이즈 이벤트 (iOS 주소창 변화 감지)
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            // iOS에서는 빈번한 업데이트 방지
-            if (isiOS) {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(setVH, 100);
-            } else {
-                setVH();
-            }
-        });
-        
-        // 오리엔테이션 변경 시
-        window.addEventListener('orientationchange', () => {
-            setTimeout(setVH, 200);
-        });
-    }
+    // 단순한 뷰포트 높이 대응 (필요시에만)
+    // 복잡한 iOS 로직 제거 - CSS의 dvh/svh에 의존
     
 document.addEventListener('DOMContentLoaded', function() {
     initSmoothScrolling();

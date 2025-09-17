@@ -1485,13 +1485,25 @@ section {
   backface-visibility: hidden;
 }
 
-/* 모바일 뷰포트 안전 높이 */
-@supports (height: 100svh) {
-  @media (max-width: 768px) {
-    .horizontal-scroll-section {
-      height: 100svh;
-      min-height: 100svh;
-    }
+/* iOS Safari 뷰포트 높이 문제 해결 */
+@supports (height: 100dvh) {
+  .horizontal-scroll-section {
+    height: 100dvh;
+  }
+  
+  .horizontal-container {
+    height: 100dvh;
+  }
+}
+
+/* 대체 방안: svh 지원 */
+@supports (height: 100svh) and (not (height: 100dvh)) {
+  .horizontal-scroll-section {
+    height: 100svh;
+  }
+  
+  .horizontal-container {
+    height: 100svh;
   }
 }
 
