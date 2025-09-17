@@ -1485,6 +1485,26 @@ section {
   backface-visibility: hidden;
 }
 
+/* 모바일 뷰포트 안전 높이 */
+@supports (height: 100svh) {
+  @media (max-width: 768px) {
+    .horizontal-scroll-section {
+      height: 100svh;
+      min-height: 100svh;
+    }
+  }
+}
+
+/* iOS 안전 영역 대응 */
+@supports (padding: max(0px)) {
+  @media (max-width: 768px) {
+    .horizontal-scroll-section {
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
+}
+
 .horizontal-scroll-section.is-pinned {
   z-index: 900 !important;
   position: fixed !important;
@@ -1512,6 +1532,15 @@ section {
   left: 0;
   z-index: 5;
   pointer-events: none;
+}
+
+/* 모바일에서 터치 이벤트 완전 차단 */
+@media (max-width: 768px) {
+  .horizontal-video-container,
+  .horizontal-video-container * {
+    pointer-events: none !important;
+    touch-action: none !important;
+  }
 }
 
 .horizontal-video {

@@ -50,6 +50,8 @@ window.addEventListener('load', () => {
     
     // 모바일 감지 및 pinType 결정
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const isiOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    // iOS는 무조건 transform, 안드로이드는 transform, PC는 fixed
     const pinType = isMobile ? 'transform' : 'fixed';
     
     // 메인 횡스크롤 타임라인 - 하나로 통합
@@ -62,7 +64,7 @@ window.addEventListener('load', () => {
             pinType: pinType,
             scrub: 1,
             invalidateOnRefresh: true,
-            anticipatePin: isMobile ? 1 : 0,
+            anticipatePin: isiOS ? 1 : 0.5,
             fastScrollEnd: true,
             preventOverlaps: true,
             onToggle: (self) => {
@@ -136,29 +138,66 @@ window.addEventListener('load', () => {
     const dots = document.querySelectorAll('.progress-dot');
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
-            // 메인 타임라인 end와 일치하도록 계산 (extraViewTime 제거)
+            // 메인 타임라인 end와 일치하도록 계산
             const targetProgress = index / (panels.length - 1);
-            const targetScroll = horizontalSection.offsetTop + (scrollDistance * targetProgress);
+            // 현재 스크롤 거리 재계산하여 최신값 사용
+            const currentScrollDistance = getScrollDistance();
+            const targetScroll = horizontalSection.offsetTop + (currentScrollDistance * targetProgress);
             
-            // Use native smooth scroll to avoid ScrollToPlugin dependency
-            try {
-                window.scrollTo({ top: targetScroll, behavior: 'smooth' });
-            } catch (_) {
-                window.scrollTo(0, targetScroll);
+            // iOS에서는 더 안전한 스크롤 방식 사용
+            if (isiOS) {
+                // iOS는 requestAnimationFrame으로 스크롤
+                const startScroll = window.pageYOffset;
+                const distance = targetScroll - startScroll;
+                const duration = 800;
+                let start = null;
+                
+                const step = (timestamp) => {
+                    if (!start) start = timestamp;
+                    const progress = Math.min((timestamp - start) / duration, 1);
+                    const easeProgress = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+                    window.scrollTo(0, startScroll + distance * easeProgress);
+                    
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                
+                window.requestAnimationFrame(step);
+            } else {
+                // PC와 Android는 기존 smooth scroll 사용
+                try {
+                    window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+                } catch (_) {
+                    window.scrollTo(0, targetScroll);
+                }
             }
         });
     });
     
     // 리사이즈 처리 최적화 (모바일 주소창 변화 대응)
     let resizeTimer;
+    let lastHeight = window.innerHeight;
+    
     const handleResize = () => {
         clearTimeout(resizeTimer);
+        
+        // iOS에서는 주소창으로 인한 작은 높이 변화는 무시
+        const heightDiff = Math.abs(window.innerHeight - lastHeight);
+        const isSmallChange = heightDiff < 100; // 100px 미만의 변화는 주소창
+        
+        if (isiOS && isSmallChange) {
+            return; // iOS 주소창 변화는 무시
+        }
+        
+        lastHeight = window.innerHeight;
+        
         resizeTimer = setTimeout(() => {
             // 스크롤 위치를 기억하고 새로고침
-            const currentProgress = tl.scrollTrigger.progress;
+            const currentProgress = tl.scrollTrigger ? tl.scrollTrigger.progress : 0;
             ScrollTrigger.refresh();
             // 스크롤 위치 복원
-            if (currentProgress > 0) {
+            if (currentProgress > 0 && tl.scrollTrigger) {
                 tl.scrollTrigger.progress(currentProgress);
             }
         }, isMobile ? 100 : 250); // 모바일에서는 더 빠른 반응
