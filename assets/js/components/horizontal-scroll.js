@@ -41,7 +41,12 @@ window.addEventListener('load', () => {
 function initGSAPScroll(horizontalSection, wrapper, panels) {
     const panelsArray = gsap.utils.toArray(panels);
     const isiOS = isIOS();
-    
+
+    // iOS에서 관성/바운스 완화
+    if (isiOS && ScrollTrigger.normalizeScroll) {
+        ScrollTrigger.normalizeScroll(true);
+    }
+
     // 스크롤 거리 계산 함수
     const getScrollDistance = () => {
         const wrapperWidth = wrapper.scrollWidth;

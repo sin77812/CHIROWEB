@@ -1477,7 +1477,8 @@ section {
   background: transparent;
   /* Keep above subsequent sections during pin */
   z-index: 900;
-  overscroll-behavior: contain;
+  /* iOS에서 바운스 억제 */
+  overscroll-behavior: none;
 }
 
 /* ===== iOS 전용 횡스크롤 스타일 ===== */
