@@ -59,18 +59,12 @@ function initGSAPScroll(horizontalSection, wrapper, panels) {
             pin: true,
             // iOS는 transform 기반 pin으로 렌더링 이슈 회피
             pinType: isiOS ? 'transform' : 'fixed',
-            // iOS에서 미세 튕김 완화용 스크럽 딜레이
-            scrub: isiOS ? 0.6 : 1,
-            // 진입 튕김 완화
-            anticipatePin: isiOS ? 0.2 : 1,
+            // iOS: 1:1 매핑으로 완전 무스냅/무관성
+            scrub: isiOS ? true : 1,
+            anticipatePin: isiOS ? 0 : 1,
             invalidateOnRefresh: true,
-            // iOS에서 가벼운 스냅으로 부드러운 정지감 제공
-            snap: isiOS ? {
-                snapTo: 1 / (panelsArray.length - 1),
-                duration: { min: 0.12, max: 0.25 },
-                ease: 'power1.out',
-                directional: true
-            } : false,
+            // iOS: 스냅 완전 비활성화로 튕김 제거
+            snap: isiOS ? false : false,
             onUpdate: (self) => {
                 const dots = document.querySelectorAll('.progress-dot');
                 const progress = self.progress;
