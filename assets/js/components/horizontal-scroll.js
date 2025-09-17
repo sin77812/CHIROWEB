@@ -2,18 +2,16 @@
 console.log('horizontal-scroll.js loaded');
 
 // iOS 감지 함수
-const isIOS = () => {
-    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-};
+const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-// GSAP 체크 (iOS가 아닌 경우에만)
-if (!isIOS() && typeof gsap === 'undefined') {
+// GSAP 체크 (모든 기기 공통)
+if (typeof gsap === 'undefined') {
     console.error('GSAP is not loaded!');
-} else if (!isIOS()) {
+} else {
     console.log('GSAP version:', gsap.version);
     gsap.registerPlugin(ScrollTrigger);
     console.log('ScrollTrigger registered:', ScrollTrigger !== undefined);
-    
+
     // GSAP 설정
     gsap.config({
         force3D: true,
@@ -34,57 +32,10 @@ window.addEventListener('load', () => {
         return;
     }
     
-    // iOS인지 확인
-    if (isIOS()) {
-        console.log('iOS detected - using native scroll');
-        initIOSNativeScroll(horizontalSection, wrapper, panels);
-    } else {
-        console.log('Non-iOS detected - using GSAP');
-        initGSAPScroll(horizontalSection, wrapper, panels);
-    }
+    // 모든 기기에서 GSAP 사용 (iOS는 transform pin)
+    initGSAPScroll(horizontalSection, wrapper, panels);
 });
 
-// iOS 네이티브 스크롤 초기화
-function initIOSNativeScroll(horizontalSection, wrapper, panels) {
-    // iOS 클래스 추가
-    horizontalSection.classList.add('ios-scroll');
-    
-    // Progress indicators 처리
-    const dots = document.querySelectorAll('.progress-dot');
-    
-    // 스크롤 이벤트 리스너
-    horizontalSection.addEventListener('scroll', function() {
-        const scrollLeft = this.scrollLeft;
-        const maxScroll = this.scrollWidth - this.clientWidth;
-        const progress = maxScroll > 0 ? scrollLeft / maxScroll : 0;
-        
-        // 현재 패널 인덱스 계산
-        const currentPanel = Math.round(progress * (panels.length - 1));
-        
-        // dots 업데이트
-        dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === currentPanel);
-        });
-    });
-    
-    // dot 클릭 이벤트
-    dots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-            const targetScroll = (horizontalSection.scrollWidth - horizontalSection.clientWidth) * (index / (panels.length - 1));
-            horizontalSection.scrollTo({
-                left: targetScroll,
-                behavior: 'auto' // iOS Safari에서 smooth + snap 충돌 방지
-            });
-        });
-    });
-    
-    // 초기 dot 활성화
-    if (dots.length > 0) {
-        dots[0].classList.add('active');
-    }
-    
-    console.log('iOS native scroll initialized with', panels.length, 'panels');
-}
 
 // GSAP 스크롤 초기화 (기존 코드)
 function initGSAPScroll(horizontalSection, wrapper, panels) {
@@ -105,7 +56,8 @@ function initGSAPScroll(horizontalSection, wrapper, panels) {
             start: "top top",
             end: () => `+=${getScrollDistance()}`,
             pin: true,
-            pinType: 'fixed',
+            // iOS는 transform 기반 pin으로 렌더링 이슈 회피
+            pinType: isIOS() ? 'transform' : 'fixed',
             scrub: 1,
             anticipatePin: 1,
             invalidateOnRefresh: true,
