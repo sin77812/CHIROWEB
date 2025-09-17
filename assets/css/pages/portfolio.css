@@ -596,42 +596,26 @@
   }
   
   .filter-categories {
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
     padding: 0 20px;
-    gap: 12px;
-    justify-content: flex-start;
-    position: relative;
-    /* 스크롤바 숨기기 */
   }
   
-  /* 우측 페이드 효과로 더 많은 항목이 있다는 것을 암시 */
-  .filter-categories::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 30px;
-    height: 100%;
-    background: linear-gradient(to right, rgba(26, 26, 26, 0), var(--secondary-bg));
-    pointer-events: none;
-    z-index: 1;
-  }
-  
-  .filter-categories::-webkit-scrollbar {
-    display: none;
-  }
-  
+  /* 모바일에서 주요 필터만 표시 */
   .filter-btn {
     flex-shrink: 0;
     white-space: nowrap;
     min-width: auto;
-    padding: 10px 20px;
-    font-size: 13px;
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+  
+  /* 모바일에서 숨길 필터들 */
+  .filter-btn[data-filter="marketing"],
+  .filter-btn[data-filter="ecommerce"] {
+    display: none;
   }
   
   .portfolio-grid {
@@ -672,9 +656,19 @@
     font-size: 32px;
   }
   
+  .filter-categories {
+    padding: 0 16px;
+    gap: 6px;
+  }
+  
   .filter-btn {
-    padding: 10px 16px;
-    font-size: 12px;
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  
+  /* 매우 작은 화면에서는 브랜딩도 숨기기 */
+  .filter-btn[data-filter="branding"] {
+    display: none;
   }
   
   .portfolio-grid {
