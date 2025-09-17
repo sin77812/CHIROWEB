@@ -592,11 +592,46 @@
   .filter-bar {
     flex-direction: column;
     gap: 20px;
+    padding: 0;
   }
   
   .filter-categories {
-    flex-wrap: wrap;
-    justify-content: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0 20px;
+    gap: 12px;
+    justify-content: flex-start;
+    position: relative;
+    /* 스크롤바 숨기기 */
+  }
+  
+  /* 우측 페이드 효과로 더 많은 항목이 있다는 것을 암시 */
+  .filter-categories::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(26, 26, 26, 0), var(--secondary-bg));
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  .filter-categories::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .filter-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-width: auto;
+    padding: 10px 20px;
+    font-size: 13px;
   }
   
   .portfolio-grid {
