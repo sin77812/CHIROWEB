@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="../../assets/images/logos/chirologo.png">
-    <link rel="apple-touch-icon" href="../../assets/images/logos/chirologo.png">
+    <link rel="icon" type="image/png" href="assets/images/logos/chirologo.png">
+    <link rel="apple-touch-icon" href="assets/images/logos/chirologo.png">
     
     <!-- SEO 메타 태그 -->
     <title>홈페이지 제작 상담 문의 | 무료 견적 | 치로웹디자인</title>
@@ -32,18 +32,16 @@
     <meta name="twitter:image" content="https://chiro-psi.vercel.app/contact-twitter.png">
     
     <!-- Combined CSS for Vercel -->
-    <link rel="stylesheet" href="../../assets/css/main.css?v=20241203">
-    <link rel="stylesheet" href="../../assets/css/icons.css">
-    <link rel="stylesheet" href="./contact-page.css">
-    
-    <!-- Removed inline z-index overrides; rely on stylesheet stacking -->
+    <link rel="stylesheet" href="assets/css/main.css?v=20241203">
+    <link rel="stylesheet" href="assets/css/icons.css">
+    <link rel="stylesheet" href="assets/css/pages/contact.css">
     
     <!-- Font Optimization -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=optional" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
     
     <!-- Font Loading Detection -->
     <script>
@@ -53,7 +51,6 @@
         ]).then(() => {
             document.documentElement.classList.add('fonts-loaded');
         }).catch(() => {
-            // Font loading failed, use system fonts
             document.documentElement.classList.add('fonts-fallback');
         });
     }
@@ -77,22 +74,21 @@
     <nav class="main-navigation">
         <div class="nav-container">
             <!-- Logo -->
-            <a href="../home/index.html" class="nav-logo">
+            <a href="/" class="nav-logo">
                 <span class="nav-logo-text">CHIRO</span>
             </a>
             
             <!-- Desktop Menu -->
             <ul class="nav-menu">
-                <li class="nav-item"><a href="../home/index.html" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="../portfolio/portfolio.html" class="nav-link">Portfolio</a></li>
-                <li class="nav-item"><a href="../about/about.html" class="nav-link">About</a></li>
-                
-                <li class="nav-item"><a href="contact.html" class="nav-link active">Contact</a></li>
+                <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="/portfolio.html" class="nav-link">Portfolio</a></li>
+                <li class="nav-item"><a href="/about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="/contact.html" class="nav-link active">Contact</a></li>
             </ul>
             
             <!-- CTA Button -->
             <div class="nav-cta">
-                <a href="contact.html" class="nav-contact-btn">Start Project</a>
+                <a href="/contact.html" class="nav-contact-btn">Start Project</a>
                 
                 <!-- Mobile Menu Toggle -->
                 <button class="nav-toggle" aria-label="Toggle menu">
@@ -106,12 +102,11 @@
     
     <!-- Mobile Menu -->
     <div class="nav-mobile-menu">
-        <a href="../home/index.html" class="nav-mobile-link">Home</a>
-        <a href="../portfolio/portfolio.html" class="nav-mobile-link">Portfolio</a>
-        <a href="../about/about.html" class="nav-mobile-link">About</a>
-        
-        <a href="contact.html" class="nav-mobile-link active">Contact</a>
-        <a href="#contact" class="nav-mobile-link nav-mobile-cta">Start Project</a>
+        <a href="/" class="nav-mobile-link">Home</a>
+        <a href="/portfolio.html" class="nav-mobile-link">Portfolio</a>
+        <a href="/about.html" class="nav-mobile-link">About</a>
+        <a href="/contact.html" class="nav-mobile-link active">Contact</a>
+        <a href="/contact.html" class="nav-mobile-link nav-mobile-cta">Start Project</a>
     </div>
     
     <!-- Contact Hero Section -->
@@ -276,7 +271,7 @@
                                 빠른 상담을 원하시면 카카오톡으로도 연락주세요.
                             </p>
                             <div class="success-actions">
-                                <a href="../home/index.html" class="success-btn primary">홈으로 돌아가기</a>
+                                <a href="/" class="success-btn primary">홈으로 돌아가기</a>
                                 <button type="button" class="success-btn secondary" onclick="resetForm()">다른 프로젝트 신청</button>
                             </div>
                         </div>
@@ -355,8 +350,8 @@
     </section>
 
     <!-- Scripts -->
-    <script src="navigation.js"></script>
+    <script src="assets/js/navigation.js"></script>
     <!-- <script src="video-optimization.js"></script> -->
-    <script src="contact-page.js"></script>
+    <script src="assets/js/pages/contact.js"></script>
 </body>
 </html>

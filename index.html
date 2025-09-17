@@ -18,7 +18,7 @@
     <link rel="canonical" href="https://chiro-psi.vercel.app/">
     
     <!-- Open Graph 메타 태그 -->
-    <meta property="og:title" content="치로웹디자인 - 인천 홈페이지 제작 전문">
+    <meta property="og:title" content="치로웹디자인 - 반응형 홈페이지 제작 전문">
     <meta property="og:description" content="80만원부터 시작! 스타트업과 중소기업을 위한 맞춤형 웹디자인">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://chiro-psi.vercel.app/">
@@ -41,17 +41,19 @@
     <meta name="ICBM" content="37.4563, 126.7052">
     
     <!-- Combined CSS for Vercel -->
-    <link rel="stylesheet" href="./assets/css/main.css?v=20241203" data-critical>
-    <link rel="stylesheet" href="./assets/css/icons.css" data-critical>
+    <link rel="stylesheet" href="assets/css/main.css?v=20241203" data-critical>
+    <link rel="stylesheet" href="assets/css/icons.css" data-critical>
     
-    <!-- Removed inline z-index overrides; rely on stylesheet stacking -->
+    <!-- Combined CSS for Vercel -->
+    <link rel="stylesheet" href="assets/css/main.css?v=20241203" data-critical>
+    <link rel="stylesheet" href="assets/css/icons.css" data-critical>
     
     <!-- Font Optimization -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=optional" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
     
     <!-- Font Loading Detection -->
     <script>
@@ -67,7 +69,14 @@
     </script>
     
     <!-- Resource Preloader (Critical) -->
-    <script src="./assets/js/utils/resource-preloader.js" data-critical></script>
+    <script src="assets/js/utils/resource-preloader.js" data-critical></script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Resource Preloader (Critical) -->
+    <script src="assets/js/utils/resource-preloader.js" data-critical></script>
     
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -79,21 +88,21 @@
     <nav class="main-navigation">
         <div class="nav-container">
             <!-- Logo -->
-            <a href="#hero" class="nav-logo">
+            <a href="/" class="nav-logo">
                 <span class="nav-logo-text">CHIRO</span>
             </a>
             
             <!-- Desktop Menu -->
             <ul class="nav-menu">
                 <li class="nav-item"><a href="/" class="nav-link active">Home</a></li>
-                <li class="nav-item"><a href="./pages/portfolio/portfolio.html" class="nav-link">Portfolio</a></li>
-                <li class="nav-item"><a href="./pages/about/about.html" class="nav-link">About</a></li>
-                <li class="nav-item"><a href="./pages/contact/contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item"><a href="/portfolio.html" class="nav-link">Portfolio</a></li>
+                <li class="nav-item"><a href="/about.html" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="/contact.html" class="nav-link">Contact</a></li>
             </ul>
             
             <!-- CTA Button -->
             <div class="nav-cta">
-                <a href="#contact" class="nav-contact-btn">Start Project</a>
+                <a href="/contact.html" class="nav-contact-btn">Start Project</a>
             </div>
             
             <!-- Mobile Menu Toggle -->
@@ -107,11 +116,11 @@
     
     <!-- Mobile Menu -->
     <div class="nav-mobile-menu">
-        <a href="index.html" class="nav-mobile-link active">Home</a>
-        <a href="portfolio.html" class="nav-mobile-link">Portfolio</a>
-        <a href="about.html" class="nav-mobile-link">About</a>
-        <a href="contact.html" class="nav-mobile-link">Contact</a>
-        <a href="#contact" class="nav-mobile-link nav-mobile-cta">Start Project</a>
+        <a href="/" class="nav-mobile-link active">Home</a>
+        <a href="/portfolio.html" class="nav-mobile-link">Portfolio</a>
+        <a href="/about.html" class="nav-mobile-link">About</a>
+        <a href="/contact.html" class="nav-mobile-link">Contact</a>
+        <a href="/contact.html" class="nav-mobile-link nav-mobile-cta">Start Project</a>
     </div>
     
     <!-- Section Indicator -->
@@ -271,7 +280,7 @@
             
             <!-- View All Button -->
             <div class="portfolio-cta">
-                <a href="#portfolio" class="btn-secondary">
+                <a href="/portfolio" class="btn-secondary">
                     View All Projects
                     <span class="btn-arrow">→</span>
                 </a>
@@ -367,7 +376,7 @@
                         <li>3회 수정</li>
                         <li>1개월 유지보수</li>
                     </ul>
-                    <a href="#contact" class="pricing-cta btn-secondary pricing-cta-hover">Get Started</a>
+                    <a href="/contact" class="pricing-cta btn-secondary pricing-cta-hover">Get Started</a>
                 </div>
                 
                 <!-- Growth Tier -->
@@ -390,7 +399,7 @@
                         <li>3개월 유지보수</li>
                         <li>기본 마케팅 설정</li>
                     </ul>
-                    <a href="#contact" class="pricing-cta btn-primary">Get Started</a>
+                    <a href="/contact" class="pricing-cta btn-primary">Get Started</a>
                 </div>
                 
                 <!-- Scale Tier -->
@@ -413,7 +422,7 @@
                         <li>마케팅 캠페인 설정</li>
                         <li>월간 리포트</li>
                     </ul>
-                    <a href="#contact" class="pricing-cta btn-secondary pricing-cta-hover">Get Started</a>
+                    <a href="/contact" class="pricing-cta btn-secondary pricing-cta-hover">Get Started</a>
                 </div>
             </div>
         </div>
@@ -432,7 +441,7 @@
             <div class="contact-content">
                 <!-- CTA Button -->
                 <div class="contact-cta">
-                    <a href="contact.html" class="cta-button">무료 상담하기</a>
+                    <a href="/contact" class="cta-button">무료 상담하기</a>
                 </div>
                 
                 <!-- Contact Info -->
@@ -480,9 +489,9 @@
                         <div class="footer-column">
                             <h4>Company</h4>
                             <ul>
-                                <li><a href="#about">About</a></li>
-                                <li><a href="#portfolio">Portfolio</a></li>
-                                <li><a href="#contact">Contact</a></li>
+                                <li><a href="/about">About</a></li>
+                                <li><a href="/portfolio">Portfolio</a></li>
+                                <li><a href="/contact">Contact</a></li>
                             </ul>
                         </div>
                         <div class="footer-column">
@@ -645,16 +654,16 @@
     </script>
 
     <!-- Performance Optimization Scripts -->
-    <script src="./assets/js/utils/image-optimization.js" data-critical></script>
+    <script src="assets/js/utils/image-optimization.js" data-critical></script>
     <!-- <script src="./assets/js/utils/video-optimization.js" data-critical></script> -->
     
     <!-- Core Application Scripts -->
-    <script src="./assets/js/api/api-config.js"></script>
-    <script src="./assets/js/api/data-manager.js"></script>
-    <script src="./pages/home/components/hero.js"></script>
-    <script src="./pages/home/navigation.js"></script>
-    <script src="./pages/home/components/horizontal-scroll.js"></script>
+    <script src="assets/js/api/api-config.js"></script>
+    <script src="assets/js/api/data-manager.js"></script>
+    <script src="assets/js/components/hero.js"></script>
+    <script src="assets/js/navigation.js"></script>
+    <script src="assets/js/components/horizontal-scroll.js"></script>
     <!-- <script src="../portfolio/portfolio.js"></script> -->
-    <script src="./pages/home/main.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>

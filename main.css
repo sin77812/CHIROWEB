@@ -1,6 +1,46 @@
 /* CHIRO - Combined Styles for Vercel Deployment */
 
-/* Font Imports from HTML <link> tag */
+/* Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=optional');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+/* Font Loading Optimization */
+.hero-title-line,
+.section-title,
+.logo-text,
+.nav-logo-text,
+h1, h2, h3, h4 {
+  /* Initial state - system fonts for immediate rendering */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+  font-weight: 900;
+  transition: font-family 0.1s ease;
+}
+
+/* After Black Han Sans loaded */
+.fonts-loaded .hero-title-line,
+.fonts-loaded .section-title,
+.fonts-loaded .logo-text,
+.fonts-loaded .nav-logo-text,
+.fonts-loaded h1, 
+.fonts-loaded h2, 
+.fonts-loaded h3,
+.fonts-loaded h4 {
+  font-family: "Black Han Sans", sans-serif;
+  font-weight: 400;
+}
+
+/* Fallback if fonts fail to load */
+.fonts-fallback .hero-title-line,
+.fonts-fallback .section-title,
+.fonts-fallback .logo-text,
+.fonts-fallback .nav-logo-text,
+.fonts-fallback h1, 
+.fonts-fallback h2, 
+.fonts-fallback h3,
+.fonts-fallback h4 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+  font-weight: 900;
+}
 
 /* Colors */
 :root {
@@ -30,8 +70,12 @@
   
   /* Typography */
   --font-en-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-korean: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-  --font-title: "Black Han Sans", sans-serif;
+  --font-en-secondary: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-korean: 'Pretendard', 'Spoqa Han Sans Neo', sans-serif;
+  --font-code: 'JetBrains Mono', Monaco, 'Cascadia Code', monospace;
+  --font-title: 'Black Han Sans', sans-serif;
+  /* Alias to keep compatibility with older rules */
+  --font-primary: var(--font-en-primary);
   
   /* Font Sizes */
   --font-display-large: 4.5rem;  /* 72px */
@@ -102,7 +146,7 @@ html {
 }
 
 body {
-  font-family: var(--font-korean);
+  font-family: var(--font-en-primary);
   background-color: var(--primary-bg);
   color: var(--primary-text);
   line-height: var(--line-height-normal);
@@ -110,10 +154,9 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6, .title-font {
+h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-title);
-  font-weight: 400; /* Black Han Sans only supports regular weight */
-  font-style: normal;
+  font-weight: var(--font-regular);
   line-height: var(--line-height-tight);
   margin-bottom: var(--space-text);
   text-transform: uppercase;
@@ -1580,27 +1623,19 @@ section {
 }
 
 .horizontal-panel {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
   will-change: transform;
 }
 
 .panel-content {
   text-align: center;
   opacity: 1;
+  /* Visually center within viewport minus fixed nav overlay */
   transform: translateY(0);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  top: 0;
   z-index: 20;
   will-change: transform, opacity;
-  width: 100%;
-  max-width: 1200px;
-  padding: 0 40px;
 }
 
 /* Prevent text selection during scroll */
@@ -1965,52 +2000,4 @@ section {
 
 .text-reveal {
   animation: textReveal var(--duration-slow) var(--ease-default);
-}
-
-/* Horizontal Scroll Panel Content Styles */
-.panel-main-title {
-  font-family: "Black Han Sans", sans-serif;
-  font-size: clamp(48px, 8vw, 120px);
-  font-weight: 400;
-  color: var(--primary-text);
-  letter-spacing: -0.03em;
-  line-height: 0.9;
-  margin-bottom: 16px;
-  text-transform: uppercase;
-  opacity: 0.9;
-}
-
-.panel-subtitle {
-  font-family: var(--font-primary);
-  font-size: clamp(24px, 3vw, 36px);
-  font-weight: 300;
-  color: var(--accent-red);
-  margin-bottom: 24px;
-  letter-spacing: 0.02em;
-}
-
-.panel-description {
-  font-family: var(--font-korean);
-  font-size: clamp(18px, 2vw, 24px);
-  font-weight: 400;
-  color: var(--secondary-text);
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 0 auto;
-  opacity: 0.8;
-}
-
-@media (max-width: 768px) {
-  .panel-main-title {
-    font-size: 48px;
-  }
-  
-  .panel-subtitle {
-    font-size: 24px;
-    margin-bottom: 16px;
-  }
-  
-  .panel-description {
-    font-size: 16px;
-  }
 }

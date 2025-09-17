@@ -1,34 +1,4 @@
 {
-  "builds": [
-    {
-      "src": "**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "^/(portfolio)/?$",
-      "dest": "/portfolio.html"
-    },
-    {
-      "src": "^/(about)/?$",
-      "dest": "/about.html"
-    },
-    {
-      "src": "^/(contact)/?$",
-      "dest": "/contact.html"
-    },
-    {
-      "src": "^/(.*\\.html)/$",
-      "status": 308,
-      "headers": { "Location": "/$1" }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
-  ]
+  "cleanUrls": true,
+  "trailingSlash": false
 }

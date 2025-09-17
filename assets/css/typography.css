@@ -1,15 +1,16 @@
-/* Font Imports */
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+/* assets/css/typography.css */
+
+/* 
+  FONT NOTICE:
+  This file is now only for font variable definitions.
+  Actual font loading (@import) is handled in main.css.
+*/
 
 :root {
   /* Font Families */
-  --font-en-primary: 'Inter Variable', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-en-secondary: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-  --font-ko-primary: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-  --font-ko-secondary: 'Spoqa Han Sans Neo', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --font-en-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-ko-primary: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-title: 'Black Han Sans', var(--font-ko-primary), sans-serif;
   
   /* Font Sizes - Desktop */
   --font-display-large: 4.5rem;    /* 72px */
@@ -48,144 +49,32 @@
     --font-h3: 1.5rem;              /* 24px */
     --font-h4: 1.25rem;             /* 20px */
     --font-body-large: 1.125rem;    /* 18px */
-    --font-body: 1rem;              /* 16px */
-    --font-caption: 0.875rem;       /* 14px */
-    --font-micro: 0.75rem;          /* 12px */
   }
 }
 
-/* Typography Classes */
-.display-large {
-  font-family: var(--font-en-primary);
-  font-size: var(--font-display-large);
-  font-weight: var(--font-bold);
-  line-height: var(--line-height-tight);
-  color: var(--primary-text);
-}
-
-.display {
-  font-family: var(--font-en-primary);
-  font-size: var(--font-display);
-  font-weight: var(--font-bold);
-  line-height: var(--line-height-tight);
-  color: var(--primary-text);
-}
-
-.h1 {
-  font-family: var(--font-en-primary);
-  font-size: var(--font-h1);
-  font-weight: var(--font-semibold);
-  line-height: var(--line-height-tight);
-  color: var(--primary-text);
-}
-
-.h2 {
-  font-family: var(--font-en-primary);
-  font-size: var(--font-h2);
-  font-weight: var(--font-semibold);
-  line-height: var(--line-height-tight);
-  color: var(--primary-text);
-}
-
-.h3 {
-  font-family: var(--font-en-primary);
-  font-size: var(--font-h3);
-  font-weight: var(--font-medium);
-  line-height: var(--line-height-normal);
-  color: var(--primary-text);
-}
-
-.h4 {
-  font-family: var(--font-en-primary);
-  font-size: var(--font-h4);
-  font-weight: var(--font-medium);
-  line-height: var(--line-height-normal);
-  color: var(--primary-text);
-}
-
-.body-large {
-  font-family: var(--font-en-primary);
-  font-size: var(--font-body-large);
-  font-weight: var(--font-regular);
-  line-height: var(--line-height-normal);
-  color: var(--secondary-text);
-}
-
-.body {
-  font-family: var(--font-en-primary);
-  font-size: var(--font-body);
-  font-weight: var(--font-regular);
-  line-height: var(--line-height-normal);
-  color: var(--secondary-text);
-}
-
-.caption {
-  font-family: var(--font-en-primary);
-  font-size: var(--font-caption);
-  font-weight: var(--font-regular);
-  line-height: var(--line-height-normal);
-  color: var(--secondary-text);
-}
-
-.micro {
-  font-family: var(--font-en-primary);
-  font-size: var(--font-micro);
-  font-weight: var(--font-regular);
-  line-height: var(--line-height-normal);
-  color: var(--disabled-text);
-}
-
-/* Korean Typography */
-.ko {
+/* Base Typography Styles */
+body {
   font-family: var(--font-ko-primary);
-}
-
-/* Code/Mono Typography */
-.mono {
-  font-family: var(--font-mono);
-  font-feature-settings: 'liga' 0, 'calt' 0;
-}
-
-/* HTML Element Defaults */
-h1 { 
-  font-family: var(--font-en-primary);
-  font-size: var(--font-h1);
-  font-weight: var(--font-semibold);
-  line-height: var(--line-height-tight);
   color: var(--primary-text);
 }
 
-h2 { 
-  font-family: var(--font-en-primary);
-  font-size: var(--font-h2);
-  font-weight: var(--font-semibold);
-  line-height: var(--line-height-tight);
-  color: var(--primary-text);
-}
-
-h3 { 
-  font-family: var(--font-en-primary);
-  font-size: var(--font-h3);
-  font-weight: var(--font-medium);
-  line-height: var(--line-height-normal);
-  color: var(--primary-text);
-}
-
-h4 { 
-  font-family: var(--font-en-primary);
-  font-size: var(--font-h4);
-  font-weight: var(--font-medium);
-  line-height: var(--line-height-normal);
-  color: var(--primary-text);
-}
-
-p { 
-  font-family: var(--font-en-primary);
-  font-size: var(--font-body);
+h1, h2, h3, h4, h5, h6, .title-font {
+  font-family: var(--font-title);
   font-weight: var(--font-regular);
-  line-height: var(--line-height-normal);
-  color: var(--secondary-text);
+  line-height: var(--line-height-tight);
+  color: var(--primary-text);
 }
+
+p, span, li, a, .body-font {
+    font-family: var(--font-ko-primary);
+    color: var(--secondary-text);
+}
+
+h1 { font-size: var(--font-h1); }
+h2 { font-size: var(--font-h2); }
+h3 { font-size: var(--font-h3); }
+h4 { font-size: var(--font-h4); }
+p { font-size: var(--font-body); }
 
 /* Font Weight Utilities */
 .font-thin { font-weight: var(--font-thin); }

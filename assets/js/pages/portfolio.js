@@ -191,6 +191,15 @@ document.addEventListener('DOMContentLoaded', function() {
         loadPortfolioData();
     }
     
+    // 포트폴리오 페이지에서 포트폴리오 로드
+    if (document.querySelector('.portfolio-grid-section') && document.querySelector('#portfolioGrid')) {
+        console.log('Portfolio page detected, loading all portfolios...');
+        loadAllPortfolios();
+        initFilterButtons();
+        initLoadMoreButton();
+        animateHeroSection();
+    }
+    
 });
 
 // Initialize image loading with fade-in effect
@@ -390,6 +399,192 @@ function initPortfolioFilter() {
             this.classList.add('active');
         });
     });
+}
+
+// Load all portfolios for portfolio page
+function loadAllPortfolios() {
+    console.log('=== PORTFOLIO PAGE LOADING ALL ITEMS ===');
+    
+    const portfolioGrid = document.querySelector('#portfolioGrid');
+    if (!portfolioGrid) {
+        console.error('Portfolio grid not found on portfolio page!');
+        return;
+    }
+    
+    const portfolios = portfolioData;
+    console.log('Loading all portfolios:', portfolios.length, 'items');
+    
+    // Show first 8 items
+    const initialItems = 8;
+    const displayPortfolios = portfolios.slice(0, initialItems);
+    
+    portfolioGrid.innerHTML = displayPortfolios.map(item => `
+        <div class="portfolio-item visible" data-category="${item.category}">
+            <div class="portfolio-image">
+                <img 
+                    src="${item.thumbnail}" 
+                    alt="${item.title}" 
+                    loading="lazy" 
+                    onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}';"
+                    class="portfolio-image-optimized">
+                <div class="portfolio-overlay">
+                    <div class="portfolio-info">
+                        <h3 class="project-title">${item.title}</h3>
+                        <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+                    </div>
+                    <a href="${item.url}" target="_blank" class="portfolio-link">
+                        <span class="link-text">View Project</span>
+                        <span class="link-icon">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    `).join('');
+    
+    // Update load more info
+    updateLoadMoreInfo(initialItems, portfolios.length);
+    
+    // Initialize interactions
+    initPortfolioInteractions();
+    initImageLoading();
+    initScrollAnimations();
+}
+
+// Initialize filter buttons
+function initFilterButtons() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const category = this.dataset.category;
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter items
+            if (category === 'all') {
+                portfolioItems.forEach(item => {
+                    item.style.display = 'block';
+                    setTimeout(() => item.classList.add('visible'), 10);
+                });
+            } else {
+                portfolioItems.forEach(item => {
+                    if (item.dataset.category === category) {
+                        item.style.display = 'block';
+                        setTimeout(() => item.classList.add('visible'), 10);
+                    } else {
+                        item.classList.remove('visible');
+                        setTimeout(() => item.style.display = 'none', 300);
+                    }
+                });
+            }
+            
+            // Update count
+            const visibleItems = document.querySelectorAll('.portfolio-item[style*="block"]').length || 
+                                document.querySelectorAll('.portfolio-item:not([style*="none"])').length;
+            updateLoadMoreInfo(visibleItems, portfolioData.length);
+        });
+    });
+}
+
+// Initialize load more button
+function initLoadMoreButton() {
+    const loadMoreBtn = document.querySelector('.load-more-btn');
+    if (!loadMoreBtn) return;
+    
+    let currentCount = 8;
+    
+    loadMoreBtn.addEventListener('click', function() {
+        const portfolioGrid = document.querySelector('#portfolioGrid');
+        const itemsToLoad = 4;
+        const nextItems = portfolioData.slice(currentCount, currentCount + itemsToLoad);
+        
+        nextItems.forEach(item => {
+            const portfolioItem = document.createElement('div');
+            portfolioItem.className = 'portfolio-item';
+            portfolioItem.dataset.category = item.category;
+            portfolioItem.innerHTML = `
+                <div class="portfolio-image">
+                    <img 
+                        src="${item.thumbnail}" 
+                        alt="${item.title}" 
+                        loading="lazy" 
+                        onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}';"
+                        class="portfolio-image-optimized">
+                    <div class="portfolio-overlay">
+                        <div class="portfolio-info">
+                            <h3 class="project-title">${item.title}</h3>
+                            <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+                        </div>
+                        <a href="${item.url}" target="_blank" class="portfolio-link">
+                            <span class="link-text">View Project</span>
+                            <span class="link-icon">→</span>
+                        </a>
+                    </div>
+                </div>
+            `;
+            portfolioGrid.appendChild(portfolioItem);
+            
+            // Animate in
+            setTimeout(() => portfolioItem.classList.add('visible'), 10);
+        });
+        
+        currentCount += itemsToLoad;
+        updateLoadMoreInfo(currentCount, portfolioData.length);
+        
+        // Hide button if all loaded
+        if (currentCount >= portfolioData.length) {
+            loadMoreBtn.style.display = 'none';
+        }
+        
+        // Re-initialize interactions for new items
+        initPortfolioInteractions();
+        initImageLoading();
+    });
+}
+
+// Update load more info
+function updateLoadMoreInfo(shown, total) {
+    const loadMoreInfo = document.querySelector('.load-more-info');
+    if (loadMoreInfo) {
+        loadMoreInfo.textContent = `${shown} of ${total}+ projects shown`;
+    }
+}
+
+// Animate hero section
+function animateHeroSection() {
+    const titleLines = document.querySelectorAll('.title-line');
+    const description = document.querySelector('.portfolio-hero-description');
+    const stats = document.querySelector('.portfolio-stats');
+    
+    // Animate title lines
+    titleLines.forEach((line, index) => {
+        setTimeout(() => {
+            line.style.opacity = '1';
+            line.style.transform = 'translateY(0)';
+            line.style.transition = 'all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)';
+        }, index * 100);
+    });
+    
+    // Animate description
+    if (description) {
+        setTimeout(() => {
+            description.style.opacity = '1';
+            description.style.transform = 'translateY(0)';
+            description.style.transition = 'all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)';
+        }, 300);
+    }
+    
+    // Animate stats
+    if (stats) {
+        setTimeout(() => {
+            stats.style.opacity = '1';
+            stats.style.transform = 'translateY(0)';
+            stats.style.transition = 'all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1)';
+        }, 500);
+    }
 }
 
 })(); // End IIFE
