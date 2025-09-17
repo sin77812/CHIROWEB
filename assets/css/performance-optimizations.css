@@ -58,7 +58,7 @@
     display: block !important;
 }
 
-/* Avoid GPU transforms on horizontal section video to prevent Safari/iOS blackouts */
+/* Avoid GPU transforms on horizontal section video to prevent video blackouts */
 .horizontal-video {
     width: 100% !important;
     height: 100% !important;

@@ -1477,48 +1477,184 @@ section {
   background: transparent;
   /* Keep above subsequent sections during pin */
   z-index: 900;
-  /* iOS에서 탄성 스크롤과 충돌 방지 - 모바일만 auto */
   overscroll-behavior: contain;
 }
 
-/* iOS Safari 뷰포트 높이 문제 해결 */
-@supports (height: 100dvh) {
-  .horizontal-scroll-section {
-    height: 100dvh;
-  }
-  
-  .horizontal-container {
-    height: 100dvh;
-  }
-  
-  .horizontal-panel {
-    height: 100dvh;
-  }
-}
+/* ===== iOS 전용 횡스크롤 스타일 ===== */
 
-/* 대체 방안: svh 지원 */
-@supports (height: 100svh) and (not (height: 100dvh)) {
-  .horizontal-scroll-section {
-    height: 100svh;
-  }
-  
-  .horizontal-container {
-    height: 100svh;
-  }
-  
-  .horizontal-panel {
-    height: 100svh;
-  }
-}
-
-/* iOS 안전 영역 대응 */
-@supports (padding: max(0px)) {
-  @media (max-width: 768px) {
-    .horizontal-scroll-section {
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
+/* iOS Safari 감지 - iOS에서만 적용되는 스타일 */
+@supports (-webkit-touch-callout: none) {
+    /* iOS 스크롤 모드일 때만 적용 */
+    .horizontal-scroll-section.ios-scroll {
+        /* 네이티브 횡스크롤 활성화 */
+        overflow-x: scroll !important;
+        overflow-y: hidden !important;
+        scroll-snap-type: x mandatory !important;
+        -webkit-overflow-scrolling: touch !important;
+        
+        /* 스크롤바 숨기기 */
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
     }
-  }
+    
+    .horizontal-scroll-section.ios-scroll::-webkit-scrollbar {
+        display: none !important;
+    }
+    
+    /* iOS에서 wrapper 스타일 변경 */
+    .horizontal-scroll-section.ios-scroll .horizontal-wrapper {
+        /* flex 컨테이너로 변경 */
+        display: flex !important;
+        flex-direction: row !important;
+        width: 400vw !important;
+        height: 100vh !important;
+        
+        /* transform 제거 (스크롤로 대체) */
+        transform: none !important;
+        will-change: auto !important;
+    }
+    
+    /* iOS에서 패널 스타일 */
+    .horizontal-scroll-section.ios-scroll .horizontal-panel {
+        /* 스냅 포인트 설정 */
+        scroll-snap-align: start !important;
+        scroll-snap-stop: always !important;
+        
+        /* 플렉스 아이템 설정 */
+        flex: 0 0 100vw !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        
+        /* 포지션 고정 */
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    /* iOS에서 비디오 컨테이너 수정 */
+    .horizontal-scroll-section.ios-scroll .horizontal-video-container {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 1 !important;
+        pointer-events: none !important;
+    }
+    
+    /* iOS에서 컨텐츠 위치 조정 */
+    .horizontal-scroll-section.ios-scroll .panel-content {
+        position: relative !important;
+        z-index: 10 !important;
+        pointer-events: auto !important;
+    }
+    
+    /* iOS 스크롤 스무딩 */
+    .horizontal-scroll-section.ios-scroll {
+        scroll-behavior: smooth !important;
+    }
+    
+    /* iOS 터치 인터랙션 개선 */
+    .horizontal-scroll-section.ios-scroll {
+        /* 터치 딜레이 제거 */
+        touch-action: pan-x !important;
+        -webkit-tap-highlight-color: transparent !important;
+    }
+    
+    /* iOS에서 패널 전환 효과 */
+    .horizontal-scroll-section.ios-scroll .panel-content {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: opacity 0.3s ease !important;
+    }
+}
+
+/* iOS가 아닌 기기에서는 기존 스타일 유지 */
+.horizontal-scroll-section:not(.ios-scroll) {
+    /* 기존 스타일 그대로 유지 */
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    background: transparent;
+    z-index: 900;
+    overscroll-behavior: contain;
+}
+
+/* Progress Indicators 기본 스타일 (모든 기기) */
+.progress-indicators {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 100;
+    padding: 12px 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 30px;
+    backdrop-filter: blur(10px);
+}
+
+.progress-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.progress-dot.active {
+    background: var(--accent-red);
+    transform: scale(1.3);
+    border-color: var(--accent-red);
+}
+
+.progress-dot:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(1.2);
+}
+
+/* iOS에서 Progress Indicators 위치 고정 */
+@supports (-webkit-touch-callout: none) {
+    .horizontal-scroll-section.ios-scroll ~ .progress-indicators,
+    .horizontal-scroll-section.ios-scroll .progress-indicators {
+        position: fixed !important;
+        bottom: 40px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        z-index: 100 !important;
+    }
+}
+
+/* 모바일 공통 (iOS 포함) */
+@media (max-width: 768px) {
+    .progress-indicators {
+        bottom: 20px !important;
+        padding: 8px 16px !important;
+    }
+    
+    .progress-dot {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+@supports (-webkit-touch-callout: none) and (max-width: 768px) {
+    .horizontal-scroll-section.ios-scroll .panel-main-title {
+        font-size: 48px !important;
+    }
+    
+    .horizontal-scroll-section.ios-scroll .panel-subtitle {
+        font-size: 20px !important;
+    }
+    
+    .horizontal-scroll-section.ios-scroll .panel-description {
+        font-size: 16px !important;
+        padding: 0 20px !important;
+    }
 }
 
 .horizontal-scroll-section.is-pinned {
@@ -1547,34 +1683,6 @@ section {
   left: 0;
   z-index: 5;
   pointer-events: none;
-}
-
-/* 모바일에서 iOS 최적화 설정 */
-@media (max-width: 768px) {
-  .horizontal-video-container,
-  .horizontal-video-container * {
-    pointer-events: none !important;
-    touch-action: none !important;
-  }
-  
-  /* iOS에서 탄성 스크롤 허용 - 횡스크롤 안정성 개선 */
-  .horizontal-scroll-section {
-    overscroll-behavior: auto;
-  }
-  
-  /* 모바일에서만 백페이스 가시성 필요시 적용 */
-  .horizontal-scroll-section.is-pinned {
-    backface-visibility: hidden;
-  }
-
-  /* iOS/Mobile: 과도한 3D 합성 비활성화로 스크롤 버벅임 완화 */
-  .horizontal-wrapper {
-    transform: none;
-    perspective: none;
-    transform-style: flat;
-    backface-visibility: visible;
-    will-change: auto;
-  }
 }
 
 .horizontal-video {
