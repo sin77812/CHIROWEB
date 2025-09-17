@@ -1847,9 +1847,13 @@ section {
     position: relative;
     overflow-x: scroll !important;
     overflow-y: hidden !important;
+    height: 100svh !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch !important;
-    scroll-behavior: smooth;
+    /* iOS Safari smooth + snap 충돌 방지 */
+    scroll-behavior: auto !important;
+    /* base에서 설정된 contain을 무효화하여 갇힘 방지 */
+    overscroll-behavior: auto !important;
     /* Touch tweaks */
     touch-action: pan-x;
     -webkit-tap-highlight-color: transparent;
@@ -1867,7 +1871,7 @@ section {
     display: flex !important;
     flex-direction: row !important;
     width: auto !important;
-    height: 100vh !important;
+    height: 100svh !important;
     transform: none !important;
     will-change: auto !important;
     backface-visibility: hidden !important;
@@ -1876,7 +1880,7 @@ section {
   .horizontal-scroll-section.ios-scroll .horizontal-panel {
     flex: 0 0 100vw !important;
     width: 100vw !important;
-    height: 100vh !important;
+    height: 100svh !important;
     scroll-snap-align: start !important;
     scroll-snap-stop: always !important;
     position: relative !important;
@@ -1896,11 +1900,11 @@ section {
 
   /* Keep background video within section, not global fixed */
   .horizontal-scroll-section.ios-scroll .horizontal-video-container {
-    position: sticky !important;
+    position: absolute !important;
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;
-    height: 100vh !important;
+    height: 100svh !important;
     z-index: 1 !important;
     pointer-events: none !important;
   }

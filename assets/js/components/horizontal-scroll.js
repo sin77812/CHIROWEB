@@ -73,7 +73,7 @@ function initIOSNativeScroll(horizontalSection, wrapper, panels) {
             const targetScroll = (horizontalSection.scrollWidth - horizontalSection.clientWidth) * (index / (panels.length - 1));
             horizontalSection.scrollTo({
                 left: targetScroll,
-                behavior: 'smooth'
+                behavior: 'auto' // iOS Safari에서 smooth + snap 충돌 방지
             });
         });
     });
