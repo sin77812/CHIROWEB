@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logos/chirologo.png">
+    <link rel="apple-touch-icon" href="assets/images/logos/chirologo.png">
+    
+    <!-- SEO 메타 태그 -->
+    <title>홈페이지 제작 상담 문의 | 무료 견적 | 치로웹디자인</title>
+    <meta name="description" content="홈페이지 제작 상담을 원하시나요? 12시간 내 답변! 무료 견적 및 기획 상담. 인천 지역 방문 상담 가능. 080만원부터 시작하는 합리적인 웹디자인.">
+    <meta name="keywords" content="홈페이지 제작 상담, 웹디자인 견적, 무료 상담, 인천 웹디자인 문의, 홈페이지 제작 비용">
+    <meta name="author" content="치로웹디자인">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://chiro-psi.vercel.app/contact">
+    
+    <!-- Open Graph 메타 태그 -->
+    <meta property="og:title" content="홈페이지 제작 상담 - 치로웹디자인">
+    <meta property="og:description" content="12시간 내 답변! 무료 견적과 전문 상담을 받아보세요">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chiro-psi.vercel.app/contact">
+    <meta property="og:image" content="https://chiro-psi.vercel.app/contact-og.png">
+    <meta property="og:site_name" content="치로웹디자인">
+    <meta property="og:locale" content="ko_KR">
+    
+    <!-- Twitter Card 메타 태그 -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="홈페이지 제작 상담 | Chiro">
+    <meta name="twitter:description" content="무료 견적과 12시간 내 답변 보장">
+    <meta name="twitter:image" content="https://chiro-psi.vercel.app/contact-twitter.png">
+    
+    <!-- Combined CSS for Vercel -->
+    <link rel="stylesheet" href="assets/css/main.css?v=20241203">
+    <link rel="stylesheet" href="assets/css/icons.css">
+    <link rel="stylesheet" href="assets/css/pages/contact.css">
+    
+    <!-- Font Optimization -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    
+    <!-- Font Loading Detection -->
+    <script>
+    if ('fonts' in document) {
+        Promise.all([
+            document.fonts.load('400 1em "Black Han Sans"'),
+        ]).then(() => {
+            document.documentElement.classList.add('fonts-loaded');
+        }).catch(() => {
+            document.documentElement.classList.add('fonts-fallback');
+        });
+    }
+    </script>
+    
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            emailjs.init("nZdvthms9zRbfn7oq"); // Your Public Key
+        })();
+    </script>
+</head>
+<body style="background: #0A0A0A; margin: 0; padding: 0;">
+    
+    <!-- Main Navigation -->
+    <nav class="main-navigation">
+        <div class="nav-container">
+            <!-- Logo -->
+            <a href="/" class="nav-logo">
+                <span class="nav-logo-text">CHIRO</span>
+            </a>
+            
+            <!-- Desktop Menu -->
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="/" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="/portfolio" class="nav-link">Portfolio</a></li>
+                <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="/contact" class="nav-link active">Contact</a></li>
+            </ul>
+            
+            <!-- CTA Button -->
+            <div class="nav-cta">
+                <a href="/contact" class="nav-contact-btn">Start Project</a>
+                
+                <!-- Mobile Menu Toggle -->
+                <button class="nav-toggle" aria-label="Toggle menu">
+                    <span class="nav-toggle-line"></span>
+                    <span class="nav-toggle-line"></span>
+                    <span class="nav-toggle-line"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div class="nav-mobile-menu">
+        <a href="/" class="nav-mobile-link">Home</a>
+        <a href="/portfolio" class="nav-mobile-link">Portfolio</a>
+        <a href="/about" class="nav-mobile-link">About</a>
+        <a href="/contact" class="nav-mobile-link active">Contact</a>
+        <a href="/contact" class="nav-mobile-link nav-mobile-cta">Start Project</a>
+    </div>
+    
+    <!-- Contact Hero Section -->
+    <section class="contact-hero-section">
+        <div class="hero-video-background">
+            <video class="hero-video" autoplay muted loop playsinline preload="auto">
+                <source src="https://chiro-web.s3.ap-northeast-2.amazonaws.com/video/bennervideo.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay"></div>
+        </div>
+        <div class="container">
+            <div class="contact-hero-content">
+                <h1 class="contact-hero-title">
+                    <span class="title-line">Start Your</span>
+                    <span class="title-line highlight">Project</span>
+                </h1>
+                <p class="contact-hero-description">
+                    혁신적인 디지털 경험을 함께 만들어보세요.<br>
+                    12시간 내에 답변을 드리겠습니다.
+                </p>
+                <div class="hero-features">
+                    <div class="feature-item">
+                        <span class="feature-icon"><i class="icon icon-lightning"></i></span>
+                        <span class="feature-text">빠른 응답</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon"><i class="icon icon-bulb"></i></span>
+                        <span class="feature-text">맞춤 솔루션</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon"><i class="icon icon-target"></i></span>
+                        <span class="feature-text">목표 달성</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section class="contact-form-section">
+        <div class="container">
+            <div class="contact-content">
+                
+                <!-- Contact Form -->
+                <div class="contact-form-container">
+                    <div class="form-header">
+                        <h2 class="form-title">프로젝트 상담 신청</h2>
+                        <div class="progress-bar">
+                            <div class="progress-step active" data-step="1">
+                                <span class="step-number">1</span>
+                                <span class="step-label">기본정보</span>
+                            </div>
+                            <div class="progress-line"></div>
+                            <div class="progress-step" data-step="2">
+                                <span class="step-number">2</span>
+                                <span class="step-label">정보</span>
+                            </div>
+                            <div class="progress-line"></div>
+                            <div class="progress-step" data-step="3">
+                                <span class="step-number">3</span>
+                                <span class="step-label">전송완료</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <form class="contact-form" id="contactForm">
+                        
+                        <!-- Step 1: Basic Information -->
+                        <div class="form-step active" data-step="1">
+                            <div class="form-group">
+                                <label for="name" class="form-label">이름 *</label>
+                                <input type="text" id="name" name="name" class="form-input" required>
+                                <span class="form-error" id="nameError"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">이메일 *</label>
+                                <input type="email" id="email" name="email" class="form-input" required>
+                                <span class="form-error" id="emailError"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="company" class="form-label">회사명</label>
+                                <input type="text" id="company" name="company" class="form-input">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="phone" class="form-label">연락처</label>
+                                <input type="tel" id="phone" name="phone" class="form-input">
+                            </div>
+                            
+                            <button type="button" class="form-next-btn" onclick="nextStep()">
+                                <span>다음 단계</span>
+                                <span class="btn-arrow"><i class="icon icon-arrow-right"></i></span>
+                            </button>
+                        </div>
+                        
+                        <!-- Step 2: Project Information -->
+                        <div class="form-step" data-step="2">
+                            <div class="form-group">
+                                <label for="projectType" class="form-label">프로젝트 유형 *</label>
+                                <select id="projectType" name="projectType" class="form-select" required>
+                                    <option value="">선택해주세요</option>
+                                    <option value="web-design">웹사이트 리디자인</option>
+                                    <option value="web-development">웹사이트 개발</option>
+                                    <option value="branding">브랜딩 페이지</option>
+                                    <option value="ecommerce">이커머스/쇼핑몰</option>
+                                    <option value="marketing">SEO 최적화 의뢰</option>
+                                    <option value="other">기타</option>
+                                </select>
+                                <span class="form-error" id="projectTypeError"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="budget" class="form-label">예산 범위</label>
+                                <select id="budget" name="budget" class="form-select">
+                                    <option value="">선택해주세요</option>
+                                    <option value="under-100">100만원 미만</option>
+                                    <option value="100-300">100-300만원</option>
+                                    <option value="300-500">300-500만원</option>
+                                    <option value="500-1000">500-1000만원</option>
+                                    <option value="over-1000">1000만원 이상</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="timeline" class="form-label">희망 일정</label>
+                                <select id="timeline" name="timeline" class="form-select">
+                                    <option value="">선택해주세요</option>
+                                    <option value="asap">가능한 빨리</option>
+                                    <option value="1-month">1개월 내</option>
+                                    <option value="2-3-months">2-3개월 내</option>
+                                    <option value="flexible">협의 가능</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message" class="form-label">프로젝트 설명 *</label>
+                                <textarea id="message" name="message" class="form-textarea" rows="5" 
+                                    placeholder="프로젝트에 대해 자세히 설명해주세요. 목표, 요구사항, 참고 사이트 등을 포함해주시면 더 정확한 제안을 드릴 수 있습니다." required></textarea>
+                                <span class="form-error" id="messageError"></span>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="form-prev-btn" onclick="prevStep()">
+                                    <span class="btn-arrow"><i class="icon icon-arrow-right" style="transform: rotate(180deg);"></i></span>
+                                    <span>이전</span>
+                                </button>
+                                <button type="submit" class="form-submit-btn">
+                                    <span>상담 신청하기</span>
+                                    <span class="btn-icon"><i class="icon icon-mail"></i></span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Success Message -->
+                        <div class="form-success" id="successMessage">
+                            <div class="success-icon"><i class="icon icon-check icon-white"></i></div>
+                            <h3 class="success-title">상담 신청이 완료되었습니다!</h3>
+                            <p class="success-description">
+                                12시간 내에 담당자가 연락드리겠습니다.<br>
+                                빠른 상담을 원하시면 카카오톡으로도 연락주세요.
+                            </p>
+                            <div class="success-actions">
+                                <a href="/" class="success-btn primary">홈으로 돌아가기</a>
+                                <button type="button" class="success-btn secondary" onclick="resetForm()">다른 프로젝트 신청</button>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+                
+                <!-- Contact Information -->
+                <div class="contact-info-container">
+                    <div class="contact-info-card">
+                        <h3 class="contact-info-title">연락처 정보</h3>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="icon icon-mail"></i></div>
+                            <div class="contact-details">
+                                <h4 class="contact-label">이메일</h4>
+                                <a href="mailto:chiroweb75@gmail.com" class="contact-value">chiroweb75@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="icon icon-clock"></i></div>
+                            <div class="contact-details">
+                                <h4 class="contact-label">영업시간</h4>
+                                <span class="contact-value">월-금 9:00-18:00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="icon icon-rocket"></i></div>
+                            <div class="contact-details">
+                                <h4 class="contact-label">응답시간</h4>
+                                <span class="contact-value">12시간 내 답변</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-faq">
+                        <h3 class="faq-title">자주 묻는 질문</h3>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>프로젝트 기간은 얼마나 걸리나요?</span>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                프로젝트 규모에 따라 1-4주 정도 소요되며, 상담 시 정확한 일정을 안내드립니다.
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>수정 요청은 몇 번까지 가능한가요?</span>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                패키지에 따라 3-5회의 수정 기회를 제공하며, 추가 수정도 협의 가능합니다.
+                            </div>
+                        </div>
+                        
+                        <div class="faq-item">
+                            <div class="faq-question">
+                                <span>유지보수 서비스도 제공하나요?</span>
+                                <span class="faq-toggle">+</span>
+                            </div>
+                            <div class="faq-answer">
+                                프로젝트 완료 후 1개월 무료 유지보수를 제공하며, 이후 별도 계약도 가능합니다.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="assets/js/navigation.js"></script>
+    <!-- <script src="video-optimization.js"></script> -->
+    <script src="assets/js/pages/contact.js"></script>
+</body>
+</html>

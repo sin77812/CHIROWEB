@@ -1566,6 +1566,15 @@ section {
   .horizontal-scroll-section.is-pinned {
     backface-visibility: hidden;
   }
+
+  /* iOS/Mobile: 과도한 3D 합성 비활성화로 스크롤 버벅임 완화 */
+  .horizontal-wrapper {
+    transform: none;
+    perspective: none;
+    transform-style: flat;
+    backface-visibility: visible;
+    will-change: auto;
+  }
 }
 
 .horizontal-video {

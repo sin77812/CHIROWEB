@@ -44,10 +44,9 @@ window.addEventListener('load', () => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
     
-    // iOS에서 normalizeScroll 활성화
+    // iOS: normalizeScroll는 환경에 따라 스크롤 체감이 악화될 수 있어 비활성화
     if (isiOS && ScrollTrigger.normalizeScroll) {
-        ScrollTrigger.normalizeScroll(true);
-        console.log('iOS normalizeScroll activated');
+        ScrollTrigger.normalizeScroll(false);
     }
     
     // iOS 전용 동적 계산 함수: 위 getScrollDistance 재사용
@@ -59,11 +58,18 @@ window.addEventListener('load', () => {
             start: "top top",
             end: () => `+=${getScrollDistance()}`,
             pin: true,
-            // iOS에서는 pinType 자동 감지, 기타는 fixed
-            pinType: isiOS ? undefined : 'fixed',
+            // iOS에서는 transform pin로 강제 (fixed 관련 렌더링 이슈 회피)
+            pinType: isiOS ? 'transform' : 'fixed',
             scrub: 1,
             anticipatePin: 1,
             invalidateOnRefresh: true,
+            // iOS에서 역스크롤 불연속성 완화용 스냅(가벼운 설정)
+            snap: isiOS ? {
+                snapTo: 1 / (panels.length - 1),
+                duration: { min: 0.1, max: 0.25 },
+                ease: 'power1.out',
+                directional: true
+            } : false,
             onUpdate: (self) => {
                 const dots = document.querySelectorAll('.progress-dot');
                 
@@ -225,54 +231,49 @@ window.addEventListener('load', () => {
         });
     }
     
-    // 요소 가시성 체크
-    const checkVisibility = () => {
-        const container = document.querySelector('.horizontal-container');
-        const video = document.querySelector('.horizontal-video-container');
-        const overlay = document.querySelector('.horizontal-video-overlay');
-        const panel = panels[0];
-        
-        const visibilityData = {
-            container: {
-                display: window.getComputedStyle(container).display,
-                opacity: window.getComputedStyle(container).opacity,
-                visibility: window.getComputedStyle(container).visibility,
-                zIndex: window.getComputedStyle(container).zIndex,
-                position: window.getComputedStyle(container).position
-            },
-            video: {
-                display: window.getComputedStyle(video).display,
-                opacity: window.getComputedStyle(video).opacity,
-                zIndex: window.getComputedStyle(video).zIndex,
-                position: window.getComputedStyle(video).position
-            },
-            overlay: {
-                backgroundColor: window.getComputedStyle(overlay).backgroundColor,
-                opacity: window.getComputedStyle(overlay).opacity,
-                zIndex: window.getComputedStyle(overlay).zIndex
-            },
-            panel: {
-                display: window.getComputedStyle(panel).display,
-                opacity: window.getComputedStyle(panel).opacity,
-                zIndex: window.getComputedStyle(panel).zIndex
-            },
-            panelContent: {
-                opacity: window.getComputedStyle(panel.querySelector('.panel-content')).opacity,
-                display: window.getComputedStyle(panel.querySelector('.panel-content')).display
-            }
+    // 프로덕션에서는 가시성 디버그 비활성화 (모바일에서 성능 저하 방지)
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        const checkVisibility = () => {
+            const container = document.querySelector('.horizontal-container');
+            const video = document.querySelector('.horizontal-video-container');
+            const overlay = document.querySelector('.horizontal-video-overlay');
+            const panel = panels[0];
+            const visibilityData = {
+                container: {
+                    display: window.getComputedStyle(container).display,
+                    opacity: window.getComputedStyle(container).opacity,
+                    visibility: window.getComputedStyle(container).visibility,
+                    zIndex: window.getComputedStyle(container).zIndex,
+                    position: window.getComputedStyle(container).position
+                },
+                video: {
+                    display: window.getComputedStyle(video).display,
+                    opacity: window.getComputedStyle(video).opacity,
+                    zIndex: window.getComputedStyle(video).zIndex,
+                    position: window.getComputedStyle(video).position
+                },
+                overlay: {
+                    backgroundColor: window.getComputedStyle(overlay).backgroundColor,
+                    opacity: window.getComputedStyle(overlay).opacity,
+                    zIndex: window.getComputedStyle(overlay).zIndex
+                },
+                panel: {
+                    display: window.getComputedStyle(panel).display,
+                    opacity: window.getComputedStyle(panel).opacity,
+                    zIndex: window.getComputedStyle(panel).zIndex
+                },
+                panelContent: {
+                    opacity: window.getComputedStyle(panel.querySelector('.panel-content')).opacity,
+                    display: window.getComputedStyle(panel.querySelector('.panel-content')).display
+                }
+            };
+            console.log('Element Visibility Check:', JSON.stringify(visibilityData, null, 2));
         };
-        console.log('Element Visibility Check:', JSON.stringify(visibilityData, null, 2));
-    };
-    
-    // 페이지 로드 후 초기 체크
-    setTimeout(checkVisibility, 1000);
-    
-    // 모든 복잡한 iOS 로직 제거 - 기본 ScrollTrigger만 사용
-    
-    // 스크롤 시 체크 (디버깅용)
-    let scrollCheckTimeout;
-    window.addEventListener('scroll', () => {
-        clearTimeout(scrollCheckTimeout);
-        scrollCheckTimeout = setTimeout(checkVisibility, 500);
-    });
+        setTimeout(checkVisibility, 1000);
+        let scrollCheckTimeout;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollCheckTimeout);
+            scrollCheckTimeout = setTimeout(checkVisibility, 500);
+        });
+    }
 });
