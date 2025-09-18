@@ -103,6 +103,36 @@ const portfolioData = [
                 thumbnail: "../../assets/images/portfolio/mansolution.jpg",
                 url: "https://mansolution.co.kr/",
                 featured: false
+            },
+            {
+                id: "11",
+                title: "2D2FIGURE",
+                category: "web",
+                year: 2024,
+                description: "피규어 주문제작 전문 업체",
+                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/2D2FIGURE.png",
+                url: "https://2d2-omega.vercel.app/",
+                featured: false
+            },
+            {
+                id: "12",
+                title: "INTERIOR",
+                category: "web",
+                year: 2024,
+                description: "감각적인 공간을 만드는 인테리어 회사",
+                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/INTERIOR.png",
+                url: "https://interior-orpin.vercel.app/",
+                featured: false
+            },
+            {
+                id: "13",
+                title: "NANAMALL",
+                category: "web",
+                year: 2024,
+                description: "일본 라이프스타일 쇼핑몰",
+                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/NANAMALL.png",
+                url: "https://nana-lilac.vercel.app/",
+                featured: false
             }
 ];
 
@@ -131,7 +161,7 @@ function loadPortfolioData() {
     
     try {
         // 메인페이지에 표시할 4개 프로젝트 선택 (2x2 그리드)
-        const featuredIds = ["1", "2", "5", "10"]; // NBPKOREA, 고요속의미식, 후니인테리어, 맨솔루션
+        const featuredIds = ["1", "2", "11", "12"]; // NBPKOREA, 고요속의미식, 2D2FIGURE, INTERIOR
         const displayPortfolios = portfolios.filter(item => featuredIds.includes(item.id));
         
         console.log('Filtered portfolios for main page:', displayPortfolios.length);
