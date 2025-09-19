@@ -133,6 +133,16 @@ const portfolioData = [
                 thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/NANAMALL.png",
                 url: "https://nana-lilac.vercel.app/",
                 featured: false
+            },
+            {
+                id: "14",
+                title: "TOHIGH",
+                category: "web",
+                year: 2024,
+                description: "AI를 적용시켜 회사의 성장을 돕는 비즈니스 컨설팅 회사",
+                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/tohigh.png",
+                url: "#",
+                featured: true
             }
 ];
 
