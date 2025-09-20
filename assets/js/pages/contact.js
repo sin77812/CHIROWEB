@@ -258,7 +258,7 @@
                                     곧 연락드리겠습니다.
                                 </p>
                                 <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                                    <a href="../home/index.html" style="
+                                    <a href="/" style="
                                         display: inline-block;
                                         background: #FF3B30;
                                         color: #FFFFFF;
