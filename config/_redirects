@@ -1,4 +1,13 @@
-# Redirect rules for Vercel
-/admin  /admin.html  200
-/login  /login.html  200
-/*      /index.html  200
+# HTTP to HTTPS redirect
+http://chiroweb.co.kr/*  https://chiroweb.co.kr/:splat  301!
+http://www.chiroweb.co.kr/*  https://www.chiroweb.co.kr/:splat  301!
+
+# Cookies page redirect to privacy policy or home
+/cookies  /  301
+
+# Clean URL redirects
+/about.html  /about  301
+/portfolio.html  /portfolio  301
+/contact.html  /contact  301
+
+# Handle non-existent pages with 404 (remove catch-all redirect)

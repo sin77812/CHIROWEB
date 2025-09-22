@@ -2,7 +2,12 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#0A0A0A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=yes, email=yes">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/chirologo.png">
@@ -10,38 +15,52 @@
     
     <!-- SEO 메타 태그 -->
     <title>웹디자인 포트폴리오 | 제작 사례 | 치로웹디자인</title>
-    <meta name="description" content="스타트업부터 중소기업까지, Chiro가 제작한 다양한 홈페이지 포트폴리오. 실제 고객사 웹사이트 제작 사례와 성공 스토리. 반응형 웹디자인 전문.">
+    <meta name="description" content="인천·안산 지역 50+ 프로젝트 포트폴리오! 스타트업부터 대기업까지 다양한 업종별 홈페이지 제작 성공사례. 실제 고객 매출 증대 스토리를 확인하고 영감을 얻어보세요!">
     <meta name="keywords" content="웹디자인 포트폴리오, 홈페이지 제작 사례, 웹사이트 샘플, 반응형 웹 포트폴리오, 기업 홈페이지 사례, 인천 웹디자인 사례">
     <meta name="author" content="치로웹디자인">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://chiro-psi.vercel.app/portfolio">
+    <link rel="canonical" href="https://chiroweb.co.kr/portfolio">
     
     <!-- Open Graph 메타 태그 -->
-    <meta property="og:title" content="웹디자인 포트폴리오 - Chiro 제작 사례">
-    <meta property="og:description" content="50+ 프로젝트 경험! Chiro가 제작한 다양한 웹사이트 포트폴리오를 확인해보세요">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://chiro-psi.vercel.app/portfolio">
+    <meta property="og:title" content="💼 50+ 성공사례 공개! 매출 증대를 만든 웹디자인 포트폴리오 갤러리">
+    <meta property="og:description" content="🎯 스타트업부터 대기업까지! 가스장비•남성의학•인테리어•사진스튜디오 등 다양한 업종별 실제 고객 매출 증대 스토리. 당신의 비즈니스에 영감을 줄 창의적 솔루션들을 지금 확인하세요!">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://chiroweb.co.kr/portfolio">
     <meta property="og:image" content="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/ogphoto.png">
+    <meta property="og:image:alt" content="치로웹디자인 포트폴리오 - 다양한 업종별 웹사이트 제작 성공사례 모음">
     <meta property="og:site_name" content="치로웹디자인">
     <meta property="og:locale" content="ko_KR">
+    <meta property="article:author" content="치로웹디자인">
+    <meta property="article:section" content="포트폴리오">
     
     <!-- Twitter Card 메타 태그 -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="웹디자인 포트폴리오 | Chiro">
-    <meta name="twitter:description" content="50+ 프로젝트! 다양한 웹사이트 제작 사례">
+    <meta name="twitter:title" content="💼 50+ 성공사례 공개! 매출 증대를 만든 웹디자인 포트폴리오 갤러리">
+    <meta name="twitter:description" content="🎯 스타트업부터 대기업까지! 가스장비•남성의학•인테리어•사진스튜디오 등 다양한 업종별 실제 고객 매출 증대 스토리. 당신의 비즈니스에 영감을 줄 창의적 솔루션들을 지금 확인하세요!">
     <meta name="twitter:image" content="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/ogphoto.png">
+    <meta name="twitter:image:alt" content="치로웹디자인 포트폴리오 - 다양한 업종별 웹사이트 제작 성공사례 모음">
     
-    <!-- Combined CSS for Vercel -->
-    <link rel="stylesheet" href="assets/css/main.css?v=20241203">
-    <link rel="stylesheet" href="assets/css/icons.css">
-    <link rel="stylesheet" href="assets/css/pages/portfolio.css">
+    <!-- Critical Resource Preloading -->
+    <link rel="preload" href="../assets/css/main.css?v=20241203" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="../assets/css/icons.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="../assets/css/pages/portfolio.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="../assets/css/main.css?v=20241203">
+        <link rel="stylesheet" href="../assets/css/icons.css">
+        <link rel="stylesheet" href="../assets/css/pages/portfolio.css">
+    </noscript>
     
-    <!-- Font Optimization -->
+    <!-- DNS Prefetch for External Resources -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//chiro-web.s3.ap-northeast-2.amazonaws.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    
+    <!-- Font Optimization -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap"></noscript>
     
     <!-- Font Loading Detection -->
     <script>
@@ -59,6 +78,28 @@
     <!-- GSAP -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- 구조화된 데이터 - BreadcrumbList Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "홈",
+          "item": "https://chiroweb.co.kr/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "포트폴리오",
+          "item": "https://chiroweb.co.kr/portfolio"
+        }
+      ]
+    }
+    </script>
 </head>
 <body style="background: #0A0A0A; margin: 0; padding: 0;">
     
@@ -117,7 +158,7 @@
                 </h1>
                 <p class="portfolio-hero-description">
                     다양한 산업과 규모의 프로젝트를 통해 축적된<br>
-                    창의적 솔루션과 기술적 전문성을 확인해보세요.
+                    <a href="/about" class="hero-inline-link">창의적 솔루션과 기술적 전문성</a>을 확인해보세요.
                 </p>
                 <div class="portfolio-stats">
                     <div class="stat-item">
@@ -189,7 +230,7 @@
             <div class="cta-content">
                 <h2 class="cta-title">다음 프로젝트의<br>주인공은 당신입니다</h2>
                 <p class="cta-description">
-                    지금까지의 경험과 전문성을 바탕으로<br>
+                    <a href="/about" class="cta-inline-link">지금까지의 경험과 전문성</a>을 바탕으로<br>
                     당신만의 특별한 디지털 경험을 만들어보세요.
                 </p>
                 <div class="cta-actions">
@@ -201,9 +242,9 @@
     </section>
 
     <!-- Scripts -->
-    <script src="assets/js/api-config.js?v=20241201"></script>
-    <script src="assets/js/navigation.js?v=20241201"></script>
+    <script src="../assets/js/api-config.js?v=20241201"></script>
+    <script src="../assets/js/navigation.js?v=20241201"></script>
     <!-- <script src="video-optimization.js?v=20241201"></script> -->
-    <script src="assets/js/pages/portfolio.js?v=20241201"></script>
+    <script src="../assets/js/pages/portfolio.js?v=20241201"></script>
 </body>
 </html>

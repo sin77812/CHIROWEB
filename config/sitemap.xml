@@ -7,47 +7,39 @@
     
     <!-- 홈페이지 -->
     <url>
-        <loc>https://chiro-psi.vercel.app/</loc>
+        <loc>https://chiroweb.co.kr/</loc>
         <lastmod>2024-09-14</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
         <image:image>
-            <image:loc>https://chiro-psi.vercel.app/hero-background.jpg</image:loc>
+            <image:loc>https://chiroweb.co.kr/hero-background.jpg</image:loc>
             <image:caption>치로웹디자인 - 인천 홈페이지 제작 전문</image:caption>
         </image:image>
     </url>
     
     <!-- 포트폴리오 -->
     <url>
-        <loc>https://chiro-psi.vercel.app/portfolio.html</loc>
+        <loc>https://chiroweb.co.kr/portfolio</loc>
         <lastmod>2024-09-14</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
         <image:image>
-            <image:loc>https://chiro-psi.vercel.app/portfolio-preview.jpg</image:loc>
+            <image:loc>https://chiroweb.co.kr/portfolio-preview.jpg</image:loc>
             <image:caption>치로웹디자인 포트폴리오</image:caption>
         </image:image>
     </url>
     
     <!-- 회사소개 -->
     <url>
-        <loc>https://chiro-psi.vercel.app/about.html</loc>
+        <loc>https://chiroweb.co.kr/about</loc>
         <lastmod>2024-09-14</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     
-    <!-- 블로그 -->
-    <url>
-        <loc>https://chiro-psi.vercel.app/blog.html</loc>
-        <lastmod>2024-09-14</lastmod>
-        <changefreq>daily</changefreq>
-        <priority>0.7</priority>
-    </url>
-    
     <!-- 연락처 -->
     <url>
-        <loc>https://chiro-psi.vercel.app/contact.html</loc>
+        <loc>https://chiroweb.co.kr/contact</loc>
         <lastmod>2024-09-14</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
