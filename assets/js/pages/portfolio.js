@@ -6,15 +6,14 @@
 const portfolioData = [
             {
                 id: "13",
-                title: "CHIROWEB",
+                title: "전원주택 건설 전문",
                 category: "web",
                 year: 2025,
-                description: "치로웹디자인의 기업 홈페이지 - 모던하고 세련된 웹디자인 에이전시",
-                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/%E1%84%92%E1%85%AA%E1%84%86%E1%85%A7%E1%86%AB+%E1%84%80%E1%85%B5%E1%84%85%E1%85%A9%E1%86%A8+2025-09-20+%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE+7.56.13.mov",
-                videoUrl: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/%E1%84%92%E1%85%AA%E1%84%86%E1%85%A7%E1%86%AB+%E1%84%80%E1%85%B5%E1%84%85%E1%85%A9%E1%86%A8+2025-09-20+%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE+7.56.13.mov",
+                description: "고품격 전원주택 건설 및 설계 전문 기업 홈페이지",
+                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA+2025-09-22+%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE+9.08.15.png",
                 url: "https://chiromain.vercel.app",
                 featured: true,
-                isVideo: true
+                deviceOnly: "pc"
             },
             {
                 id: "10",
@@ -208,6 +207,7 @@ function loadPortfolioData() {
                                 <div class="portfolio-info">
                                     <h3 class="project-title">${item.title}</h3>
                                     <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+                                    ${item.deviceOnly ? `<span class="device-only-badge">Only ${item.deviceOnly.toUpperCase()}</span>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -228,6 +228,7 @@ function loadPortfolioData() {
                                 <div class="portfolio-info">
                                     <h3 class="project-title">${item.title}</h3>
                                     <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+                                    ${item.deviceOnly ? `<span class="device-only-badge">Only ${item.deviceOnly.toUpperCase()}</span>` : ''}
                                 </div>
                             </div>
                         </div>
@@ -516,6 +517,7 @@ function loadAllPortfolios() {
                             <div class="portfolio-info">
                                 <h3 class="project-title">${item.title}</h3>
                                 <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+                                ${item.deviceOnly ? `<span class="device-only-badge">Only ${item.deviceOnly.toUpperCase()}</span>` : ''}
                             </div>
                             <a href="${item.url}" target="_blank" class="portfolio-link">
                                 <span class="link-text">View Project</span>
@@ -539,6 +541,7 @@ function loadAllPortfolios() {
                             <div class="portfolio-info">
                                 <h3 class="project-title">${item.title}</h3>
                                 <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+                                ${item.deviceOnly ? `<span class="device-only-badge">Only ${item.deviceOnly.toUpperCase()}</span>` : ''}
                             </div>
                             <a href="${item.url}" target="_blank" class="portfolio-link">
                                 <span class="link-text">View Project</span>

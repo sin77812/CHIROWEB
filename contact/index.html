@@ -40,15 +40,10 @@
     <meta name="twitter:image" content="https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/ogphoto.png">
     <meta name="twitter:image:alt" content="치로웹디자인 무료 상담 신청 - 홈페이지 제작 견적 및 전문가 컨설팅">
     
-    <!-- Critical Resource Preloading -->
-    <link rel="preload" href="../assets/css/main.css?v=20241203" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="../assets/css/icons.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="preload" href="../assets/css/pages/contact.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="../assets/css/main.css?v=20241203">
-        <link rel="stylesheet" href="../assets/css/icons.css">
-        <link rel="stylesheet" href="../assets/css/pages/contact.css">
-    </noscript>
+    <!-- Critical CSS (Synchronous Loading) -->
+    <link rel="stylesheet" href="../assets/css/main.css?v=20241203">
+    <link rel="stylesheet" href="../assets/css/icons.css">
+    <link rel="stylesheet" href="../assets/css/pages/contact.css">
     
     <!-- DNS Prefetch for External Resources -->
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
