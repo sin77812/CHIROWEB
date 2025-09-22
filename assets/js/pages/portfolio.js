@@ -5,6 +5,18 @@
 // 하드코딩된 포트폴리오 데이터 (Claude가 직접 관리)
 const portfolioData = [
             {
+                id: "13",
+                title: "CHIROWEB",
+                category: "web",
+                year: 2025,
+                description: "치로웹디자인의 기업 홈페이지 - 모던하고 세련된 웹디자인 에이전시",
+                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/%E1%84%92%E1%85%AA%E1%84%86%E1%85%A7%E1%86%AB+%E1%84%80%E1%85%B5%E1%84%85%E1%85%A9%E1%86%A8+2025-09-20+%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE+7.56.13.mov",
+                videoUrl: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/%E1%84%92%E1%85%AA%E1%84%86%E1%85%A7%E1%86%AB+%E1%84%80%E1%85%B5%E1%84%85%E1%85%A9%E1%86%A8+2025-09-20+%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE+7.56.13.mov",
+                url: "https://chiromain.vercel.app",
+                featured: true,
+                isVideo: true
+            },
+            {
                 id: "10",
                 title: "맨솔루션",
                 category: "web",
@@ -170,32 +182,59 @@ function loadPortfolioData() {
     }
     
     try {
-        // 메인페이지에 표시할 4개 프로젝트 선택 (2x2 그리드)
-        const featuredIds = ["1", "2", "11", "12"]; // NBPKOREA, 고요속의미식, 2D2FIGURE, INTERIOR
+        // 메인페이지에 표시할 4개 프로젝트 선택 (2x2 그리드) - CHIROWEB를 첫번째로
+        const featuredIds = ["13", "1", "11", "12"]; // CHIROWEB, NBPKOREA, 2D2FIGURE, INTERIOR
         const displayPortfolios = portfolios.filter(item => featuredIds.includes(item.id));
         
         console.log('Filtered portfolios for main page:', displayPortfolios.length);
         console.log('Selected projects:', displayPortfolios.map(p => p.title));
         
-        portfolioGrid.innerHTML = displayPortfolios.map(item => `
-            <div class="portfolio-item visible" data-category="${item.category}">
-                <div class="portfolio-image">
-                    <img 
-                        src="${item.thumbnail}" 
-                        alt="${item.title}" 
-                        loading="lazy" 
-                        data-fallback="https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}"
-                        onerror="this.onerror=null; this.src=this.dataset.fallback || '../../assets/images/portfolio/placeholder.jpg';"
-                        class="portfolio-image-optimized loaded">
-                    <div class="portfolio-overlay">
-                        <div class="portfolio-info">
-                            <h3 class="project-title">${item.title}</h3>
-                            <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+        portfolioGrid.innerHTML = displayPortfolios.map(item => {
+            if (item.isVideo) {
+                return `
+                    <div class="portfolio-item visible" data-category="${item.category}">
+                        <div class="portfolio-image">
+                            <video 
+                                src="${item.videoUrl}" 
+                                muted
+                                loop
+                                playsinline
+                                class="portfolio-video"
+                                onmouseenter="this.play()"
+                                onmouseleave="this.pause()"
+                                poster="${item.thumbnail}">
+                            </video>
+                            <div class="portfolio-overlay">
+                                <div class="portfolio-info">
+                                    <h3 class="project-title">${item.title}</h3>
+                                    <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        `).join('');
+                `;
+            } else {
+                return `
+                    <div class="portfolio-item visible" data-category="${item.category}">
+                        <div class="portfolio-image">
+                            <img 
+                                src="${item.thumbnail}" 
+                                alt="${item.title}" 
+                                loading="lazy" 
+                                data-fallback="https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}"
+                                onerror="this.onerror=null; this.src=this.dataset.fallback || '../../assets/images/portfolio/placeholder.jpg';"
+                                class="portfolio-image-optimized loaded">
+                            <div class="portfolio-overlay">
+                                <div class="portfolio-info">
+                                    <h3 class="project-title">${item.title}</h3>
+                                    <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }).join('');
         
         console.log('Generated HTML for main page, length:', portfolioGrid.innerHTML.length);
         console.log('Main page portfolio loaded successfully:', displayPortfolios.length, 'items');
@@ -458,28 +497,59 @@ function loadAllPortfolios() {
     const initialItems = 8;
     const displayPortfolios = portfolios.slice(0, initialItems);
     
-    portfolioGrid.innerHTML = displayPortfolios.map(item => `
-        <div class="portfolio-item visible" data-category="${item.category}">
-            <div class="portfolio-image">
-                <img 
-                    src="${item.thumbnail}" 
-                    alt="${item.title}" 
-                    loading="lazy" 
-                    onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}';"
-                    class="portfolio-image-optimized">
-                <div class="portfolio-overlay">
-                    <div class="portfolio-info">
-                        <h3 class="project-title">${item.title}</h3>
-                        <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+    portfolioGrid.innerHTML = displayPortfolios.map(item => {
+        if (item.isVideo) {
+            return `
+                <div class="portfolio-item visible" data-category="${item.category}">
+                    <div class="portfolio-image">
+                        <video 
+                            src="${item.videoUrl}" 
+                            muted
+                            loop
+                            playsinline
+                            class="portfolio-video"
+                            onmouseenter="this.play()"
+                            onmouseleave="this.pause()"
+                            poster="${item.thumbnail}">
+                        </video>
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <h3 class="project-title">${item.title}</h3>
+                                <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+                            </div>
+                            <a href="${item.url}" target="_blank" class="portfolio-link">
+                                <span class="link-text">View Project</span>
+                                <span class="link-icon">→</span>
+                            </a>
+                        </div>
                     </div>
-                    <a href="${item.url}" target="_blank" class="portfolio-link">
-                        <span class="link-text">View Project</span>
-                        <span class="link-icon">→</span>
-                    </a>
                 </div>
-            </div>
-        </div>
-    `).join('');
+            `;
+        } else {
+            return `
+                <div class="portfolio-item visible" data-category="${item.category}">
+                    <div class="portfolio-image">
+                        <img 
+                            src="${item.thumbnail}" 
+                            alt="${item.title}" 
+                            loading="lazy" 
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/600x400/1a1a1a/666666?text=${encodeURIComponent(item.title)}';"
+                            class="portfolio-image-optimized">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <h3 class="project-title">${item.title}</h3>
+                                <p class="project-category">${getCategoryDisplayName(item.category)}</p>
+                            </div>
+                            <a href="${item.url}" target="_blank" class="portfolio-link">
+                                <span class="link-text">View Project</span>
+                                <span class="link-icon">→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }).join('');
     
     // Update load more info
     updateLoadMoreInfo(initialItems, portfolios.length);
