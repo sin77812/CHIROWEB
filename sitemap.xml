@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- 홈페이지 -->
+  <url>
+    <loc>https://www.chiroweb.co.kr/</loc>
+    <lastmod>2024-09-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/chirologo.png</image:loc>
+      <image:title>치로웹디자인 로고</image:title>
+    </image:image>
+  </url>
+  
+  <!-- 포트폴리오 -->
+  <url>
+    <loc>https://www.chiroweb.co.kr/portfolio.html</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- 회사소개 -->
+  <url>
+    <loc>https://www.chiroweb.co.kr/about.html</loc>
+    <lastmod>2024-09-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- 문의하기 -->
+  <url>
+    <loc>https://www.chiroweb.co.kr/contact.html</loc>
+    <lastmod>2024-09-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+</urlset>

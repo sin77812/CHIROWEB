@@ -33,4 +33,4 @@ Allow: /portfolio/
 User-agent: Googlebot-Video
 Allow: /videos/
 
-Sitemap: https://chiro-psi.vercel.app/sitemap.xml
+Sitemap: https://www.chiroweb.co.kr/sitemap.xml
