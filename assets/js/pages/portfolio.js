@@ -6,11 +6,13 @@
 const portfolioData = [
             {
                 id: "13",
-                title: "전원주택 건설 전문",
+                title: "MERRYCON",
                 category: "web",
                 year: 2025,
                 description: "고품격 전원주택 건설 및 설계 전문 기업 홈페이지",
-                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA+2025-09-22+%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE+9.08.15.png",
+                thumbnail: "../../assets/images/portfolio/MERRYCON.jpg",
+                responsive: false,
+                deviceSupport: "PC 온리, 반응형 미지원",
                 url: "https://chiromain.vercel.app",
                 featured: true,
                 deviceOnly: "pc"
@@ -154,6 +156,16 @@ const portfolioData = [
                 thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/tohigh.png",
                 url: "#",
                 featured: true
+            },
+            {
+                id: "15",
+                title: "PEIT24",
+                category: "web",
+                year: 2024,
+                description: "정치/경제 DNA 검사 플랫폼",
+                thumbnail: "../../assets/images/portfolio/PEIT24.jpg",
+                url: "https://peit.vercel.app/",
+                featured: false
             }
 ];
 
