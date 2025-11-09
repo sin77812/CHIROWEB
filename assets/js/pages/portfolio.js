@@ -5,6 +5,26 @@
 // 하드코딩된 포트폴리오 데이터 (Claude가 직접 관리)
 const portfolioData = [
             {
+                id: "15",
+                title: "PEIT24",
+                category: "web",
+                year: 2024,
+                description: "정치/경제 DNA 검사 플랫폼",
+                thumbnail: "../../assets/images/portfolio/PEIT24.jpg",
+                url: "https://peit.vercel.app/",
+                featured: false
+            },
+            {
+                id: "1",
+                title: "NBPKOREA",
+                category: "web",
+                year: 2024,
+                description: "친환경 가스히터 설비 전문업체의 기업 웹사이트",
+                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/nbpkorea.jpg",
+                url: "https://nbpkorea.vercel.app/",
+                featured: true
+            },
+            {
                 id: "13",
                 title: "MERRYCON",
                 category: "web",
@@ -26,16 +46,6 @@ const portfolioData = [
                 thumbnail: "../../assets/images/portfolio/mansolution.jpg",
                 url: "https://mansolution.co.kr/",
                 featured: false
-            },
-            {
-                id: "1",
-                title: "NBPKOREA",
-                category: "web",
-                year: 2024,
-                description: "친환경 가스히터 설비 전문업체의 기업 웹사이트",
-                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/image/nbpkorea.jpg",
-                url: "https://nbpkorea.vercel.app/",
-                featured: true
             },
             {
                 id: "11",
@@ -156,16 +166,6 @@ const portfolioData = [
                 thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/tohigh.png",
                 url: "#",
                 featured: true
-            },
-            {
-                id: "15",
-                title: "PEIT24",
-                category: "web",
-                year: 2024,
-                description: "정치/경제 DNA 검사 플랫폼",
-                thumbnail: "../../assets/images/portfolio/PEIT24.jpg",
-                url: "https://peit.vercel.app/",
-                featured: false
             }
 ];
 
