@@ -166,6 +166,16 @@ const portfolioData = [
                 thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/tohigh.png",
                 url: "#",
                 featured: true
+            },
+            {
+                id: "16",
+                title: "KUBAN",
+                category: "web",
+                year: 2024,
+                description: "커피 로스터리 웹사이트",
+                thumbnail: "https://chiro-web.s3.ap-northeast-2.amazonaws.com/kuban.png",
+                url: "https://kubancoffeeroasters.com/",
+                featured: false
             }
 ];
 
